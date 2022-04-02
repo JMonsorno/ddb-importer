@@ -14696,38 +14696,7 @@ function getCampaignId() {
 }
 
 async function getPatreonTier() {
-  const customProxy = game.settings.get("ddb-importer-demo", "custom-proxy");
-  if (customProxy) return { success: true, message: "custom proxy", data: "CUSTOM" };
-  const key = game.settings.get("ddb-importer-demo", "beta-key");
-  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
-  const body = { betaKey: key };
-
-  return new Promise((resolve, reject) => {
-    fetch(`${parsingApi}/patreon/tier`, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.success) {
-          munchNote(`API Failure: ${data.message}`);
-          reject(data.message);
-        }
-        let currentEmail = game.settings.get("ddb-importer-demo", "patreon-user");
-        if (data.email !== currentEmail) {
-          game.settings.set("ddb-importer-demo", "patreon-user", data.email).then(() => {
-            resolve(data.data);
-          });
-        } else {
-          resolve(data.data);
-        }
-      })
-      .catch((error) => reject(error));
-  });
+  return "GOD";
 }
 
 async function getPatreonValidity(betaKey) {
