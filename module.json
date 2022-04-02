@@ -1,22 +1,22 @@
 {
-  "name": "ddb-importer",
-  "author": "MrPrimate",
+  "name": "ddb-importer-demo",
+  "author": "JMonsorno",
   "title": "D&D Beyond Importer - Demo",
   "license": "MIT License",
   "description": "Import your dndbeyond.com characters, spells, items, monsters, encounters, and adventures at super speed!",
-  "version": "2.9.26",
+  "version": "2.9.26-alpha",
   "download": "https://github.com/JMonsorno/ddb-importer/archive/refs/heads/demo-mode.zip",
   "manifest": "https://github.com/JMonsorno/ddb-importer/raw/demo-mode/module.json",
   "readme": "https://github.com/JMonsorno/ddb-importer/blob/demo-mode/README.md",
   "changelog": "https://github.com/JMonsorno/ddb-importer/blob/demo-mode/CHANGELOG.md",
-  "url": "https://github.com/mrprimate/ddb-importer",
+  "url": "https://github.com/JMonsorno/ddb-importer",
   "minimumCoreVersion": "0.8.9",
   "compatibleCoreVersion": "9",
   "authors": [
     {
-      "name": "MrPrimate",
-      "email": "jack@mrprimate.co.uk",
-      "url": "https://mrprimate.co.uk"
+      "name": "JMonsorno",
+      "email": "JMonsorno@JMonsorno.com",
+      "url": "https://JMonsorno.com"
     }
   ],
   "languages": [
