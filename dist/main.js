@@ -313,12 +313,12 @@ async function characterExtras(html, characterData, actor) {
 
   MUNCH_DEFAULTS.forEach((setting) => {
     _logger_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].debug */ .Z.debug(`Loading extras munch settings ${setting.name}`);
-    setting["chosen"] = game.settings.get("ddb-importer", setting.name);
+    setting["chosen"] = game.settings.get("ddb-importer-demo", setting.name);
     munchSettings.push(setting);
   });
 
   munchSettings.forEach((setting) => {
-    game.settings.set("ddb-importer", setting.name, setting.needed);
+    game.settings.set("ddb-importer-demo", setting.name, setting.needed);
   });
 
   try {
@@ -564,9 +564,9 @@ async function characterExtras(html, characterData, actor) {
 
     _logger_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].debug */ .Z.debug("Parsed Extras:", parsedExtras);
 
-    const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
-    const updateImages = game.settings.get("ddb-importer", "munching-policy-update-images");
-    // const uploadDirectory = game.settings.get("ddb-importer", "image-upload-directory").replace(/^\/|\/$/g, "");
+    const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+    const updateImages = game.settings.get("ddb-importer-demo", "munching-policy-update-images");
+    // const uploadDirectory = game.settings.get("ddb-importer-demo", "image-upload-directory").replace(/^\/|\/$/g, "");
 
     const existingExtras = await game.actors.contents
       .filter((extra) => extra.data.folder === folder.id)
@@ -591,7 +591,7 @@ async function characterExtras(html, characterData, actor) {
         isLocal: actor.getFlag("automated-evocations", "isLocal"),
         companions: actor.getFlag("automated-evocations", "isLocal"),
       };
-  
+
       const companions = existingExtras.concat(importedExtras).map((extra) => {
         return {
           id: extra.id ? extra.id : extra._id,
@@ -606,7 +606,7 @@ async function characterExtras(html, characterData, actor) {
         companions,
       };
       const mergedSettings = mergeObject(currentAutomatedEvocationSettings, newAutomatedEvocationSettings);
-  
+
       actor.setFlag("automated-evocations", "isLocal", mergedSettings.isLocal);
       actor.setFlag("automated-evocations", "companions", mergedSettings.companions);
     }
@@ -617,7 +617,7 @@ async function characterExtras(html, characterData, actor) {
   } finally {
     munchSettings.forEach((setting) => {
       _logger_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].debug */ .Z.debug(`Returning ${setting.name} to ${setting.chosen}`);
-      game.settings.set("ddb-importer", setting.name, setting.chosen);
+      game.settings.set("ddb-importer-demo", setting.name, setting.chosen);
     });
   }
 }
@@ -1888,11 +1888,11 @@ function getEffectExcludedModifiers(type, features, ac) {
 
   if (type !== "item") {
     // these are the effect tweaks, and mostly excessive
-    const speedEffect = game.settings.get("ddb-importer", `character-update-policy-effect-${type}-speed`);
-    const senseEffect = game.settings.get("ddb-importer", `character-update-policy-effect-${type}-senses`);
-    const hpEffect = game.settings.get("ddb-importer", `character-update-policy-effect-${type}-hp`);
-    const spellBonusEffect = game.settings.get("ddb-importer", `character-update-policy-effect-${type}-spell-bonus`);
-    const damageEffect = game.settings.get("ddb-importer", `character-update-policy-effect-${type}-damages`);
+    const speedEffect = game.settings.get("ddb-importer-demo", `character-update-policy-effect-${type}-speed`);
+    const senseEffect = game.settings.get("ddb-importer-demo", `character-update-policy-effect-${type}-senses`);
+    const hpEffect = game.settings.get("ddb-importer-demo", `character-update-policy-effect-${type}-hp`);
+    const spellBonusEffect = game.settings.get("ddb-importer-demo", `character-update-policy-effect-${type}-spell-bonus`);
+    const damageEffect = game.settings.get("ddb-importer-demo", `character-update-policy-effect-${type}-damages`);
 
     // features represent core non ac features
     if (features) {
@@ -3197,15 +3197,15 @@ function configureDependencies() {
 }
 
 async function loadMacroFile(type, fileName, forceLoad = false) {
-  const embedMacros = game.settings.get("ddb-importer", "embed-macros");
+  const embedMacros = game.settings.get("ddb-importer-demo", "embed-macros");
   _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug(`Getting macro for ${type} ${fileName}`);
   const fileExists = forceLoad
     ? true
-    : await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].fileExists */ .Z.fileExists(`[data] modules/ddb-importer/macros/${type}s`, fileName);
+    : await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].fileExists */ .Z.fileExists(`[data] modules/ddb-importer-demo/macros/${type}s`, fileName);
 
   let data;
   if (fileExists && (forceLoad || embedMacros)) {
-    const url = await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].getFileUrl */ .Z.getFileUrl(`[data] modules/ddb-importer/macros/${type}s`, fileName);
+    const url = await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].getFileUrl */ .Z.getFileUrl(`[data] modules/ddb-importer-demo/macros/${type}s`, fileName);
     const response = await fetch(url, { method: "GET" });
     data = await response.text();
   } else if (fileExists && !embedMacros) {
@@ -6617,11 +6617,11 @@ function sanitiseName(name) {
 
 async function loadDataFile(fileName) {
   _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug(`Getting icon mapping for ${fileName}`);
-  const fileExists = await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].fileExists */ .Z.fileExists("[data] modules/ddb-importer/data", fileName);
+  const fileExists = await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].fileExists */ .Z.fileExists("[data] modules/ddb-importer-demo/data", fileName);
 
   let data = [];
   if (fileExists) {
-    const url = await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].getFileUrl */ .Z.getFileUrl("[data] modules/ddb-importer/data", fileName);
+    const url = await _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].getFileUrl */ .Z.getFileUrl("[data] modules/ddb-importer-demo/data", fileName);
     const response = await fetch(url, { method: "GET" });
     // eslint-disable-next-line require-atomic-updates
     data = await response.json();
@@ -6975,7 +6975,7 @@ function isLocalCobalt(keyPostfix) {
 
 function getCobalt(keyPostfix = "") {
   let cobalt;
-  const localCookie = game.settings.get("ddb-importer", "cobalt-cookie-local");
+  const localCookie = game.settings.get("ddb-importer-demo", "cobalt-cookie-local");
   const characterCookie = isLocalCobalt(keyPostfix);
 
   _logger_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].debug */ .Z.debug(`Getting Cookie: Key postfix? "${keyPostfix}" -  Local? ${localCookie} - Character? ${characterCookie}`);
@@ -6984,14 +6984,14 @@ function getCobalt(keyPostfix = "") {
   } else if (localCookie) {
     cobalt = localStorage.getItem("ddb-cobalt-cookie");
   } else {
-    cobalt = game.settings.get("ddb-importer", "cobalt-cookie");
+    cobalt = game.settings.get("ddb-importer-demo", "cobalt-cookie");
   }
 
   return cobalt;
 }
 
 async function setCobalt(value, keyPostfix = "") {
-  const localCookie = game.settings.get("ddb-importer", "cobalt-cookie-local");
+  const localCookie = game.settings.get("ddb-importer-demo", "cobalt-cookie-local");
   const characterCookie = keyPostfix && keyPostfix !== "";
 
   let cobaltValue = value;
@@ -7005,7 +7005,7 @@ async function setCobalt(value, keyPostfix = "") {
   } else if (localCookie) {
     localStorage.setItem("ddb-cobalt-cookie", cobaltValue);
   } else {
-    await game.settings.set("ddb-importer", "cobalt-cookie", cobaltValue);
+    await game.settings.set("ddb-importer-demo", "cobalt-cookie", cobaltValue);
   }
 }
 
@@ -7018,14 +7018,14 @@ function deleteLocalCobalt(keyPostfix) {
 }
 
 async function moveCobaltToLocal() {
-  localStorage.setItem('ddb-cobalt-cookie', game.settings.get("ddb-importer", "cobalt-cookie"));
-  await game.settings.set("ddb-importer", "cobalt-cookie", "");
-  game.settings.set("ddb-importer", "cobalt-cookie-local", true);
+  localStorage.setItem('ddb-cobalt-cookie', game.settings.get("ddb-importer-demo", "cobalt-cookie"));
+  await game.settings.set("ddb-importer-demo", "cobalt-cookie", "");
+  game.settings.set("ddb-importer-demo", "cobalt-cookie-local", true);
 }
 
 async function moveCobaltToSettings() {
-  game.settings.set("ddb-importer", "cobalt-cookie", localStorage.getItem('ddb-cobalt-cookie'));
-  game.settings.set("ddb-importer", "cobalt-cookie-local", false);
+  game.settings.set("ddb-importer-demo", "cobalt-cookie", localStorage.getItem('ddb-cobalt-cookie'));
+  game.settings.set("ddb-importer-demo", "cobalt-cookie-local", false);
 }
 
 async function checkCobalt(keyPostfix = "", alternativeKey = null) {
@@ -7034,8 +7034,8 @@ async function checkCobalt(keyPostfix = "", alternativeKey = null) {
       ? JSON.parse(alternativeKey).cbt
       : alternativeKey
     : getCobalt(keyPostfix);
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, betaKey: betaKey };
 
   return new Promise((resolve, reject) => {
@@ -7073,7 +7073,7 @@ const logger = {
       return false;
     }
 
-    const setting = game.settings.get("ddb-importer", "log-level");
+    const setting = game.settings.get("ddb-importer-demo", "log-level");
     const logLevels = ["DEBUG", "INFO", "WARN", "ERR", "OFF"];
     const logLevelIndex = logLevels.indexOf(logLevel.toUpperCase());
     if (setting == "OFF" ||
@@ -7172,10 +7172,10 @@ const logger = {
 function getVehicleData() {
   const cobaltCookie = (0,_lib_Secrets_js__WEBPACK_IMPORTED_MODULE_1__/* .getCobalt */ .HF)();
   const campaignId = (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__/* .getCampaignId */ .F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   return new Promise((resolve, reject) => {
     fetch(`${parsingApi}/proxy/vehicles`, {
@@ -7227,7 +7227,7 @@ async function getMonsterMap () {
 async function getSpellMap() {
   // ddb://spells
   // mm 2176
-  const spellCompendiumLabel = await game.settings.get("ddb-importer", "entity-spell-compendium");
+  const spellCompendiumLabel = await game.settings.get("ddb-importer-demo", "entity-spell-compendium");
   const spellCompendium = await game.packs.find((pack) => pack.collection === spellCompendiumLabel);
   const spellIndices = ["name", "flags.ddbimporter.definitionId"];
   const spellIndex = await spellCompendium.getIndex({ fields: spellIndices });
@@ -7249,7 +7249,7 @@ async function getSpellMap() {
 
 async function getItemMap() {
   // ddb://magicitems
-  const itemCompendiumLabel = await game.settings.get("ddb-importer", "entity-item-compendium");
+  const itemCompendiumLabel = await game.settings.get("ddb-importer-demo", "entity-item-compendium");
   const itemCompendium = await game.packs.find((pack) => pack.collection === itemCompendiumLabel);
   const itemIndices = ["name", "flags.ddbimporter.definitionId"];
   const itemIndex = await itemCompendium.getIndex({ fields: itemIndices });
@@ -7270,11 +7270,11 @@ async function getItemMap() {
 }
 
 async function generateAdventureConfig(full = true, cobalt = true) {
-  const customProxy = game.settings.get("ddb-importer", "custom-proxy");
+  const customProxy = game.settings.get("ddb-importer-demo", "custom-proxy");
 
   const result = {
     generateTokens: true,
-    version: game.modules.get("ddb-importer").data.version,
+    version: game.modules.get("ddb-importer-demo").data.version,
     lookups: {
       monsters: [],
       items: [],
@@ -7388,7 +7388,7 @@ async function generateAdventureConfig(full = true, cobalt = true) {
 }
 
 async function downloadAdventureConfig() {
-  const fullConfig = game.settings.get("ddb-importer", "adventure-muncher-full-config");
+  const fullConfig = game.settings.get("ddb-importer-demo", "adventure-muncher-full-config");
   const result = await generateAdventureConfig(fullConfig);
   (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__/* .download */ .LR)(JSON.stringify(result, null, 4), `adventure-config.json`, "application/json");
   return result;
@@ -7676,9 +7676,9 @@ async function createCompendiumFolderStructure(type) {
   const compendiumFoldersInstalled = _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("compendium-folders");
 
   if (compendiumFoldersInstalled) {
-    compendiumFolderTypeMonster = game.settings.get("ddb-importer", "munching-selection-compendium-folders-monster");
-    compendiumFolderTypeSpell = game.settings.get("ddb-importer", "munching-selection-compendium-folders-spell");
-    compendiumFolderTypeItem = game.settings.get("ddb-importer", "munching-selection-compendium-folders-item");
+    compendiumFolderTypeMonster = game.settings.get("ddb-importer-demo", "munching-selection-compendium-folders-monster");
+    compendiumFolderTypeSpell = game.settings.get("ddb-importer-demo", "munching-selection-compendium-folders-spell");
+    compendiumFolderTypeItem = game.settings.get("ddb-importer-demo", "munching-selection-compendium-folders-item");
     // generate compendium folders for type
     const packName = await (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__/* .getCompendiumLabel */ .Eb)(type);
     await game.CF.FICFolderAPI.loadFolders(packName);
@@ -8137,7 +8137,7 @@ function findDAEItem(itemData, packs) {
       delete matchItem._id;
       return matchItem;
     }
-    
+
   }
   return undefined;
 }
@@ -8401,11 +8401,11 @@ async function removeItems(items, itemsToRemove) {
 const getCharacterUpdatePolicyTypes = () => {
   let itemTypes = [];
   itemTypes.push("class");
-  if (game.settings.get("ddb-importer", "character-update-policy-feat")) itemTypes.push("feat");
-  if (game.settings.get("ddb-importer", "character-update-policy-weapon")) itemTypes.push("weapon");
-  if (game.settings.get("ddb-importer", "character-update-policy-equipment"))
+  if (game.settings.get("ddb-importer-demo", "character-update-policy-feat")) itemTypes.push("feat");
+  if (game.settings.get("ddb-importer-demo", "character-update-policy-weapon")) itemTypes.push("weapon");
+  if (game.settings.get("ddb-importer-demo", "character-update-policy-equipment"))
     itemTypes = itemTypes.concat(DICTIONARY.types.equipment);
-  if (game.settings.get("ddb-importer", "character-update-policy-spell")) itemTypes.push("spell");
+  if (game.settings.get("ddb-importer-demo", "character-update-policy-spell")) itemTypes.push("spell");
   return itemTypes;
 };
 
@@ -8695,7 +8695,7 @@ async function createCompendiumItems(type, compendium, compendiumItems, index, m
 
 async function compendiumFolders(document, type) {
   // using compendium folders?
-  const compendiumFolderAdd = game.settings.get("ddb-importer", "munching-policy-use-compendium-folders");
+  const compendiumFolderAdd = game.settings.get("ddb-importer-demo", "munching-policy-use-compendium-folders");
   const compendiumFoldersInstalled = _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("compendium-folders");
   if (compendiumFolderAdd && compendiumFoldersInstalled) {
     // we create the compendium folder before import
@@ -8740,12 +8740,12 @@ async function updateCompendium(type, input, updateExisting = false, matchFlags 
 
 
 async function getImagePath(imageUrl, type = "ddb", name = "", download = false, remoteImages = false) {
-  const frameDirectory = game.settings.get("ddb-importer", "frame-image-upload-directory").replace(/^\/|\/$/g, "");
-  const otherDirectory = game.settings.get("ddb-importer", "other-image-upload-directory").replace(/^\/|\/$/g, "");
+  const frameDirectory = game.settings.get("ddb-importer-demo", "frame-image-upload-directory").replace(/^\/|\/$/g, "");
+  const otherDirectory = game.settings.get("ddb-importer-demo", "other-image-upload-directory").replace(/^\/|\/$/g, "");
   const uploadDirectory = type === "frame" ? frameDirectory : otherDirectory;
-  const downloadImage = (download) ? download : game.settings.get("ddb-importer", "munching-policy-download-images");
-  const remoteImage = (remoteImages) ? remoteImages : game.settings.get("ddb-importer", "munching-policy-remote-images");
-  const useWebP = game.settings.get("ddb-importer", "use-webp");
+  const downloadImage = (download) ? download : game.settings.get("ddb-importer-demo", "munching-policy-download-images");
+  const remoteImage = (remoteImages) ? remoteImages : game.settings.get("ddb-importer-demo", "munching-policy-remote-images");
+  const useWebP = game.settings.get("ddb-importer-demo", "use-webp");
 
   if (imageUrl && downloadImage) {
     const ext = useWebP
@@ -8857,8 +8857,8 @@ async function retainExistingIcons(items) {
 
 async function getDDBItemImages(items, download) {
   (0,_utils_js__WEBPACK_IMPORTED_MODULE_3__/* .munchNote */ .ep)(`Fetching DDB Item Images`);
-  const downloadImages = (download) ? true : game.settings.get("ddb-importer", "munching-policy-download-images");
-  const remoteImages = game.settings.get("ddb-importer", "munching-policy-remote-images");
+  const downloadImages = (download) ? true : game.settings.get("ddb-importer-demo", "munching-policy-download-images");
+  const remoteImages = game.settings.get("ddb-importer-demo", "munching-policy-remote-images");
 
   const itemMap = items.map(async (item) => {
     let itemImage = {
@@ -9009,10 +9009,10 @@ async function getDDBEquipmentIcons(items, download) {
 
 
 async function updateMagicItemImages(items) {
-  const useSRDCompendiumIcons = game.settings.get("ddb-importer", "character-update-policy-use-srd-icons");
-  const ddbSpellIcons = game.settings.get("ddb-importer", "character-update-policy-use-ddb-spell-icons");
-  const inbuiltIcons = game.settings.get("ddb-importer", "character-update-policy-use-inbuilt-icons");
-  const ddbItemIcons = game.settings.get("ddb-importer", "character-update-policy-use-ddb-item-icons");
+  const useSRDCompendiumIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-srd-icons");
+  const ddbSpellIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-spell-icons");
+  const inbuiltIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-inbuilt-icons");
+  const ddbItemIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-item-icons");
 
   // if we still have items to add, add them
   if (items.length > 0) {
@@ -9371,20 +9371,20 @@ function addACEffectIcons(effects) {
 
 async function updateIcons(items, srdIconUpdate = true, monster = false, monsterName = "") {
   // this will use ddb item icons as a fall back
-  const ddbItemIcons = game.settings.get("ddb-importer", "munching-policy-use-ddb-item-icons");
+  const ddbItemIcons = game.settings.get("ddb-importer-demo", "munching-policy-use-ddb-item-icons");
   if (ddbItemIcons) {
     _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug("DDB Equipment Icon Match");
     items = await getDDBEquipmentIcons(items);
   }
 
-  const inBuiltIcons = game.settings.get("ddb-importer", "munching-policy-use-inbuilt-icons");
+  const inBuiltIcons = game.settings.get("ddb-importer-demo", "munching-policy-use-inbuilt-icons");
   if (inBuiltIcons) {
     _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug("Inbuilt icon matching");
     items = await (0,_icons_index_js__WEBPACK_IMPORTED_MODULE_5__/* .copyInbuiltIcons */ .b)(items, monster, monsterName);
   }
 
   // check for SRD icons
-  const srdIcons = game.settings.get("ddb-importer", "munching-policy-use-srd-icons");
+  const srdIcons = game.settings.get("ddb-importer-demo", "munching-policy-use-srd-icons");
   // eslint-disable-next-line require-atomic-updates
   if (srdIcons && srdIconUpdate) {
     _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug("SRD Icon Matching");
@@ -9392,21 +9392,21 @@ async function updateIcons(items, srdIconUpdate = true, monster = false, monster
   }
 
   // this will use ddb spell school icons as a fall back
-  const ddbSpellIcons = game.settings.get("ddb-importer", "munching-policy-use-ddb-spell-icons");
+  const ddbSpellIcons = game.settings.get("ddb-importer-demo", "munching-policy-use-ddb-spell-icons");
   if (ddbSpellIcons) {
     _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug("DDB Spell School Icon Match");
     items = await getDDBSpellSchoolIcons(items, true);
   }
 
   // this will use ddb generic icons as a fall back
-  const ddbGenericItemIcons = game.settings.get("ddb-importer", "munching-policy-use-ddb-generic-item-icons");
+  const ddbGenericItemIcons = game.settings.get("ddb-importer-demo", "munching-policy-use-ddb-generic-item-icons");
   if (ddbGenericItemIcons) {
     _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug("DDB Generic Item Icon Match");
     items = await getDDBGenericItemIcons(items, true);
   }
 
   // update any generated effects
-  const addEffects = game.settings.get("ddb-importer", "munching-policy-add-effects");
+  const addEffects = game.settings.get("ddb-importer-demo", "munching-policy-add-effects");
   if (addEffects) {
     items = addItemEffectIcons(items);
   }
@@ -9415,8 +9415,8 @@ async function updateIcons(items, srdIconUpdate = true, monster = false, monster
 }
 
 async function srdFiddling(items, type) {
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
-  const useSrd = game.settings.get("ddb-importer", "munching-policy-use-srd");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+  const useSrd = game.settings.get("ddb-importer-demo", "munching-policy-use-srd");
 
   if (useSrd && type == "monsters") {
     const srdItems = await getSRDCompendiumItems(items, type);
@@ -9448,7 +9448,7 @@ async function srdFiddling(items, type) {
 
 
 async function daeFiddling(items) {
-  const fiddle = game.settings.get("ddb-importer", "munching-policy-use-dae-effects");
+  const fiddle = game.settings.get("ddb-importer-demo", "munching-policy-use-dae-effects");
   const installed = _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("dae") &&
     (_utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("Dynamic-Effects-SRD") || _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("midi-srd"));
 
@@ -9578,7 +9578,7 @@ async function retrieveCompendiumItems(items, compendiumName) {
  * @param {[items]} spells Array of Strings or items
  */
 async function retrieveSpells(spells) {
-  const compendiumName = await game.settings.get("ddb-importer", "entity-spell-compendium");
+  const compendiumName = await game.settings.get("ddb-importer-demo", "entity-spell-compendium");
   const compendiumItems = await retrieveCompendiumItems(spells, compendiumName);
   const itemData = compendiumItems.map((i) => {
     let spell = i.toObject();
@@ -9639,10 +9639,10 @@ async function addNPCToCompendium(npc) {
 
     let compendiumNPC;
     if (npcMatch) {
-      if (game.settings.get("ddb-importer", "munching-policy-update-existing")) {
+      if (game.settings.get("ddb-importer-demo", "munching-policy-update-existing")) {
         const existingNPC = await compendium.getDocument(npcMatch._id);
 
-        const updateImages = game.settings.get("ddb-importer", "munching-policy-update-images");
+        const updateImages = game.settings.get("ddb-importer-demo", "munching-policy-update-images");
         if (!updateImages && existingNPC.data.img !== "icons/svg/mystery-man.svg") {
           npcBasic.img = existingNPC.data.img;
         }
@@ -9661,7 +9661,7 @@ async function addNPCToCompendium(npc) {
           npcBasic.token.lightColor = existingNPC.data.token.lightColor;
         }
 
-        const retainBiography = game.settings.get("ddb-importer", "munching-policy-monster-retain-biography");
+        const retainBiography = game.settings.get("ddb-importer-demo", "munching-policy-monster-retain-biography");
         if (retainBiography) {
           npcBasic.data.details.biography = existingNPC.data.data.details.biography;
         }
@@ -9718,7 +9718,7 @@ async function addNPCDDBId(npc) {
     );
 
     if (npcMatch) {
-      if (game.settings.get("ddb-importer", "munching-policy-update-existing")) {
+      if (game.settings.get("ddb-importer-demo", "munching-policy-update-existing")) {
         const existingNPC = await compendium.getDocument(npcMatch._id);
         const updateDDBData = {
           _id: npcMatch._id,
@@ -9740,15 +9740,15 @@ async function getNPCImage(data) {
     return false;
   }
 
-  const updateImages = game.settings.get("ddb-importer", "munching-policy-update-images");
+  const updateImages = game.settings.get("ddb-importer-demo", "munching-policy-update-images");
   if (!updateImages && data.img !== "icons/svg/mystery-man.svg") {
     return false;
   }
 
   let dndBeyondImageUrl = data.flags.monsterMunch.img;
   let dndBeyondTokenImageUrl = data.flags.monsterMunch.tokenImg;
-  const useAvatarAsToken = game.settings.get("ddb-importer", "munching-policy-use-full-token-image");
-  const useTokenAsAvatar = game.settings.get("ddb-importer", "munching-policy-use-token-avatar-image");
+  const useAvatarAsToken = game.settings.get("ddb-importer-demo", "munching-policy-use-full-token-image");
+  const useTokenAsAvatar = game.settings.get("ddb-importer-demo", "munching-policy-use-token-avatar-image");
   if (useAvatarAsToken) {
     dndBeyondTokenImageUrl = dndBeyondImageUrl;
   } else if (useTokenAsAvatar) {
@@ -9976,7 +9976,7 @@ async function addSpells(data) {
 }
 
 async function swapItems(data) {
-  const swap = game.settings.get("ddb-importer", "munching-policy-monster-items");
+  const swap = game.settings.get("ddb-importer-demo", "munching-policy-monster-items");
 
   if (swap) {
     _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug("Replacing items...");
@@ -10031,7 +10031,7 @@ async function buildNPC(data, temporary = true, update = false, handleBuild = fa
   // DAE
   const daeInstalled = _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("dae") &&
     (_utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("Dynamic-Effects-SRD") || _utils_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"].isModuleInstalledAndActive */ .Z.isModuleInstalledAndActive("midi-srd"));
-  const daeCopy = game.settings.get("ddb-importer", "munching-policy-dae-copy");
+  const daeCopy = game.settings.get("ddb-importer-demo", "munching-policy-dae-copy");
   if (daeInstalled && daeCopy) {
     (0,_utils_js__WEBPACK_IMPORTED_MODULE_4__/* .munchNote */ .ep)(`Importing DAE Item for ${data.name}`);
     // eslint-disable-next-line require-atomic-updates
@@ -10090,7 +10090,7 @@ function addNPC(data) {
 async function generateIconMap(monsters) {
   let promises = [];
 
-  const srdIcons = game.settings.get("ddb-importer", "munching-policy-use-srd-icons");
+  const srdIcons = game.settings.get("ddb-importer-demo", "munching-policy-use-srd-icons");
   // eslint-disable-next-line require-atomic-updates
   if (srdIcons) {
     const srdIconLibrary = await (0,_import_js__WEBPACK_IMPORTED_MODULE_3__/* .getSRDIconLibrary */ .CW)();
@@ -10826,7 +10826,7 @@ function getSize (monster) {
 
 ;// CONCATENATED MODULE: ./src/muncher/monster/source.js
 function getSource(monster) {
-  const fullSource = game.settings.get("ddb-importer", "use-full-source");
+  const fullSource = game.settings.get("ddb-importer-demo", "use-full-source");
   const sourceObject = CONFIG.DDB.sources.find((cnf) => cnf.id == monster.sourceId);
   const sourceBook = (sourceObject)
     ? (fullSource) ? sourceObject.description : sourceObject.name
@@ -10977,7 +10977,7 @@ function replaceRollable(text) {
 
 function damageModReplace(text, attackInfo, damageType) {
   let result;
-  const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+  const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
   const damageHint = globalDamageHints && damageType ? `[${damageType}]` : "";
   const diceParse = utils/* default.parseDiceString */.Z.parseDiceString(text, null, damageHint);
   if (attackInfo.baseAbility) {
@@ -11062,7 +11062,7 @@ function getExtendedDamage(description, attackInfo) {
   }
 
   if (regainMatch) {
-    const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+    const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
     const damageHint = globalDamageHints ? `[healing]` : "";
     result.damage.parts.push([utils/* default.parseDiceString */.Z.parseDiceString(regainMatch[3], null, damageHint).diceString, 'healing']);
   }
@@ -11547,8 +11547,8 @@ function getLairActions(monster) {
 
   const lairDescription = replaceRollable(monster.lairDescription);
 
-  const updateExisting = game.settings.get("ddb-importer", "munching-policy-update-existing");
-  const hideDescription = game.settings.get("ddb-importer", "munching-policy-hide-description");
+  const updateExisting = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+  const hideDescription = game.settings.get("ddb-importer-demo", "munching-policy-hide-description");
 
   let dom = new DocumentFragment();
   $.parseHTML(lairDescription).forEach((element) => {
@@ -11664,8 +11664,8 @@ function getLegendaryActions(monster, monsterActions) {
     };
   }
 
-  const updateExisting = game.settings.get("ddb-importer", "munching-policy-update-existing");
-  const hideDescription = game.settings.get("ddb-importer", "munching-policy-hide-description");
+  const updateExisting = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+  const hideDescription = game.settings.get("ddb-importer-demo", "munching-policy-hide-description");
 
   let actionResource = {
     value: 3,
@@ -11901,8 +11901,8 @@ function buildAction(action, actionInfo, textContent, type) {
 }
 
 function getActions(monster, type = "action") {
-  const hideDescription = game.settings.get("ddb-importer", "munching-policy-hide-description");
-  const updateExisting = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const hideDescription = game.settings.get("ddb-importer-demo", "munching-policy-hide-description");
+  const updateExisting = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
   let actions;
   let characterDescription;
 
@@ -12147,8 +12147,8 @@ function getSpecialTraits(monster) {
     };
   }
 
-  const updateExisting = game.settings.get("ddb-importer", "munching-policy-update-existing");
-  const hideDescription = game.settings.get("ddb-importer", "munching-policy-hide-description");
+  const updateExisting = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+  const hideDescription = game.settings.get("ddb-importer-demo", "munching-policy-hide-description");
 
   let resistanceResource = {
     value: 0,
@@ -13079,7 +13079,7 @@ async function parseMonsters(monsterData, extra = false) {
   let foundryActors = [];
   let failedMonsterNames = [];
 
-  const useItemAC = game.settings.get("ddb-importer", "munching-policy-monster-use-item-ac");
+  const useItemAC = game.settings.get("ddb-importer-demo", "munching-policy-monster-use-item-ac");
 
   monsterData.forEach((monster) => {
     try {
@@ -14367,7 +14367,7 @@ function tableReplacer(htmlDocument, tableNum, compendiumTables) {
   const tablePoint = element[tableNum];
 
   if (tablePoint) {
-    const rollCompendiumLabel = game.settings.get("ddb-importer", "entity-table-compendium");
+    const rollCompendiumLabel = game.settings.get("ddb-importer-demo", "entity-table-compendium");
     compendiumTables.slice().reverse().forEach((table) => {
       logger/* default.debug */.Z.debug(`Updating table reference for: ${table.name}`);
       tablePoint.insertAdjacentHTML("afterend", `<div id="table-link">@Compendium[${rollCompendiumLabel}.${table.name}]{Open RollTable ${table.name}}</div>`);
@@ -14601,13 +14601,13 @@ function download(content, fileName, contentType) {
 function munchNote(note, nameField = false, monsterNote = false) {
   if (nameField) {
     $("#munching-task-name").text(note);
-    $("#ddb-importer-monsters").css("height", "auto");
+    $("#ddb-importer-demo-monsters").css("height", "auto");
   } else if (monsterNote) {
     $("#munching-task-monster").text(note);
-    $("#ddb-importer-monsters").css("height", "auto");
+    $("#ddb-importer-demo-monsters").css("height", "auto");
   } else {
     $("#munching-task-notes").text(note);
-    $("#ddb-importer-monsters").css("height", "auto");
+    $("#ddb-importer-demo-monsters").css("height", "auto");
   }
 }
 
@@ -14646,7 +14646,7 @@ const compendiumLookup = [
 
 function getCompendiumLabel(type) {
   const compendiumName = compendiumLookup.find((c) => c.type == type).compendium;
-  const compendiumLabel = game.settings.get("ddb-importer", compendiumName);
+  const compendiumLabel = game.settings.get("ddb-importer-demo", compendiumName);
   return compendiumLabel;
 }
 
@@ -14681,7 +14681,7 @@ function getCompendiumType(type, fail = true) {
 }
 
 function getCampaignId() {
-  const campaignId = game.settings.get("ddb-importer", "campaign-id").split("/").pop();
+  const campaignId = game.settings.get("ddb-importer-demo", "campaign-id").split("/").pop();
 
   if (campaignId && campaignId !== "" && !Number.isInteger(parseInt(campaignId))) {
     munchNote(`Campaign Id is invalid! Set to "${campaignId}", using empty string`, true);
@@ -14696,10 +14696,10 @@ function getCampaignId() {
 }
 
 async function getPatreonTier() {
-  const customProxy = game.settings.get("ddb-importer", "custom-proxy");
+  const customProxy = game.settings.get("ddb-importer-demo", "custom-proxy");
   if (customProxy) return { success: true, message: "custom proxy", data: "CUSTOM" };
-  const key = game.settings.get("ddb-importer", "beta-key");
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
+  const key = game.settings.get("ddb-importer-demo", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
   const body = { betaKey: key };
 
   return new Promise((resolve, reject) => {
@@ -14717,9 +14717,9 @@ async function getPatreonTier() {
           munchNote(`API Failure: ${data.message}`);
           reject(data.message);
         }
-        let currentEmail = game.settings.get("ddb-importer", "patreon-user");
+        let currentEmail = game.settings.get("ddb-importer-demo", "patreon-user");
         if (data.email !== currentEmail) {
-          game.settings.set("ddb-importer", "patreon-user", data.email).then(() => {
+          game.settings.set("ddb-importer-demo", "patreon-user", data.email).then(() => {
             resolve(data.data);
           });
         } else {
@@ -14731,9 +14731,9 @@ async function getPatreonTier() {
 }
 
 async function getPatreonValidity(betaKey) {
-  const customProxy = game.settings.get("ddb-importer", "custom-proxy");
+  const customProxy = game.settings.get("ddb-importer-demo", "custom-proxy");
   if (customProxy) return { success: true, message: "custom proxy", data: true };
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
   const body = { betaKey: betaKey };
 
   return new Promise((resolve, reject) => {
@@ -14757,7 +14757,7 @@ function getPatreonTiers(tier) {
   const godTier = tier === "GOD";
   const undyingTier = tier === "UNDYING";
   const coffeeTier = tier === "COFFEE";
-  const customProxy = game.settings.get("ddb-importer", "custom-proxy");
+  const customProxy = game.settings.get("ddb-importer-demo", "custom-proxy");
   const custom = tier === "CUSTOM" || customProxy;
 
   const tiers = {
@@ -14784,7 +14784,7 @@ async function checkPatreon() {
 
 async function setPatreonTier() {
   const tier = await getPatreonTier();
-  game.settings.set("ddb-importer", "patreon-tier", tier);
+  game.settings.set("ddb-importer-demo", "patreon-tier", tier);
 }
 
 function stripHtml(html) {
@@ -15447,7 +15447,7 @@ const applyConstraint = (value, constraint) => {
     }
     default: {
       _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].debug */ .Z.debug(`Missed match is ${match}`);
-      _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].warn */ .Z.warn(`ddb-importer does not know about template constraint {{@${constraint}}}. Please log a bug.`); // eslint-disable-line no-console
+      _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].warn */ .Z.warn(`ddb-importer-demo does not know about template constraint {{@${constraint}}}. Please log a bug.`); // eslint-disable-line no-console
     }
   }
 
@@ -15588,7 +15588,7 @@ function parseTemplateString(ddb, character, text, feature) {
         result.text = result.text.replace(entry.replacePattern, entry.parsed);
       } catch (err) {
         result.text = result.text.replace(entry.replacePattern, `{{${match}}}`);
-        _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].warn */ .Z.warn(`ddb-importer does not know about template value {{${match}}}. Please log a bug.`, err);
+        _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].warn */ .Z.warn(`ddb-importer-demo does not know about template value {{${match}}}. Please log a bug.`, err);
         _logger_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"].warn */ .Z.warn(err.stack);
       }
     }
@@ -15646,9 +15646,9 @@ const utils = {
   },
 
   globalDamageTagInfo: (mod) => {
-    const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+    const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
     const midiInstalled = utils.isModuleInstalledAndActive("midi-qol");
-    const damageRestrictionHints = game.settings.get("ddb-importer", "add-damage-restrictions-to-hints") && !midiInstalled;
+    const damageRestrictionHints = game.settings.get("ddb-importer-demo", "add-damage-restrictions-to-hints") && !midiInstalled;
     const hintOrRestriction = globalDamageHints || damageRestrictionHints;
     const restriction = damageRestrictionHints && mod.restriction && mod.restriction !== "" ? mod.restriction : "";
     const hintAndRestriction = globalDamageHints && restriction !== "" ? " - " : "";
@@ -15816,7 +15816,7 @@ const utils = {
    * @param {obj} definition item definition
    */
   getSourceData: (definition) => {
-    const fullSource = game.settings.get("ddb-importer", "use-full-source");
+    const fullSource = game.settings.get("ddb-importer-demo", "use-full-source");
     const result = {
       name: null,
       page: null,
@@ -15868,7 +15868,7 @@ const utils = {
 
   getActiveItemModifiers: (data, includeExcludedEffects = false) => {
     // are we adding effects to items?
-    const addEffects = game.settings.get("ddb-importer", "character-update-policy-add-item-effects");
+    const addEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-item-effects");
     const daeInstalled = utils.isModuleInstalledAndActive("dae");
     const excludedModifiers = (addEffects && daeInstalled && !includeExcludedEffects) ? (0,_effects_effects_js__WEBPACK_IMPORTED_MODULE_3__/* .getEffectExcludedModifiers */ .qk)("item", true, true) : [];
     // get items we are going to interact on
@@ -15899,8 +15899,8 @@ const utils = {
 
   getModifiers: (data, type, includeExcludedEffects = false, effectOnly = false) => {
     // are we adding effects to items?
-    const featureEffects = game.settings.get("ddb-importer", "character-update-policy-add-character-effects");
-    const acEffects = game.settings.get("ddb-importer", "character-update-policy-generate-ac-feature-effects");
+    const featureEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-character-effects");
+    const acEffects = game.settings.get("ddb-importer-demo", "character-update-policy-generate-ac-feature-effects");
     const daeInstalled = utils.isModuleInstalledAndActive("dae");
     const excludedModifiers = ((featureEffects || acEffects) && daeInstalled &&
       (!includeExcludedEffects || (includeExcludedEffects && effectOnly)))
@@ -16222,7 +16222,7 @@ const utils = {
   },
 
   diceStringResultBuild: (diceMap, dice, bonus = "", mods = "", diceHint = "", specialFlags = "") => {
-    const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+    const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
     const resultBonus = bonus === 0 ? "" : `${bonus > 0 ? ' +' : ' '} ${bonus}`;
     const diceHintAdd = globalDamageHints && diceHint && diceMap;
     const hintString = diceHintAdd ? diceHint : "";
@@ -16463,7 +16463,7 @@ const utils = {
         return new Promise((resolve) => {
           let canvas = document.createElement("canvas");
           let ctx = canvas.getContext("2d");
-          const quality = game.settings.get("ddb-importer", "webp-quality");
+          const quality = game.settings.get("ddb-importer-demo", "webp-quality");
 
           canvas.width = rawImage.width;
           canvas.height = rawImage.height;
@@ -16481,7 +16481,7 @@ const utils = {
   },
 
   uploadFile: async function (data, path, filename, forceWebp = false) {
-    const useWebP = game.settings.get("ddb-importer", "use-webp");
+    const useWebP = game.settings.get("ddb-importer-demo", "use-webp");
     const file = new File([data], filename, { type: data.type });
     const imageType = data.type.startsWith("image") && data.type !== "image/webp";
     const uploadFile = useWebP && (imageType || forceWebp)
@@ -16527,7 +16527,7 @@ const utils = {
   uploadRemoteImage: async function (url, targetDirectory, baseFilename, useProxy = true) {
     // prepare filenames
     const filename = baseFilename;
-    const useWebP = game.settings.get("ddb-importer", "use-webp");
+    const useWebP = game.settings.get("ddb-importer-demo", "use-webp");
     const ext = useWebP
       ? "webp"
       : url
@@ -16536,8 +16536,8 @@ const utils = {
         .split(/#|\?|&/)[0];
 
     try {
-      const proxyEndpoint = game.settings.get("ddb-importer", "cors-endpoint");
-      const urlEncode = game.settings.get("ddb-importer", "cors-encode");
+      const proxyEndpoint = game.settings.get("ddb-importer-demo", "cors-endpoint");
+      const urlEncode = game.settings.get("ddb-importer-demo", "cors-encode");
       const target = urlEncode ? encodeURIComponent(url) : url;
       url = useProxy ? proxyEndpoint + target : url;
       const data = await utils.downloadImage(url);
@@ -16547,7 +16547,7 @@ const utils = {
       return result;
     } catch (error) {
       _logger_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"].error */ .Z.error("Image upload error", error);
-      ui.notifications.warn(`Image upload failed. Please check your ddb-importer upload folder setting. ${url}`);
+      ui.notifications.warn(`Image upload failed. Please check your ddb-importer-demo upload folder setting. ${url}`);
       return null;
     }
   },
@@ -16592,7 +16592,7 @@ const utils = {
     entityTypes.set("journal", "JournalEntry");
     entityTypes.set("journalEntry", "JournalEntry");
 
-    const folderName = game.i18n.localize(`ddb-importer.item-type.${kind}`);
+    const folderName = game.i18n.localize(`ddb-importer-demo.item-type.${kind}`);
     const entityType = entityTypes.get(kind);
     const baseFolder = await utils.getOrCreateFolder(null, entityType, baseFolderName, baseColor);
     const entityFolder = typeFolder ? await utils.getOrCreateFolder(baseFolder, entityType, folderName, subColor) : baseFolder;
@@ -18580,7 +18580,7 @@ function keys(object) {
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -18594,17 +18594,17 @@ function keys(object) {
 /******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
@@ -18617,7 +18617,7 @@ function keys(object) {
 /******/ 			}
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -18629,7 +18629,7 @@ function keys(object) {
 /******/ 			}
 /******/ 		})();
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/harmony module decorator */
 /******/ 	(() => {
 /******/ 		__webpack_require__.hmd = (module) => {
@@ -18644,12 +18644,12 @@ function keys(object) {
 /******/ 			return module;
 /******/ 		};
 /******/ 	})();
-/******/ 	
+/******/
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
@@ -18734,8 +18734,8 @@ let getEldritchInvocations = (data) => {
 function fixSpells(ddb, items) {
   // because the effect parsing happens before this, we need to fix some of the spell changes here
   const usingEffects = ddb === null
-    ? game.settings.get("ddb-importer", "munching-policy-add-spell-effects")
-    : game.settings.get("ddb-importer", "character-update-policy-add-spell-effects");
+    ? game.settings.get("ddb-importer-demo", "munching-policy-add-spell-effects")
+    : game.settings.get("ddb-importer-demo", "character-update-policy-add-spell-effects");
 
   items.forEach((spell) => {
     const name = spell.flags.ddbimporter.originalName || spell.name;
@@ -19012,7 +19012,7 @@ function classSpell(data, result) {
   if (result.mode === "pact" && data.definition.level === 0) {
     result.mode = "prepared";
     result.prepared = true;
-  } else if (result.mode === "pact" && game.settings.get("ddb-importer", "pact-spells-prepared")) {
+  } else if (result.mode === "pact" && game.settings.get("ddb-importer-demo", "pact-spells-prepared")) {
     result.prepared = true;
   }
   return result;
@@ -19373,9 +19373,9 @@ function getDamage(data, spell) {
   };
   let chatFlavor = [];
 
-  const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+  const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
   const spellEffects = getProperty(data, "flags.ddbimporter.addSpellEffects");
-  const damageRestrictionHints = game.settings.get("ddb-importer", "add-damage-restrictions-to-hints") && !spellEffects;
+  const damageRestrictionHints = game.settings.get("ddb-importer-demo", "add-damage-restrictions-to-hints") && !spellEffects;
   const hintOrRestriction = globalDamageHints || damageRestrictionHints;
 
   // damage
@@ -19707,8 +19707,8 @@ function parseSpell(data, character) {
 
   const isGeneric = getProperty(data, "flags.ddbimporter.generic");
   const addSpellEffects = isGeneric
-    ? game.settings.get("ddb-importer", "munching-policy-add-spell-effects")
-    : game.settings.get("ddb-importer", "character-update-policy-add-spell-effects");
+    ? game.settings.get("ddb-importer-demo", "munching-policy-add-spell-effects")
+    : game.settings.get("ddb-importer-demo", "character-update-policy-add-spell-effects");
   setProperty(data, "flags.ddbimporter.addSpellEffects", addSpellEffects);
 
   // spell level
@@ -19726,7 +19726,7 @@ function parseSpell(data, character) {
   spell.data.preparation = getSpellPreparationMode(data);
 
   const updateExisting = data.flags.ddbimporter.generic
-    ? game.settings.get("ddb-importer", "munching-policy-update-existing")
+    ? game.settings.get("ddb-importer-demo", "munching-policy-update-existing")
     : false;
   data.definition.description = (0,table/* generateTable */.p)(spell.name, data.definition.description, updateExisting);
 
@@ -19843,13 +19843,13 @@ var compendiumFolders = __webpack_require__(269);
 function getSpellData(className, sourceFilter) {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey, className: className };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
-  const enableSources = game.settings.get("ddb-importer", "munching-policy-use-source-filter");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
+  const enableSources = game.settings.get("ddb-importer-demo", "munching-policy-use-source-filter");
   const sources = enableSources
-    ? game.settings.get("ddb-importer", "munching-policy-muncher-sources").flat()
+    ? game.settings.get("ddb-importer-demo", "munching-policy-muncher-sources").flat()
     : [];
 
   return new Promise((resolve, reject) => {
@@ -19886,13 +19886,13 @@ function getSpellData(className, sourceFilter) {
 }
 
 async function parseSpells(ids = null) {
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
-  const uploadDirectory = game.settings.get("ddb-importer", "other-image-upload-directory").replace(/^\/|\/$/g, "");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+  const uploadDirectory = game.settings.get("ddb-importer-demo", "other-image-upload-directory").replace(/^\/|\/$/g, "");
 
   // to speed up file checking we pregenerate existing files now.
   await src_utils/* default.generateCurrentFiles */.Z.generateCurrentFiles(uploadDirectory);
 
-  const addToCompendiumFolder = game.settings.get("ddb-importer", "munching-policy-use-compendium-folders");
+  const addToCompendiumFolder = game.settings.get("ddb-importer-demo", "munching-policy-use-compendium-folders");
   const compendiumFoldersInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("compendium-folders");
   if (addToCompendiumFolder && compendiumFoldersInstalled) {
     (0,utils/* munchNote */.ep)(`Checking compendium folders..`, true);
@@ -19961,7 +19961,7 @@ async function parseSpells(ids = null) {
 
 function getDescription(data) {
   const chatSnippet = data.definition.snippet ? data.definition.snippet : "";
-  const chatAdd = game.settings.get("ddb-importer", "add-description-to-chat");
+  const chatAdd = game.settings.get("ddb-importer-demo", "add-description-to-chat");
 
   return {
     value: (0,templateStrings/* parseTags */.RN)(data.definition.description),
@@ -21224,7 +21224,7 @@ function parseCustomItem(data) {
     ? description + `<p><blockquote>${data.definition.notes}</blockquote></p>`
     : description;
 
-  const chatAdd = game.settings.get("ddb-importer", "add-description-to-chat");
+  const chatAdd = game.settings.get("ddb-importer-demo", "add-description-to-chat");
   customItem.data.description = {
     value: description,
     chat: chatAdd ? description : "",
@@ -22055,8 +22055,8 @@ function getItemFlags(ddb, data, character) {
   if (flags.classFeatures.includes("Lifedrinker")) {
     flags.damage.parts.push(["@mod", "necrotic"]);
   }
-  // const addItemEffects = game.settings.get("ddb-importer", "character-update-policy-add-item-effects");
-  const addCharacterEffects = game.settings.get("ddb-importer", "character-update-policy-add-character-effects");
+  // const addItemEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-item-effects");
+  const addCharacterEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-character-effects");
 
   // for melee attacks get extras
   if (data.definition.attackType === 1) {
@@ -22295,10 +22295,10 @@ function getInventory(ddb, character, itemSpells) {
   const daeInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("dae");
   const compendiumItem = character.flags.ddbimporter.compendium;
   const addEffects = (compendiumItem)
-    ? game.settings.get("ddb-importer", "munching-policy-add-effects")
-    : game.settings.get("ddb-importer", "character-update-policy-add-item-effects");
+    ? game.settings.get("ddb-importer-demo", "munching-policy-add-effects")
+    : game.settings.get("ddb-importer-demo", "character-update-policy-add-item-effects");
   const generateArmorACEffect = (compendiumItem)
-    ? game.settings.get("ddb-importer", "munching-policy-add-ac-armor-effects")
+    ? game.settings.get("ddb-importer-demo", "munching-policy-add-ac-armor-effects")
     : false;
 
   for (let ddbItem of ddb.character.inventory.concat(customItems)) {
@@ -22307,7 +22307,7 @@ function getInventory(ddb, character, itemSpells) {
     const flags = getItemFlags(ddb, ddbItem, character);
 
     const updateExisting = compendiumItem
-      ? game.settings.get("ddb-importer", "munching-policy-update-existing")
+      ? game.settings.get("ddb-importer-demo", "munching-policy-update-existing")
       : false;
     ddbItem.definition.description = (0,table/* generateTable */.p)(ddbItem.definition.name, ddbItem.definition.description, updateExisting);
 
@@ -22425,13 +22425,13 @@ async function generateImportItems(items) {
 function getItemData(sourceFilter) {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
-  const enableSources = game.settings.get("ddb-importer", "munching-policy-use-source-filter");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
+  const enableSources = game.settings.get("ddb-importer-demo", "munching-policy-use-source-filter");
   const sources = enableSources
-    ? game.settings.get("ddb-importer", "munching-policy-muncher-sources").flat()
+    ? game.settings.get("ddb-importer-demo", "munching-policy-muncher-sources").flat()
     : [];
 
   return new Promise((resolve, reject) => {
@@ -22485,16 +22485,16 @@ async function addMagicItemSpells(items, spells, updateBool) {
 }
 
 async function parseItems(ids = null) {
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
   const magicItemsInstalled = !!game.modules.get("magicitems");
-  const uploadDirectory = game.settings.get("ddb-importer", "other-image-upload-directory").replace(/^\/|\/$/g, "");
+  const uploadDirectory = game.settings.get("ddb-importer-demo", "other-image-upload-directory").replace(/^\/|\/$/g, "");
 
   // to speed up file checking we pregenerate existing files now.
   src_logger/* default.info */.Z.info("Checking for existing files...");
   await src_utils/* default.generateCurrentFiles */.Z.generateCurrentFiles(uploadDirectory);
   src_logger/* default.info */.Z.info("Check complete, getting ItemData.");
 
-  const addToCompendiumFolder = game.settings.get("ddb-importer", "munching-policy-use-compendium-folders");
+  const addToCompendiumFolder = game.settings.get("ddb-importer-demo", "munching-policy-use-compendium-folders");
   const compendiumFoldersInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("compendium-folders");
   if (addToCompendiumFolder && compendiumFoldersInstalled) {
     (0,utils/* munchNote */.ep)(`Checking compendium folders..`, true);
@@ -22553,8 +22553,8 @@ var ac = __webpack_require__(596);
 
 async function getMonsterData(ids) {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
 
   const body = {
     cobalt: cobaltCookie,
@@ -22566,19 +22566,19 @@ async function getMonsterData(ids) {
   } else {
     const searchFilter = $("#monster-munch-filter")[0];
     const searchTerm = searchFilter?.value || "";
-    const enableSources = game.settings.get("ddb-importer", "munching-policy-use-source-filter");
+    const enableSources = game.settings.get("ddb-importer-demo", "munching-policy-use-source-filter");
     const sources = enableSources
-      ? game.settings.get("ddb-importer", "munching-policy-muncher-sources").flat()
+      ? game.settings.get("ddb-importer-demo", "munching-policy-muncher-sources").flat()
       : [];
     body.sources = sources;
     body.search = searchTerm;
-    body.homebrew = body.sources.length > 0 ? false : game.settings.get("ddb-importer", "munching-policy-monster-homebrew");
-    body.homebrewOnly = body.sources.length > 0 ? false : game.settings.get("ddb-importer", "munching-policy-monster-homebrew-only");
+    body.homebrew = body.sources.length > 0 ? false : game.settings.get("ddb-importer-demo", "munching-policy-monster-homebrew");
+    body.homebrewOnly = body.sources.length > 0 ? false : game.settings.get("ddb-importer-demo", "munching-policy-monster-homebrew-only");
     body.searchTerm = encodeURIComponent(searchTerm);
-    body.exactMatch = game.settings.get("ddb-importer", "munching-policy-monster-exact-match");
+    body.exactMatch = game.settings.get("ddb-importer-demo", "munching-policy-monster-exact-match");
   }
 
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   const url = ids && ids.length > 0
     ? `${parsingApi}/proxy/monsters/ids`
@@ -22627,9 +22627,9 @@ async function getMonsterData(ids) {
 async function parseCritters(ids = null) {
   (0,importMonster/* checkMonsterCompendium */.eX)();
   (0,ac/* resetEquipment */.a)();
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
-  const updateImages = game.settings.get("ddb-importer", "munching-policy-update-images");
-  const uploadDirectory = game.settings.get("ddb-importer", "other-image-upload-directory").replace(/^\/|\/$/g, "");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
+  const updateImages = game.settings.get("ddb-importer-demo", "munching-policy-update-images");
+  const uploadDirectory = game.settings.get("ddb-importer-demo", "other-image-upload-directory").replace(/^\/|\/$/g, "");
 
   // to speed up file checking we pregenerate existing files now.
   src_logger/* default.info */.Z.info("Checking for existing files...");
@@ -22674,7 +22674,7 @@ async function parseCritters(ids = null) {
   await (0,importMonster/* generateIconMap */.NM)(finalMonsters);
 
 
-  const addToCompendiumFolder = game.settings.get("ddb-importer", "munching-policy-use-compendium-folders");
+  const addToCompendiumFolder = game.settings.get("ddb-importer-demo", "munching-policy-use-compendium-folders");
   const compendiumFoldersInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("compendium-folders");
   if (addToCompendiumFolder && compendiumFoldersInstalled) {
     (0,utils/* munchNote */.ep)(`Checking compendium folders..`, true);
@@ -22741,7 +22741,7 @@ async function updateActorsWithActor(targetActors, sourceActor) {
     // pop items in later
     delete actorUpdate.items;
 
-    const updateImages = game.settings.get("ddb-importer", "munching-policy-update-world-monster-update-images");
+    const updateImages = game.settings.get("ddb-importer-demo", "munching-policy-update-world-monster-update-images");
     if (!updateImages) {
       actorUpdate.img = targetActor.data.img;
       actorUpdate.token.img = targetActor.data.token.img;
@@ -22758,7 +22758,7 @@ async function updateActorsWithActor(targetActors, sourceActor) {
       actorUpdate.token.lightColor = targetActor.data.token.lightColor;
     }
 
-    const retainBiography = game.settings.get("ddb-importer", "munching-policy-update-world-monster-retain-biography");
+    const retainBiography = game.settings.get("ddb-importer-demo", "munching-policy-update-world-monster-retain-biography");
     if (retainBiography) {
       actorUpdate.data.details.biography = targetActor.data.data.details.biography;
     }
@@ -22977,7 +22977,7 @@ const NO_TRAITS = [
 
 async function getRaces(data) {
   src_logger/* default.debug */.Z.debug("get races started");
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
 
   let results = [];
   let races = [];
@@ -23024,10 +23024,10 @@ async function getRaces(data) {
 function getRaceData() {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   return new Promise((resolve, reject) => {
     fetch(`${parsingApi}/proxy/races`, {
@@ -23130,7 +23130,7 @@ async function buildFeat(feat,) {
 
 async function getFeats(data) {
   src_logger/* default.debug */.Z.debug("get feats started");
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
 
   let feats = [];
 
@@ -23158,10 +23158,10 @@ async function getFeats(data) {
 function getFeatData() {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   return new Promise((resolve, reject) => {
     fetch(`${parsingApi}/proxy/feats`, {
@@ -23270,7 +23270,7 @@ const shared_FEATURE_DUP = [
 
 function shared_buildBase(data) {
   let result = JSON.parse(JSON.stringify(CLASS_TEMPLATE));
-  const updateExisting = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateExisting = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
 
   result.name = data.name;
   const tableDescription = (0,table/* generateTable */.p)(data.name, data.description, updateExisting);
@@ -23509,7 +23509,7 @@ async function buildClass(klass, compendiumClassFeatures) {
 async function getClasses(data) {
   let results = [];
   src_logger/* default.debug */.Z.debug("get clases started");
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
 
   let klasses = [];
   let classFeatures = [];
@@ -23641,7 +23641,7 @@ async function buildSubClass(klass, subclass, compendiumSubClassFeatures) {
 
 async function getSubClasses(data) {
   src_logger/* default.debug */.Z.debug("get subclasses started");
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
 
   let subClasses = [];
   let classFeatures = [];
@@ -23705,7 +23705,7 @@ async function getSubClasses(data) {
 
 async function getClassOptions(data, className) {
   src_logger/* default.debug */.Z.debug("get options started");
-  const updateBool = game.settings.get("ddb-importer", "munching-policy-update-existing");
+  const updateBool = game.settings.get("ddb-importer-demo", "munching-policy-update-existing");
   let results = [];
 
   let classFeatures = [];
@@ -23745,10 +23745,10 @@ async function getClassOptions(data, className) {
 function getSubClassesData(className) {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey, className: className };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   return new Promise((resolve, reject) => {
     fetch(`${parsingApi}/proxy/subclass`, {
@@ -23778,10 +23778,10 @@ function getSubClassesData(className) {
 function getClassOptionsData(className) {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey, className: className };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   return new Promise((resolve, reject) => {
     fetch(`${parsingApi}/proxy/v5/classes/options`, {
@@ -23811,10 +23811,10 @@ function getClassOptionsData(className) {
 function getClassesData() {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
   const campaignId = (0,utils/* getCampaignId */.F9)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, campaignId: campaignId, betaKey: betaKey };
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   return new Promise((resolve, reject) => {
     fetch(`${parsingApi}/proxy/classes`, {
@@ -23896,9 +23896,9 @@ async function parseClasses() {
 
 async function getFrameData() {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   const body = {
     cobalt: cobaltCookie,
@@ -24050,7 +24050,7 @@ class Helpers {
   }
 
   static getImportFilePaths(path, adventure, misc) {
-    const useWebP = game.settings.get("ddb-importer", "use-webp") && !path.endsWith("svg");
+    const useWebP = game.settings.get("ddb-importer-demo", "use-webp") && !path.endsWith("svg");
     const adventurePath = (adventure.name).replace(/[^a-z0-9]/gi, '_');
     const targetPath = path.replace(/[\\/][^\\/]+$/, '');
     const baseFilename = path.replace(/^.*[\\/]/, '').replace(/\?(.*)/, '');
@@ -24058,8 +24058,8 @@ class Helpers {
       ? `${Helpers.removeFileExtension(baseFilename)}.webp`
       : baseFilename;
     const baseUploadPath = misc
-      ? game.settings.get("ddb-importer", "adventure-misc-path")
-      : game.settings.get("ddb-importer", "adventure-upload-path");
+      ? game.settings.get("ddb-importer-demo", "adventure-misc-path")
+      : game.settings.get("ddb-importer-demo", "adventure-upload-path");
     const parsedBaseUploadPath = DirectoryPicker/* DirectoryPicker.parse */.B.parse(baseUploadPath);
     const uploadPath = misc
       ? `${parsedBaseUploadPath.current}/${targetPath}`
@@ -24426,7 +24426,7 @@ class Helpers {
             break;
           case "monster": {
             try {
-              const tier = game.settings.get("ddb-importer", "patreon-tier");
+              const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
               const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
               if (tiers.all) {
                 src_logger/* default.debug */.Z.debug(`Importing missing ${type}s from DDB`, docIds);
@@ -24725,7 +24725,7 @@ class AdventureMunch extends FormApplication {
   constructor(object = {}, options = {}) {
     super(object, options);
     this._itemsToRevisit = [];
-    const importPathData = game.settings.get("ddb-importer", "adventure-import-path");
+    const importPathData = game.settings.get("ddb-importer-demo", "adventure-import-path");
     this._importPathData = DirectoryPicker/* DirectoryPicker.parse */.B.parse(importPathData);
   }
 
@@ -24738,7 +24738,7 @@ class AdventureMunch extends FormApplication {
       id: "ddb-adventure-import",
       classes: ["ddb-adventure-import"],
       title: "Adventure Munch",
-      template: "modules/ddb-importer/handlebars/adventure/import.hbs",
+      template: "modules/ddb-importer-demo/handlebars/adventure/import.hbs",
       width: 350,
     });
   }
@@ -24769,7 +24769,7 @@ class AdventureMunch extends FormApplication {
     return {
       data,
       files,
-      cssClass: "ddb-importer-window"
+      cssClass: "ddb-importer-demo-window"
     };
 
   }
@@ -24881,7 +24881,7 @@ class AdventureMunch extends FormApplication {
       },
       {
         classes: ["dialog", "adventure-import-export"],
-        template: "modules/ddb-importer/handlebars/adventure/import-complete.hbs",
+        template: "modules/ddb-importer-demo/handlebars/adventure/import-complete.hbs",
       }
     ).render(true);
   }
@@ -24972,7 +24972,7 @@ class AdventureMunch extends FormApplication {
         $(".import-progress").toggleClass("import-hidden");
         $(".ddb-overlay").toggleClass("import-invalid");
 
-        const form = $("form.ddb-importer-window")[0];
+        const form = $("form.ddb-importer-demo-window")[0];
 
         let zip;
         if (form.data.files.length) {
@@ -25224,7 +25224,7 @@ class AdventureMunch extends FormApplication {
 
     let fileData = [];
     let hasVersions = false;
-    const moduleInfo = game.modules.get("ddb-importer").data;
+    const moduleInfo = game.modules.get("ddb-importer-demo").data;
     const installedVersion = moduleInfo.version;
 
     await Helpers.asyncForEach(dataFiles, async (file) => {
@@ -25289,7 +25289,7 @@ class AdventureMunch extends FormApplication {
           {
             width: 700,
             classes: ["dialog", "adventure-import-updates"],
-            template: "modules/ddb-importer/handlebars/adventure/import-updates.hbs",
+            template: "modules/ddb-importer-demo/handlebars/adventure/import-updates.hbs",
           }
         ).render(true);
       } else {
@@ -25531,7 +25531,7 @@ class ThirdPartyMunch extends FormApplication {
       id: "ddb-adventure-import",
       classes: ["ddb-adventure-import"],
       title: "Third Party Munch",
-      template: "modules/ddb-importer/handlebars/adventure/import-third.hbs",
+      template: "modules/ddb-importer-demo/handlebars/adventure/import-third.hbs",
       width: 400,
       height: "auto",
     });
@@ -25550,7 +25550,7 @@ class ThirdPartyMunch extends FormApplication {
         src_logger/* default.debug */.Z.debug(`${key}: ${value}`);
         packages.push(value);
       }
-      const partialScenes = game.settings.get("ddb-importer", "third-party-scenes-partial");
+      const partialScenes = game.settings.get("ddb-importer-demo", "third-party-scenes-partial");
       packages = packages
         .filter((p) => p.released || partialScenes)
         .sort((a, b) => a.name.localeCompare(b.last_nom));
@@ -25563,7 +25563,7 @@ class ThirdPartyMunch extends FormApplication {
     return {
       data,
       packages,
-      cssClass: "ddb-importer-third-party-window"
+      cssClass: "ddb-importer-demo-third-party-window"
     };
 
   }
@@ -25679,7 +25679,7 @@ class ThirdPartyMunch extends FormApplication {
       },
       {
         classes: ["dialog", "adventure-import-export"],
-        template: "modules/ddb-importer/handlebars/adventure/import-complete.hbs",
+        template: "modules/ddb-importer-demo/handlebars/adventure/import-complete.hbs",
       }
     ).render(true);
   }
@@ -26064,33 +26064,33 @@ class ThirdPartyMunch extends FormApplication {
 
 function setRecommendedCharacterActiveEffectSettings(html) {
   $(html).find("#character-import-policy-dae-copy").prop("checked", false);
-  game.settings.set("ddb-importer", "character-update-policy-dae-copy", false);
+  game.settings.set("ddb-importer-demo", "character-update-policy-dae-copy", false);
   $(html).find("#character-import-policy-dae-effect-copy").prop("checked", !(0,specialSpells/* spellEffectModules */.fM)().hasCore);
-  game.settings.set("ddb-importer", "character-update-policy-dae-effect-copy", !(0,specialSpells/* spellEffectModules */.fM)().hasCore);
+  game.settings.set("ddb-importer-demo", "character-update-policy-dae-effect-copy", !(0,specialSpells/* spellEffectModules */.fM)().hasCore);
   $(html).find("#character-import-policy-add-spell-effects").prop("checked", (0,specialSpells/* spellEffectModules */.fM)().hasCore);
-  game.settings.set("ddb-importer", "character-update-policy-add-spell-effects", (0,specialSpells/* spellEffectModules */.fM)().hasCore);
+  game.settings.set("ddb-importer-demo", "character-update-policy-add-spell-effects", (0,specialSpells/* spellEffectModules */.fM)().hasCore);
   $(html).find("#character-import-policy-dae-effect-copy").prop("checked", false);
-  game.settings.set("ddb-importer", "character-update-policy-dae-effect-copy", false);
+  game.settings.set("ddb-importer-demo", "character-update-policy-dae-effect-copy", false);
   $(html).find("#character-import-policy-add-item-effects").prop("checked", true);
-  game.settings.set("ddb-importer", "character-update-policy-add-item-effects", true);
+  game.settings.set("ddb-importer-demo", "character-update-policy-add-item-effects", true);
   $(html).find("#character-import-policy-add-character-effects").prop("checked", true);
-  game.settings.set("ddb-importer", "character-update-policy-add-character-effects", true);
+  game.settings.set("ddb-importer-demo", "character-update-policy-add-character-effects", true);
   $(html).find("#character-import-policy-generate-ac-feature-effects").prop("checked", true);
-  game.settings.set("ddb-importer", "character-update-policy-generate-ac-feature-effects", true);
+  game.settings.set("ddb-importer-demo", "character-update-policy-generate-ac-feature-effects", true);
   $(html).find("#character-import-policy-active-effect-copy").prop("checked", false);
-  game.settings.set("ddb-importer", "character-update-policy-active-effect-copy", false);
+  game.settings.set("ddb-importer-demo", "character-update-policy-active-effect-copy", false);
 
   ["class", "race", "background", "feat"].forEach((type) => {
     $(html).find(`#character-import-policy-effect-${type}-spell-bonus`).prop("checked", true);
-    game.settings.set("ddb-importer", `character-update-policy-effect-${type}-spell-bonus`, true);
+    game.settings.set("ddb-importer-demo", `character-update-policy-effect-${type}-spell-bonus`, true);
     $(html).find(`#character-import-policy-effect-${type}-speed`).prop("checked", false);
-    game.settings.set("ddb-importer", `character-update-policy-effect-${type}-speed`, false);
+    game.settings.set("ddb-importer-demo", `character-update-policy-effect-${type}-speed`, false);
     $(html).find(`#character-import-policy-effect-${type}-senses`).prop("checked", false);
-    game.settings.set("ddb-importer", `character-update-policy-effect-${type}-senses`, false);
+    game.settings.set("ddb-importer-demo", `character-update-policy-effect-${type}-senses`, false);
     $(html).find(`#character-import-policy-effect-${type}-hp`).prop("checked", false);
-    game.settings.set("ddb-importer", `character-update-policy-effect-${type}-hp`, false);
+    game.settings.set("ddb-importer-demo", `character-update-policy-effect-${type}-hp`, false);
     $(html).find(`#character-import-policy-effect-${type}-damages`).prop("checked", false);
-    game.settings.set("ddb-importer", `character-update-policy-effect-${type}-damages`, false);
+    game.settings.set("ddb-importer-demo", `character-update-policy-effect-${type}-damages`, false);
   });
 }
 
@@ -26102,72 +26102,72 @@ function getCharacterImportSettings() {
   const importPolicies1 = [
     {
       name: "name",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-name"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-name"),
       description: "Name",
     },
     {
       name: "hp",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-hp"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-hp"),
       description: "HP",
     },
     {
       name: "hit-die",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-hit-die"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-hit-die"),
       description: "Hit Die",
     },
     {
       name: "image",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-image"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-image"),
       description: "Image",
     },
     {
       name: "bio",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-bio"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-bio"),
       description: "Bio",
     },
     {
       name: "languages",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-languages"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-languages"),
       description: "Languages",
     },
   ];
   const importPolicies2 = [
     {
       name: "class",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-class"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-class"),
       description: "Classes",
     },
     {
       name: "feat",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-feat"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-feat"),
       description: "Features",
     },
     {
       name: "weapon",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-weapon"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-weapon"),
       description: "Weapons",
     },
     {
       name: "equipment",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-equipment"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-equipment"),
       description: "Other Equipment",
     },
     {
       name: "currency",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-currency"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-currency"),
       description: "Currency",
     },
     {
       name: "spell",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-spell"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-spell"),
       description: "Spells",
     },
   ];
 
   const spellEffectModulesAvailable = (0,specialSpells/* spellEffectModules */.fM)();
-  const generateSpellEffects = game.settings.get("ddb-importer", "character-update-policy-add-spell-effects");
+  const generateSpellEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-spell-effects");
   if (generateSpellEffects && !spellEffectModulesAvailable.hasCore) {
-    game.settings.set("ddb-importer", "character-update-policy-add-spell-effects", false);
+    game.settings.set("ddb-importer-demo", "character-update-policy-add-spell-effects", false);
   }
   const daeInstalled = spellEffectModulesAvailable.daeInstalled;
   const daeSRDInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("Dynamic-Effects-SRD");
@@ -26175,66 +26175,66 @@ function getCharacterImportSettings() {
   // dae/midi srd currently not working in v9
   const version = (game.version ?? game.data.version);
   const v9 = src_utils/* default.versionCompare */.Z.versionCompare(version, "9.0") >= 0;
-  if (v9) game.settings.set("ddb-importer", "munching-policy-use-dae-effects", false);
+  if (v9) game.settings.set("ddb-importer-demo", "munching-policy-use-dae-effects", false);
   const daeSRDContentAvailable = (daeSRDInstalled || midiSRDInstalled) && !v9;
   const spellEffectText = `Generate active effects for spells. These require DAE${getInstalledIcon("daeInstalled")}, Midi-QOL${getInstalledIcon("midiQolInstalled")}, Advanced Macros${getInstalledIcon("advancedMacrosInstalled")}, Item Macro${getInstalledIcon("itemMacroInstalled")}, About Time${getInstalledIcon("aboutTime")}, Times Up${getInstalledIcon("timesUp")}, and Convenient Effects${getInstalledIcon("convenientEffectsInstalled")} as a minimum. Also recommened is Active Auras${getInstalledIcon("activeAurasInstalled")}, Active Token Effects${getInstalledIcon("atlInstalled")}, Token Magic FX${getInstalledIcon("tokenMagicInstalled")}, and Automated Animations${getInstalledIcon("autoAnimationsInstalled")}`;
 
-  // const importExtras = game.settings.get("ddb-importer", "character-update-policy-import-extras");
+  // const importExtras = game.settings.get("ddb-importer-demo", "character-update-policy-import-extras");
 
   const importConfig = [
     {
       name: "use-inbuilt-icons",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-inbuilt-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-inbuilt-icons"),
       description: "Use icons from the inbuilt dictionary. (High coverage of items, feats, and spells).",
       enabled: true,
     },
     {
       name: "use-srd-icons",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-srd-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-srd-icons"),
       description: "Use icons from the SRD compendium. (This can take a while).",
       enabled: true,
     },
     {
       name: "use-ddb-spell-icons",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-ddb-spell-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-spell-icons"),
       description: "Use spell school icons from D&DBeyond.",
       enabled: true,
     },
     {
       name: "use-ddb-item-icons",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-ddb-item-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-item-icons"),
       description: "Use equipment icons from D&DBeyond (where they exist).",
       enabled: true,
     },
     {
       name: "use-ddb-generic-item-icons",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-ddb-generic-item-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-generic-item-icons"),
       description: "Use D&D Beyond generic item type images, if available (final fallback)",
       enabled: true,
     },
     {
       name: "use-full-description",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-full-description"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-full-description"),
       description: "For actions use full description and snippets, else use snippets only.",
       enabled: true,
     },
     {
       name: "use-actions-as-features",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-actions-as-features"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-actions-as-features"),
       description:
         "Import D&D Beyond Actions as Features, not weapons.",
       enabled: true,
     },
     {
       name: "use-action-and-feature",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-action-and-feature"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-action-and-feature"),
       description:
         "[CAUTION] If a feature is marked as an action, import both the action and the feature. This might lead to some weird behaviour.",
       enabled: true,
     },
     {
       name: "ignore-non-ddb-items",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-ignore-non-ddb-items"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-ignore-non-ddb-items"),
       description:
         "Ignore items on character sheet that have not been imported from D&D Beyond. This will remove items that have been removed from the DDB character since the last import, but will keep items added to the character within Foundry.",
       enabled: true,
@@ -26244,7 +26244,7 @@ function getCharacterImportSettings() {
   const advancedImportConfig = [
     {
       name: "use-override",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-override"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-override"),
       title: "Replace Items using those in your Override compendium",
       description:
         "Use existing items from <i>ddb-import Override compendium</i>, rather than parsing from DDB. This is useful if you want to place customised items into the compendium for use by characters.",
@@ -26252,15 +26252,15 @@ function getCharacterImportSettings() {
     },
     {
       name: "use-existing",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-existing"),
-      title: "[Caution] Replace Items using ddb-importer compendiums",
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-existing"),
+      title: "[Caution] Replace Items using ddb-importer-demo compendiums",
       description:
         "Use existing items from <i>ddb-import compendiums</i>, rather than parsing from DDB. This is useful if you have customised the items in the compendium, although you will lose any custom effects applied by this module e.g. Improved Divine Smite. Please consider marking the item you wish to keep as ignored by import instead.",
       enabled: true,
     },
     {
       name: "use-srd",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-use-srd"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-use-srd"),
       title: "[Caution] Replace Items using SRD compendiums",
       description:
         "Use the <i>SRD compendiums</i>, rather than DDB. Importing using SRD will not include features like fighting style and divine smite in damage calculations. Please consider marking the item you wish to keep as ignored by import instead.",
@@ -26271,7 +26271,7 @@ function getCharacterImportSettings() {
   const effectImportConfig = [
     {
       name: "add-item-effects",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-add-item-effects") && daeInstalled,
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-add-item-effects") && daeInstalled,
       title: "Generate Active Effects for Equipment",
       description:
         "Dynamically generate active effects for a characters equipment, doesn't include AC effects on armor, but will for things like the Ring of Protection.",
@@ -26286,7 +26286,7 @@ function getCharacterImportSettings() {
     },
     {
       name: "add-character-effects",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-add-character-effects") && daeInstalled,
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-add-character-effects") && daeInstalled,
       title: "Generate Active Effects for Character Features/Racial Traits/Feats/Backgrounds",
       description:
         "Dynamically generate active effects for a character. Some effects are always generated, some are optional (see below).",
@@ -26295,7 +26295,7 @@ function getCharacterImportSettings() {
     {
       name: "generate-ac-feature-effects",
       isChecked:
-        game.settings.get("ddb-importer", "character-update-policy-generate-ac-feature-effects") && daeInstalled,
+        game.settings.get("ddb-importer-demo", "character-update-policy-generate-ac-feature-effects") && daeInstalled,
       title: "Generate DAE Active Effects ACs for Character Features & Racial Traits",
       description:
         "Use extras in DAE to Dynamically add AC values as dynamic effects to items, this might not work as expected for some AC calculations. If unticked some ac bonuses will still be generated.",
@@ -26303,7 +26303,7 @@ function getCharacterImportSettings() {
     },
     {
       name: "dae-effect-copy",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-dae-effect-copy") && daeSRDContentAvailable,
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-dae-effect-copy") && daeSRDContentAvailable,
       title: "Copy Active Effect from DAE Compendiums",
       description:
         "<i>Transfer</i> the <i>Dynamic Active Effects Compendiums</i> effect for matching items/features/spells (requires DAE SRD and/or Midi SRD module - not available in v9). This may result in odd character AC's, HP etc. especially if the generate item and character effect options above are unticked. Please try importing the character with this option disabled before logging a bug. This will overwrite effects generated with the above options.",
@@ -26311,7 +26311,7 @@ function getCharacterImportSettings() {
     },
     // {
     //   name: "dae-copy",
-    //   isChecked: game.settings.get("ddb-importer", "character-update-policy-dae-copy") && daeSRDContentAvailable,
+    //   isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-dae-copy") && daeSRDContentAvailable,
     //   title: "[Caution] Replace Items using DAE compendiums",
     //   description:
     //     "Replace parsed item with <i>Dynamic Active Effects Compendiums</i> for matching items/features/spells (requires DAE SRD and/or Midi SRD module). This will remove any effects applied directly to your character/not via features/items. This may result in odd character AC's, HP etc. especially if the generate options above are unticked. Please try importing the character with this option disabled before logging a bug.",
@@ -26319,7 +26319,7 @@ function getCharacterImportSettings() {
     // },
     {
       name: "active-effect-copy",
-      isChecked: game.settings.get("ddb-importer", "character-update-policy-active-effect-copy"),
+      isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-active-effect-copy"),
       title: "Retain Active Effects",
       description:
         "Retain existing Active Effects, this will try and transfer any existing effects on the actor such as custom effects, effects from conditions or existing spells. Untick this option if you experience <i>odd</i> behaviour, especially around AC.",
@@ -26328,9 +26328,9 @@ function getCharacterImportSettings() {
   ];
 
   // dae migration function no longer sound
-  if (game.settings.get("ddb-importer", "character-update-policy-dae-copy")) {
-    game.settings.set("ddb-importer", "character-update-policy-dae-copy", false);
-    game.settings.set("ddb-importer", "character-update-policy-dae-effect-copy", true);
+  if (game.settings.get("ddb-importer-demo", "character-update-policy-dae-copy")) {
+    game.settings.set("ddb-importer-demo", "character-update-policy-dae-copy", false);
+    game.settings.set("ddb-importer-demo", "character-update-policy-dae-effect-copy", true);
   }
 
   const effectSelectionConfig = {
@@ -26338,31 +26338,31 @@ function getCharacterImportSettings() {
       {
         name: "effect-class-spell-bonus",
         title: "Spell Bonuses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-class-spell-bonus"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-class-spell-bonus"),
         enabled: true,
       },
       {
         name: "effect-class-speed",
         title: "Movement",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-class-speed"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-class-speed"),
         enabled: true,
       },
       {
         name: "effect-class-senses",
         title: "Senses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-class-senses"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-class-senses"),
         enabled: true,
       },
       {
         name: "effect-class-hp",
         title: "HP",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-class-hp"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-class-hp"),
         enabled: true,
       },
       {
         name: "effect-class-damages",
         title: "Imm/Res/Vuln",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-class-damages"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-class-damages"),
         enabled: true,
       },
     ],
@@ -26370,31 +26370,31 @@ function getCharacterImportSettings() {
       {
         name: "effect-race-spell-bonus",
         title: "Spell Bonuses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-race-spell-bonus"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-race-spell-bonus"),
         enabled: true,
       },
       {
         name: "effect-race-speed",
         title: "Movement",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-race-speed"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-race-speed"),
         enabled: true,
       },
       {
         name: "effect-race-senses",
         title: "Senses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-race-senses"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-race-senses"),
         enabled: true,
       },
       {
         name: "effect-race-hp",
         title: "HP",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-race-hp"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-race-hp"),
         enabled: true,
       },
       {
         name: "effect-race-damages",
         title: "Imm/Res/Vuln",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-race-damages"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-race-damages"),
         enabled: true,
       },
     ],
@@ -26402,31 +26402,31 @@ function getCharacterImportSettings() {
       {
         name: "effect-background-spell-bonus",
         title: "Spell Bonuses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-background-spell-bonus"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-background-spell-bonus"),
         enabled: true,
       },
       {
         name: "effect-background-speed",
         title: "Movement",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-background-speed"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-background-speed"),
         enabled: true,
       },
       {
         name: "effect-background-senses",
         title: "Senses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-background-senses"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-background-senses"),
         enabled: true,
       },
       {
         name: "effect-background-hp",
         title: "HP",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-background-hp"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-background-hp"),
         enabled: true,
       },
       {
         name: "effect-background-damages",
         title: "Imm/Res/Vuln",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-background-damages"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-background-damages"),
         enabled: true,
       },
     ],
@@ -26434,31 +26434,31 @@ function getCharacterImportSettings() {
       {
         name: "effect-feat-spell-bonus",
         title: "Spell Bonuses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-feat-spell-bonus"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-feat-spell-bonus"),
         enabled: true,
       },
       {
         name: "effect-feat-speed",
         title: "Movement",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-feat-speed"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-feat-speed"),
         enabled: true,
       },
       {
         name: "effect-feat-senses",
         title: "Senses",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-feat-senses"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-feat-senses"),
         enabled: true,
       },
       {
         name: "effect-feat-hp",
         title: "HP",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-feat-hp"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-feat-hp"),
         enabled: true,
       },
       {
         name: "effect-feat-damages",
         title: "Imm/Res/Vuln",
-        isChecked: game.settings.get("ddb-importer", "character-update-policy-effect-feat-damages"),
+        isChecked: game.settings.get("ddb-importer-demo", "character-update-policy-effect-feat-damages"),
         enabled: true,
       },
     ],
@@ -26467,73 +26467,73 @@ function getCharacterImportSettings() {
   const syncConfig = [
     {
       name: "action-use",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-action-use"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-action-use"),
       description: "Action Uses",
       enabled: true,
     },
     {
       name: "currency",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-currency"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-currency"),
       description: "Currency",
       enabled: true,
     },
     {
       name: "deathsaves",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-deathsaves"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-deathsaves"),
       description: "Death Saves",
       enabled: true,
     },
     {
       name: "equipment",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-equipment"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-equipment"),
       description: "Equipment",
       enabled: true,
     },
     {
       name: "condition",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-condition"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-condition"),
       description: "Exhaustion",
       enabled: true,
     },
     {
       name: "hitdice",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-hitdice"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-hitdice"),
       description: "Hit Dice/Short Rest",
       enabled: true,
     },
     {
       name: "hitpoints",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-hitpoints"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-hitpoints"),
       description: "Hit Points",
       enabled: true,
     },
     {
       name: "inspiration",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-inspiration"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-inspiration"),
       description: "Inspiration",
       enabled: true,
     },
     {
       name: "spells-prepared",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-spells-prepared"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-spells-prepared"),
       description: "Spells Prepared",
       enabled: true,
     },
     {
       name: "spells-slots",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-spells-slots"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-spells-slots"),
       description: "Spell Slots",
       enabled: true,
     },
     {
       name: "spells-sync",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-spells-sync"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-spells-sync"),
       description: "Spells Known",
       enabled: false,
     },
     {
       name: "xp",
-      isChecked: game.settings.get("ddb-importer", "sync-policy-xp"),
+      isChecked: game.settings.get("ddb-importer-demo", "sync-policy-xp"),
       description: "XP",
       enabled: true,
     },
@@ -26542,76 +26542,76 @@ function getCharacterImportSettings() {
   const extrasConfig = [
     // {
     //   name: "update-existing",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-update-existing"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-update-existing"),
     //   description: "Update existing things.",
     //   enabled: true,
     // },
     // {
     //   name: "use-srd",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-use-srd"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-srd"),
     //   description: "Use SRD compendium things instead of importing.",
     //   enabled: true,
     // },
     // {
     //   name: "use-inbuilt-icons",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-use-inbuilt-icons"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-inbuilt-icons"),
     //   description: "Use icons from the inbuilt dictionary. (High coverage of items, feats, and spells).",
     //   enabled: true,
     // },
     // {
     //   name: "use-srd-icons",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-use-srd-icons"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-srd-icons"),
     //   description: "Use icons from the SRD compendiums.",
     //   enabled: true,
     // },
     // {
     //   name: "download-images",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-download-images"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-download-images"),
     //   description: "Download D&D Beyond images (takes longer and needs space).",
     //   enabled: true,
     // },
     // {
     //   name: "remote-images",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-remote-images"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-remote-images"),
     //   description: "Use D&D Beyond remote images (a lot quicker)",
     //   enabled: true,
     // },
     // {
     //   name: "use-dae-effects",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-use-dae-effects"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-dae-effects"),
     //   description: "Copy effects from DAE (items and spells only). (Requires DAE and SRD module)",
     //   enabled: daeInstalled,
     // },
     // {
     //   name: "hide-description",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-hide-description"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-hide-description"),
     //   description: "Hide description from players?",
     //   enabled: true,
     // },
     // {
     //   name: "monster-items",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-monster-items"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-items"),
     //   description: "[Experimental] Load items from DDB compendium instead of parsing action/attack?",
     //   enabled: true,
     // },
     // {
     //   name: "update-images",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-update-images"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-update-images"),
     //   description: "Update images on existing items?",
     //   enabled: true,
     // },
     // {
     //   name: "dae-copy",
-    //   isChecked: game.settings.get("ddb-importer", "munching-policy-dae-copy"),
+    //   isChecked: game.settings.get("ddb-importer-demo", "munching-policy-dae-copy"),
     //   description: "Use Dynamic Active Effects Compendiums for matching items/features (requires DAE and SRD module).",
     //   enabled: daeInstalled,
     // },
   ];
 
-  const uploadDir = game.settings.get("ddb-importer", "image-upload-directory");
+  const uploadDir = game.settings.get("ddb-importer-demo", "image-upload-directory");
   const badDirs = ["[data]", "[data] ", "", null];
   const dataDirSet = !badDirs.includes(uploadDir);
-  const tier = game.settings.get("ddb-importer", "patreon-tier");
+  const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
   const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
 
   const result = {
@@ -26635,24 +26635,24 @@ function updateActorSettings(html, event) {
   const checked = event.currentTarget.checked;
 
   src_logger/* default.debug */.Z.debug(`Updating munching-policy-${selection} to ${checked}`);
-  game.settings.set("ddb-importer", "character-update-policy-" + selection, checked);
+  game.settings.set("ddb-importer-demo", "character-update-policy-" + selection, checked);
 
   if (selection === "dae-copy" && checked) {
     $(html).find("#character-import-policy-dae-effect-copy").prop("checked", false);
-    game.settings.set("ddb-importer", "character-update-policy-dae-effect-copy", false);
+    game.settings.set("ddb-importer-demo", "character-update-policy-dae-effect-copy", false);
   } else if (selection === "dae-effect-copy" && checked) {
     $(html).find("#character-import-policy-dae-copy").prop("checked", false);
-    game.settings.set("ddb-importer", "character-update-policy-dae-copy", false);
+    game.settings.set("ddb-importer-demo", "character-update-policy-dae-copy", false);
     $(html).find("#character-import-policy-add-item-effects").prop("checked", true);
-    game.settings.set("ddb-importer", "character-update-policy-add-item-effects", true);
+    game.settings.set("ddb-importer-demo", "character-update-policy-add-item-effects", true);
     $(html).find("#character-import-policy-add-character-effects").prop("checked", true);
-    game.settings.set("ddb-importer", "character-update-policy-add-character-effects", true);
+    game.settings.set("ddb-importer-demo", "character-update-policy-add-character-effects", true);
   }
 }
 
 function getCompendiumFolderLookups(type) {
-  const compendiumFolderSetting = game.settings.settings.get(`ddb-importer.munching-selection-compendium-folders-${type}`);
-  const settingValue = game.settings.get("ddb-importer", `munching-selection-compendium-folders-${type}`);
+  const compendiumFolderSetting = game.settings.settings.get(`ddb-importer-demo.munching-selection-compendium-folders-${type}`);
+  const settingValue = game.settings.get("ddb-importer-demo", `munching-selection-compendium-folders-${type}`);
 
   let selections = [];
   for (const [key, value] of Object.entries(compendiumFolderSetting.choices)) {
@@ -26668,8 +26668,8 @@ function getCompendiumFolderLookups(type) {
 
 function getMuncherSettings(includeHomebrew = true) {
   const cobalt = (0,Secrets/* getCobalt */.HF)() != "";
-  const betaKey = game.settings.get("ddb-importer", "beta-key") != "";
-  const tier = game.settings.get("ddb-importer", "patreon-tier");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key") != "";
+  const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
   const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
   const spellEffectModulesAvailable = (0,specialSpells/* spellEffectModules */.fM)();
   const daeInstalled = spellEffectModulesAvailable.daeInstalled;
@@ -26679,41 +26679,41 @@ function getMuncherSettings(includeHomebrew = true) {
   // dae/midi srd currently not working in v9
   const v9 = src_utils/* default.versionCompare */.Z.versionCompare(version, "9.0") >= 0;
   const daeSRDContentAvailable = (daeSRDInstalled || midiSRDInstalled) && !v9;
-  if (v9) game.settings.set("ddb-importer", "munching-policy-use-dae-effects", false);
-  const compendiumFolderAdd = game.settings.get("ddb-importer", "munching-policy-use-compendium-folders");
+  if (v9) game.settings.set("ddb-importer-demo", "munching-policy-use-dae-effects", false);
+  const compendiumFolderAdd = game.settings.get("ddb-importer-demo", "munching-policy-use-compendium-folders");
   const compendiumFoldersInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("compendium-folders");
   const compendiumFolderMonsterStyles = getCompendiumFolderLookups("monster");
   const compendiumFolderSpellStyles = getCompendiumFolderLookups("spell");
   const compendiumFolderItemStyles = getCompendiumFolderLookups("item");
   const spellEffectText = `Create active effects. These require DAE${getInstalledIcon("daeInstalled")}, Midi-QOL${getInstalledIcon("midiQolInstalled")}, Advanced Macros${getInstalledIcon("advancedMacrosInstalled")}, Item Macro${getInstalledIcon("itemMacroInstalled")}, About Time${getInstalledIcon("aboutTime")}, Times Up${getInstalledIcon("timesUp")}, and Convenient Effects${getInstalledIcon("convenientEffectsInstalled")} as a minimum. Also recommened is Active Auras${getInstalledIcon("activeAurasInstalled")}, Active Token Effects${getInstalledIcon("atlInstalled")}, Token Magic FX${getInstalledIcon("tokenMagicInstalled")}, and Automated Animations${getInstalledIcon("autoAnimationsInstalled")}. Copying from MidiSRD will override these spells.`;
 
-  const generateSpellEffects = game.settings.get("ddb-importer", "munching-policy-add-spell-effects");
+  const generateSpellEffects = game.settings.get("ddb-importer-demo", "munching-policy-add-spell-effects");
   if (generateSpellEffects && !spellEffectModulesAvailable.hasCore) {
-    game.settings.set("ddb-importer", "munching-policy-add-spell-effects", false);
+    game.settings.set("ddb-importer-demo", "munching-policy-add-spell-effects", false);
   }
 
   const itemConfig = [
     {
       name: "use-ddb-item-icons",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-ddb-item-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-ddb-item-icons"),
       description: "Use D&D Beyond item images, if available",
       enabled: true,
     },
     {
       name: "use-ddb-generic-item-icons",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-ddb-generic-item-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-ddb-generic-item-icons"),
       description: "Use D&D Beyond generic item type images, if available (final fallback)",
       enabled: true,
     },
     {
       name: "add-effects",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-add-effects"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-add-effects"),
       description: "Dynamically generate DAE effects (equipment only). (Requires DAE)",
       enabled: daeInstalled,
     },
     {
       name: "add-ac-armor-effects",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-add-ac-armor-effects"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-add-ac-armor-effects"),
       description: "[Caution] Dynamically generate DAE AC effects on armor equipment. (Requires DAE). Probably not required.",
       enabled: daeInstalled,
     },
@@ -26722,7 +26722,7 @@ function getMuncherSettings(includeHomebrew = true) {
   const spellConfig = [
     {
       name: "use-ddb-spell-icons",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-ddb-spell-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-ddb-spell-icons"),
       description: "If no other icon, use the D&DBeyond spell school icon.",
       enabled: true,
     },
@@ -26734,9 +26734,9 @@ function getMuncherSettings(includeHomebrew = true) {
     },
   ];
 
-  const enableSources = game.settings.get("ddb-importer", "munching-policy-use-source-filter");
+  const enableSources = game.settings.get("ddb-importer-demo", "munching-policy-use-source-filter");
   const sourceArray = enableSources
-    ? game.settings.get("ddb-importer", "munching-policy-muncher-sources").flat()
+    ? game.settings.get("ddb-importer-demo", "munching-policy-muncher-sources").flat()
     : [];
   const sourcesSelected = enableSources && sourceArray.length > 0;
   const sourceNames = getSourcesLookups(sourceArray).filter((source) => source.selected).map((source) => source.label);
@@ -26748,49 +26748,49 @@ function getMuncherSettings(includeHomebrew = true) {
   const basicMonsterConfig = [
     {
       name: "hide-description",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-hide-description"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-hide-description"),
       description: "Hide monster action description from players?",
       enabled: true,
     },
     {
       name: "monster-items",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-monster-items"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-items"),
       description: "[Experimental] Load items from DDB compendium instead of parsing action/attack?",
       enabled: true,
     },
     {
       name: "monster-use-item-ac",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-monster-use-item-ac"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-use-item-ac"),
       description: "[Experimental] Attempt to use items instead of setting a flat AC?",
       enabled: true,
     },
     {
       name: "update-images",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-update-images"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-update-images"),
       description: "Update Monster images on existing items?",
       enabled: true,
     },
     {
       name: "use-full-token-image",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-full-token-image"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-full-token-image"),
       description: "Use avatar image for token rather than token image (full art)",
       enabled: true,
     },
     {
       name: "use-token-avatar-image",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-token-avatar-image"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-token-avatar-image"),
       description: "Use token image for avatar rather than avatar image (close up)",
       enabled: true,
     },
     {
       name: "monster-retain-biography",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-monster-retain-biography"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-retain-biography"),
       description: "Should monsters retain existing biography?",
       enabled: true,
     },
     {
       name: "dae-copy",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-dae-copy"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-dae-copy"),
       description: "Use Dynamic Active Effects Compendiums for matching items/features (requires DAE and SRD module - not v9).",
       enabled: daeInstalled && daeSRDContentAvailable,
     }
@@ -26800,19 +26800,19 @@ function getMuncherSettings(includeHomebrew = true) {
     ? [
       {
         name: "monster-homebrew",
-        isChecked: game.settings.get("ddb-importer", "munching-policy-monster-homebrew") && !sourcesSelected,
+        isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-homebrew") && !sourcesSelected,
         description: homebrewDescription,
         enabled: tiers.homebrew && !sourcesSelected,
       },
       {
         name: "monster-homebrew-only",
-        isChecked: game.settings.get("ddb-importer", "munching-policy-monster-homebrew-only") && !sourcesSelected,
+        isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-homebrew-only") && !sourcesSelected,
         description: "Homebrew monsters only? (Otherwise both)",
         enabled: tiers.homebrew && !sourcesSelected,
       },
       {
         name: "monster-exact-match",
-        isChecked: game.settings.get("ddb-importer", "munching-policy-monster-exact-match"),
+        isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-exact-match"),
         description: "Exact name match?",
         enabled: tiers.homebrew,
       }
@@ -26824,37 +26824,37 @@ function getMuncherSettings(includeHomebrew = true) {
   const genericConfig = [
     {
       name: "update-existing",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-update-existing"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-update-existing"),
       description: "Update existing things.",
       enabled: true,
     },
     {
       name: "use-inbuilt-icons",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-inbuilt-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-inbuilt-icons"),
       description: "Use icons from the inbuilt dictionary. (High coverage, recommended, fast).",
       enabled: true,
     },
     {
       name: "use-srd-icons",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-srd-icons"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-srd-icons"),
       description: "Use icons from the SRD compendiums.",
       enabled: true,
     },
     {
       name: "download-images",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-download-images"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-download-images"),
       description: "Download D&D Beyond images (takes longer and needs space).",
       enabled: true,
     },
     {
       name: "remote-images",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-remote-images"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-remote-images"),
       description: "Use D&D Beyond remote images (a lot quicker)",
       enabled: true,
     },
     {
       name: "use-dae-effects",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-dae-effects"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-dae-effects"),
       description: "Copy effects from DAE (items and spells only). (Requires DAE and SRD or Midi content module). Will replace dynamically generated effects.",
       enabled: daeInstalled && daeSRDContentAvailable,
     },
@@ -26866,7 +26866,7 @@ function getMuncherSettings(includeHomebrew = true) {
     },
     {
       name: "use-srd",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-use-srd"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-use-srd"),
       description:
         "[CAUTION] Use SRD compendium things instead of importing. This is not recommended, and may break adventure munching functionality.",
       enabled: true,
@@ -26882,13 +26882,13 @@ function getMuncherSettings(includeHomebrew = true) {
   const worldUpdateConfig = [
     {
       name: "update-world-monster-update-images",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-update-world-monster-update-images"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-update-world-monster-update-images"),
       description: "Update Monster images?",
       enabled: true,
     },
     {
       name: "update-world-monster-retain-biography",
-      isChecked: game.settings.get("ddb-importer", "munching-policy-update-world-monster-retain-biography"),
+      isChecked: game.settings.get("ddb-importer-demo", "munching-policy-update-world-monster-retain-biography"),
       description: "Retain existing biography?",
       enabled: true,
     },
@@ -26924,47 +26924,47 @@ function updateMuncherSettings(html, event, dialog) {
 
   src_logger/* default.debug */.Z.debug(`Updating munching-policy-${selection} to ${checked}`);
 
-  game.settings.set("ddb-importer", "munching-policy-" + selection, checked);
+  game.settings.set("ddb-importer-demo", "munching-policy-" + selection, checked);
 
   switch (selection) {
     case "use-full-token-image": {
       if (checked) {
-        game.settings.set("ddb-importer", "munching-policy-use-token-avatar-image", false);
+        game.settings.set("ddb-importer-demo", "munching-policy-use-token-avatar-image", false);
         $("#munching-policy-use-token-avatar-image").prop("checked", false);
       }
       break;
     }
     case "use-token-avatar-image": {
       if (checked) {
-        game.settings.set("ddb-importer", "munching-policy-use-full-token-image", false);
+        game.settings.set("ddb-importer-demo", "munching-policy-use-full-token-image", false);
         $("#munching-policy-use-full-token-image").prop("checked", false);
       }
       break;
     }
     case "monster-homebrew": {
       if (!checked) {
-        game.settings.set("ddb-importer", "munching-policy-monster-homebrew-only", false);
+        game.settings.set("ddb-importer-demo", "munching-policy-monster-homebrew-only", false);
         $("#munching-policy-monster-homebrew-only").prop("checked", false);
       }
       break;
     }
     case "monster-homebrew-only": {
       if (checked) {
-        game.settings.set("ddb-importer", "munching-policy-monster-homebrew", true);
+        game.settings.set("ddb-importer-demo", "munching-policy-monster-homebrew", true);
         $("#munching-policy-monster-homebrew").prop("checked", true);
       }
       break;
     }
     case "remote-images": {
       if (checked) {
-        game.settings.set("ddb-importer", "munching-policy-download-images", false);
+        game.settings.set("ddb-importer-demo", "munching-policy-download-images", false);
         $("#munching-generic-policy-download-images").prop("checked", false);
       }
       break;
     }
     case "download-images": {
       if (checked) {
-        game.settings.set("ddb-importer", "munching-policy-remote-images", false);
+        game.settings.set("ddb-importer-demo", "munching-policy-remote-images", false);
         $("#munching-generic-policy-remote-images").prop("checked", false);
       }
       break;
@@ -27022,8 +27022,8 @@ function getSourcesLookups(selected) {
 class DDBSources extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-sources";
-    options.template = "modules/ddb-importer/handlebars/sources.hbs";
+    options.id = "ddb-importer-demo-sources";
+    options.template = "modules/ddb-importer-demo/handlebars/sources.hbs";
     options.width = 500;
     return options;
   }
@@ -27052,7 +27052,7 @@ class DDBSources extends FormApplication {
 
   /** @override */
   async getData() { // eslint-disable-line class-methods-use-this
-    const existingSelection = game.settings.get("ddb-importer", "munching-policy-muncher-sources").flat();
+    const existingSelection = game.settings.get("ddb-importer-demo", "munching-policy-muncher-sources").flat();
     const sources = getSourcesLookups(existingSelection);
 
     return {
@@ -27070,7 +27070,7 @@ class DDBSources extends FormApplication {
     for (const [key, value] of Object.entries(formData)) {
       if (value) sources.push(parseInt(key));
     }
-    await game.settings.set("ddb-importer", "munching-policy-muncher-sources", sources);
+    await game.settings.set("ddb-importer-demo", "munching-policy-muncher-sources", sources);
     // eslint-disable-next-line no-use-before-define
     new DDBMuncher().render(true);
   }
@@ -27079,8 +27079,8 @@ class DDBSources extends FormApplication {
 class DDBMuncher extends Application {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-monsters";
-    options.template = "modules/ddb-importer/handlebars/munch.hbs";
+    options.id = "ddb-importer-demo-monsters";
+    options.template = "modules/ddb-importer-demo/handlebars/munch.hbs";
     options.resizable = false;
     options.height = "auto";
     options.width = 800;
@@ -27199,17 +27199,17 @@ class DDBMuncher extends Application {
     html.find("#compendium-folder-style-monster").on("change", async () => {
       const style = html.find("#compendium-folder-style-monster");
       const importStyle = style[0].selectedOptions[0] ? style[0].selectedOptions[0].value : "TYPE";
-      game.settings.set("ddb-importer", "munching-selection-compendium-folders-monster", importStyle);
+      game.settings.set("ddb-importer-demo", "munching-selection-compendium-folders-monster", importStyle);
     });
     html.find("#compendium-folder-style-spell").on("change", async () => {
       const style = html.find("#compendium-folder-style-spell");
       const importStyle = style[0].selectedOptions[0] ? style[0].selectedOptions[0].value : "SCHOOL";
-      game.settings.set("ddb-importer", "munching-selection-compendium-folders-spell", importStyle);
+      game.settings.set("ddb-importer-demo", "munching-selection-compendium-folders-spell", importStyle);
     });
     html.find("#compendium-folder-style-item").on("change", async () => {
       const style = html.find("#compendium-folder-style-item");
       const importStyle = style[0].selectedOptions[0] ? style[0].selectedOptions[0].value : "TYPE";
-      game.settings.set("ddb-importer", "munching-selection-compendium-folders-item", importStyle);
+      game.settings.set("ddb-importer-demo", "munching-selection-compendium-folders-item", importStyle);
     });
 
     this.close();
@@ -27217,7 +27217,7 @@ class DDBMuncher extends Application {
 
   static enableButtons() {
     const cobalt = (0,Secrets/* getCobalt */.HF)() != "";
-    const tier = game.settings.get("ddb-importer", "patreon-tier");
+    const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
     const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
 
     if (cobalt) {
@@ -27263,7 +27263,7 @@ class DDBMuncher extends Application {
   static async parseSpells() {
     try {
       src_logger/* default.info */.Z.info("Munching spells!");
-      if (game.settings.get("ddb-importer", "munching-policy-add-spell-effects")) await (0,macros/* createGMMacros */.Kk)("spells");
+      if (game.settings.get("ddb-importer-demo", "munching-policy-add-spell-effects")) await (0,macros/* createGMMacros */.Kk)("spells");
       await parseSpells();
       (0,utils/* munchNote */.ep)(`Finished importing spells!`, true);
       (0,utils/* munchNote */.ep)("");
@@ -27422,7 +27422,7 @@ function renderPopup(type, url) {
 }
 
 function isSetupComplete(needsCobalt = true) {
-  const uploadDir = game.settings.get("ddb-importer", "image-upload-directory");
+  const uploadDir = game.settings.get("ddb-importer-demo", "image-upload-directory");
   const dataDirSet = !utils/* BAD_DIRS.includes */.qd.includes(uploadDir);
   const cobalt = (0,Secrets/* getCobalt */.HF)() != "";
   const setupComplete = dataDirSet && (cobalt || !needsCobalt);
@@ -27431,7 +27431,7 @@ function isSetupComplete(needsCobalt = true) {
 
 async function linkToPatreon() {
 
-  const proxy = game.settings.get("ddb-importer", "api-endpoint");
+  const proxy = game.settings.get("ddb-importer-demo", "api-endpoint");
   const patreonId = "oXQUxnRAbV6mq2DXlsXY2uDYQpU-Ea2ds0G_5hIdi0Bou33ZRJgvV8Ub3zsEQcHp";
   const patreonAuthUrl = `${proxy}/patreon/auth`;
   const patreonScopes = encodeURI("identity identity[email]");
@@ -27465,9 +27465,9 @@ async function linkToPatreon() {
 
     POPUPS["web"].close();
 
-    game.settings.set("ddb-importer", "beta-key", data.key);
-    game.settings.set("ddb-importer", "patreon-user", data.email);
-    game.settings.set("ddb-importer", "patreon-tier", data.tier);
+    game.settings.set("ddb-importer-demo", "beta-key", data.key);
+    game.settings.set("ddb-importer-demo", "patreon-user", data.email);
+    game.settings.set("ddb-importer-demo", "patreon-tier", data.tier);
 
     $('#ddb-patreon-user').text(data.email);
     $('#ddb-patreon-tier').text(data.tier);
@@ -27485,8 +27485,8 @@ async function linkToPatreon() {
 
 function getDDBCampaigns(cobalt = null) {
   const cobaltCookie = cobalt ? cobalt : (0,Secrets/* getCobalt */.HF)();
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const body = { cobalt: cobaltCookie, betaKey: betaKey };
 
   return new Promise((resolve, reject) => {
@@ -27514,7 +27514,7 @@ async function checkCobaltCookie(value) {
   const cookieStatus = await (0,Secrets/* checkCobalt */.B)("", value);
   if (value !== "" && !cookieStatus.success) {
     $('#munching-task-setup').text(`Your Cobalt Cookie is invalid, please check that you pasted the right information.`);
-    $('#ddb-importer-settings').css("height", "auto");
+    $('#ddb-importer-demo-settings').css("height", "auto");
     throw new Error(`Your Cobalt Cookie is invalid, please check that you pasted the right information.`);
   }
   return cookieStatus;
@@ -27544,8 +27544,8 @@ async function getAvailableCampaigns() {
 async function setCobaltCookie(value, local) {
   await checkCobaltCookie(value);
   await (0,Secrets/* setCobalt */.hc)(value);
-  await game.settings.set("ddb-importer", "cobalt-cookie-local", local);
-  const runCookieMigrate = local != game.settings.get("ddb-importer", "cobalt-cookie-local");
+  await game.settings.set("ddb-importer-demo", "cobalt-cookie-local", local);
+  const runCookieMigrate = local != game.settings.get("ddb-importer-demo", "cobalt-cookie-local");
   if (runCookieMigrate && local) {
     (0,Secrets/* moveCobaltToLocal */.Nr)();
   } else if (runCookieMigrate && !local) {
@@ -27557,8 +27557,8 @@ async function setCobaltCookie(value, local) {
 class DDBKeyChange extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-key-change";
-    options.template = "modules/ddb-importer/handlebars/key-change.hbs";
+    options.id = "ddb-importer-demo-key-change";
+    options.template = "modules/ddb-importer-demo/handlebars/key-change.hbs";
     options.width = 500;
     return options;
   }
@@ -27579,11 +27579,11 @@ class DDBKeyChange extends FormApplication {
 
   /** @override */
   async getData() { // eslint-disable-line class-methods-use-this
-    const key = game.settings.get("ddb-importer", "beta-key");
+    const key = game.settings.get("ddb-importer-demo", "beta-key");
     const setupConfig = {
       "beta-key": key,
     };
-    const patreonUser = 'Override'; //game.settings.get("ddb-importer", "patreon-user");
+    const patreonUser = 'Override'; //game.settings.get("ddb-importer-demo", "patreon-user");
     const check = true; //await (0,utils/* getPatreonValidity */.my)(key);
 
     return {
@@ -27599,16 +27599,16 @@ class DDBKeyChange extends FormApplication {
   // eslint-disable-next-line no-unused-vars
   async _updateObject(event, formData) { // eslint-disable-line class-methods-use-this
     event.preventDefault();
-    const currentKey = game.settings.get("ddb-importer", "beta-key");
+    const currentKey = game.settings.get("ddb-importer-demo", "beta-key");
     if (currentKey !== formData['beta-key']) {
-      await game.settings.set("ddb-importer", "beta-key", formData['beta-key']);
+      await game.settings.set("ddb-importer-demo", "beta-key", formData['beta-key']);
       await (0,utils/* setPatreonTier */.Q1)();
     }
 
-    const callMuncher = game.settings.get("ddb-importer", "settings-call-muncher");
+    const callMuncher = game.settings.get("ddb-importer-demo", "settings-call-muncher");
 
     if (callMuncher) {
-      game.settings.set("ddb-importer", "settings-call-muncher", false);
+      game.settings.set("ddb-importer-demo", "settings-call-muncher", false);
       new DDBMuncher().render(true);
     }
 
@@ -27618,7 +27618,7 @@ class DDBKeyChange extends FormApplication {
 async function isValidKey() {
   let validKey = false;
 
-  const key = game.settings.get("ddb-importer", "beta-key");
+  const key = game.settings.get("ddb-importer-demo", "beta-key");
   if (key === "") {
     validKey = true;
   } else {
@@ -27627,7 +27627,7 @@ async function isValidKey() {
       validKey = true;
     } else {
       validKey = false;
-      game.settings.set("ddb-importer", "settings-call-muncher", true);
+      game.settings.set("ddb-importer-demo", "settings-call-muncher", true);
       new DDBKeyChange().render(true);
     }
   }
@@ -27644,8 +27644,8 @@ class DDBCookie extends FormApplication {
 
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-cobalt-change";
-    options.template = "modules/ddb-importer/handlebars/cobalt.hbs";
+    options.id = "ddb-importer-demo-cobalt-change";
+    options.template = "modules/ddb-importer-demo/handlebars/cobalt.hbs";
     options.width = 500;
     return options;
   }
@@ -27681,10 +27681,10 @@ class DDBCookie extends FormApplication {
     if (!cobaltStatus.success) {
       new DDBCookie().render(true);
     } else {
-      const callMuncher = game.settings.get("ddb-importer", "settings-call-muncher");
+      const callMuncher = game.settings.get("ddb-importer-demo", "settings-call-muncher");
 
       if (callMuncher) {
-        game.settings.set("ddb-importer", "settings-call-muncher", false);
+        game.settings.set("ddb-importer-demo", "settings-call-muncher", false);
         new DDBMuncher().render(true);
       }
     }
@@ -27705,8 +27705,8 @@ Hooks.on("renderma", (app, html, user) => {
 class DDBSetup extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-settings";
-    options.template = "modules/ddb-importer/handlebars/settings.hbs";
+    options.id = "ddb-importer-demo-settings";
+    options.template = "modules/ddb-importer-demo/handlebars/settings.hbs";
     options.width = 500;
     return options;
   }
@@ -27722,20 +27722,20 @@ class DDBSetup extends FormApplication {
     const cobalt = (0,Secrets/* getCobalt */.HF)();
     const isCobalt = cobalt != "";
     const cobaltStatus = await (0,Secrets/* checkCobalt */.B)("", cobalt);
-    const cobaltLocal = game.settings.get("ddb-importer", "cobalt-cookie-local");
-    const hasKey = game.settings.get("ddb-importer", "beta-key") != "";
-    const key = game.settings.get("ddb-importer", "beta-key");
+    const cobaltLocal = game.settings.get("ddb-importer-demo", "cobalt-cookie-local");
+    const hasKey = game.settings.get("ddb-importer-demo", "beta-key") != "";
+    const key = game.settings.get("ddb-importer-demo", "beta-key");
     const campaignId = (0,utils/* getCampaignId */.F9)();
-    const tier = game.settings.get("ddb-importer", "patreon-tier");
-    const uploadDir = game.settings.get("ddb-importer", "image-upload-directory");
-    const otherUploadDir = game.settings.get("ddb-importer", "other-image-upload-directory");
-    const frameUploadDir = game.settings.get("ddb-importer", "frame-image-upload-directory");
+    const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
+    const uploadDir = game.settings.get("ddb-importer-demo", "image-upload-directory");
+    const otherUploadDir = game.settings.get("ddb-importer-demo", "other-image-upload-directory");
+    const frameUploadDir = game.settings.get("ddb-importer-demo", "frame-image-upload-directory");
     const dataDirSet = !utils/* BAD_DIRS.includes */.qd.includes(uploadDir) && !utils/* BAD_DIRS.includes */.qd.includes(otherUploadDir);
-    const patreonUser = game.settings.get("ddb-importer", "patreon-user");
+    const patreonUser = game.settings.get("ddb-importer-demo", "patreon-user");
     const validKeyObject = hasKey ? await (0,utils/* getPatreonValidity */.my)(key) : false;
     const validKey = validKeyObject && validKeyObject.success && validKeyObject.data;
     const availableCampaigns = isCobalt && cobaltStatus.success ? await getAvailableCampaigns() : [];
-    const useWebP = game.settings.get("ddb-importer", "use-webp");
+    const useWebP = game.settings.get("ddb-importer-demo", "use-webp");
 
     availableCampaigns.forEach((campaign) => {
       const selected = campaign.id == campaignId;
@@ -27812,33 +27812,33 @@ class DDBSetup extends FormApplication {
     const otherImageDir = formData['other-image-upload-directory'];
     const frameImageDir = formData['frame-image-upload-directory'];
     const useWebP = formData['image-use-webp'];
-    const currentKey = game.settings.get("ddb-importer", "beta-key");
+    const currentKey = game.settings.get("ddb-importer-demo", "beta-key");
 
     if (currentKey !== formData['beta-key']) {
-      await game.settings.set("ddb-importer", "beta-key", formData['beta-key']);
+      await game.settings.set("ddb-importer-demo", "beta-key", formData['beta-key']);
       await (0,utils/* setPatreonTier */.Q1)();
     }
 
-    await game.settings.set("ddb-importer", "image-upload-directory", imageDir);
-    await game.settings.set("ddb-importer", "other-image-upload-directory", otherImageDir);
-    await game.settings.set("ddb-importer", "frame-image-upload-directory", frameImageDir);
-    await game.settings.set("ddb-importer", "campaign-id", campaignId);
-    await game.settings.set("ddb-importer", "use-webp", useWebP);
+    await game.settings.set("ddb-importer-demo", "image-upload-directory", imageDir);
+    await game.settings.set("ddb-importer-demo", "other-image-upload-directory", otherImageDir);
+    await game.settings.set("ddb-importer-demo", "frame-image-upload-directory", frameImageDir);
+    await game.settings.set("ddb-importer-demo", "campaign-id", campaignId);
+    await game.settings.set("ddb-importer-demo", "use-webp", useWebP);
 
     await setCobaltCookie(cobaltCookie, cobaltCookieLocal);
 
     const imageDirSet = !utils/* BAD_DIRS.includes */.qd.includes(imageDir);
     const otherImageDirSet = !utils/* BAD_DIRS.includes */.qd.includes(otherImageDir);
 
-    const callMuncher = game.settings.get("ddb-importer", "settings-call-muncher");
+    const callMuncher = game.settings.get("ddb-importer-demo", "settings-call-muncher");
 
     if (!imageDirSet || !otherImageDirSet || !frameImageDir) {
       $('#munching-task-setup').text(`Please set the image upload directory(s) to something other than the root.`);
-      $('#ddb-importer-settings').css("height", "auto");
+      $('#ddb-importer-demo-settings').css("height", "auto");
       throw new Error(`Please set the image upload directory to something other than the root.`);
     } else if (callMuncher && cobaltCookie === "") {
       $('#munching-task-setup').text(`To use Muncher you need to set a Cobalt Cookie value!`);
-      $('#ddb-importer-settings').css("height", "auto");
+      $('#ddb-importer-demo-settings').css("height", "auto");
       throw new Error(`To use Muncher you need to set a Cobalt Cookie value!`);
     } else {
       DirectoryPicker/* DirectoryPicker.verifyPath */.B.verifyPath(DirectoryPicker/* DirectoryPicker.parse */.B.parse(imageDir));
@@ -27846,7 +27846,7 @@ class DDBSetup extends FormApplication {
       DirectoryPicker/* DirectoryPicker.verifyPath */.B.verifyPath(DirectoryPicker/* DirectoryPicker.parse */.B.parse(frameImageDir));
 
       if (callMuncher) {
-        game.settings.set("ddb-importer", "settings-call-muncher", false);
+        game.settings.set("ddb-importer-demo", "settings-call-muncher", false);
         new DDBMuncher().render(true);
       }
     }
@@ -27878,8 +27878,8 @@ function getCompendiumLookups(type, selected) {
 class DDBCompendiumSetup extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-settings-compendium";
-    options.template = "modules/ddb-importer/handlebars/compendium.hbs";
+    options.id = "ddb-importer-demo-settings-compendium";
+    options.template = "modules/ddb-importer-demo/handlebars/compendium.hbs";
     options.width = 500;
     return options;
   }
@@ -27895,7 +27895,7 @@ class DDBCompendiumSetup extends FormApplication {
     const settings = [
       {
         name: "auto-create-compendium",
-        isChecked: game.settings.get("ddb-importer", "auto-create-compendium"),
+        isChecked: game.settings.get("ddb-importer-demo", "auto-create-compendium"),
         description: "Create default compendiums if missing?",
         enabled: true,
       },
@@ -27906,71 +27906,71 @@ class DDBCompendiumSetup extends FormApplication {
         setting: "entity-class-compendium",
         name: "Classes",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-class-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-class-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-class-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-class-compendium")),
       },
       {
         setting: "entity-feature-compendium",
         name: "Class features",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-feature-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-feature-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-feature-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-feature-compendium")),
       },
       {
         setting: "entity-feat-compendium",
         name: "Feats",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-feat-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-feat-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-feat-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-feat-compendium")),
       },
       {
         setting: "entity-item-compendium",
         name: "Items",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-item-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-item-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-item-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-item-compendium")),
       },
       {
         setting: "entity-monster-compendium",
         name: "Monsters",
         type: "actor",
-        current: game.settings.get("ddb-importer", "entity-monster-compendium"),
-        compendiums: getCompendiumLookups("Actor", game.settings.get("ddb-importer", "entity-monster-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-monster-compendium"),
+        compendiums: getCompendiumLookups("Actor", game.settings.get("ddb-importer-demo", "entity-monster-compendium")),
       },
       {
         setting: "entity-race-compendium",
         name: "Races",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-race-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-race-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-race-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-race-compendium")),
       },
       {
         setting: "entity-trait-compendium",
         name: "Racial traits",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-trait-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-trait-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-trait-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-trait-compendium")),
       },
       {
         setting: "entity-spell-compendium",
         name: "Spells",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-spell-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-spell-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-spell-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-spell-compendium")),
       },
       {
         setting: "entity-table-compendium",
         name: "Tables",
         type: "RollTable",
-        current: game.settings.get("ddb-importer", "entity-table-compendium"),
-        compendiums: getCompendiumLookups("RollTable", game.settings.get("ddb-importer", "entity-table-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-table-compendium"),
+        compendiums: getCompendiumLookups("RollTable", game.settings.get("ddb-importer-demo", "entity-table-compendium")),
       },
       {
         setting: "entity-override-compendium",
         name: "Override",
         type: "item",
-        current: game.settings.get("ddb-importer", "entity-override-compendium"),
-        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer", "entity-override-compendium")),
+        current: game.settings.get("ddb-importer-demo", "entity-override-compendium"),
+        compendiums: getCompendiumLookups("Item", game.settings.get("ddb-importer-demo", "entity-override-compendium")),
       },
     ];
 
@@ -27985,14 +27985,14 @@ class DDBCompendiumSetup extends FormApplication {
   async _updateObject(event, formData) { // eslint-disable-line class-methods-use-this
     event.preventDefault();
     for (const [key, value] of Object.entries(formData)) {
-      game.settings.set("ddb-importer", key, value);
+      game.settings.set("ddb-importer-demo", key, value);
     }
   }
 }
 
 
 function getGMUsers() {
-  const updateUser = game.settings.get("ddb-importer", "dynamic-sync-user");
+  const updateUser = game.settings.get("ddb-importer-demo", "dynamic-sync-user");
 
   const gmUsers = game.users
     .filter((user) => user.isGM)
@@ -28012,8 +28012,8 @@ function getGMUsers() {
 class DDBDynamicUpdateSetup extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.id = "ddb-importer-settings-dynamic-updates";
-    options.template = "modules/ddb-importer/handlebars/dynamic-updates.hbs";
+    options.id = "ddb-importer-demo-settings-dynamic-updates";
+    options.template = "modules/ddb-importer-demo/handlebars/dynamic-updates.hbs";
     options.width = 500;
     return options;
   }
@@ -28026,80 +28026,80 @@ class DDBDynamicUpdateSetup extends FormApplication {
 
   /** @override */
   async getData() { // eslint-disable-line class-methods-use-this
-    const tier = game.settings.get("ddb-importer", "patreon-tier");
+    const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
     const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
     const enabled = tiers.experimentalMid;
 
     const settings = [
       {
         name: "dynamic-sync",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync"),
         description: "Enable Dynamic Sync?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-currency",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-currency"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-currency"),
         description: "Currency?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-hitpoints",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-hitpoints"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-hitpoints"),
         description: "Hit Points?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-hitdice",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-hitdice"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-hitdice"),
         description: "Hit Dice?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-action-use",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-action-use"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-action-use"),
         description: "Action usage?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-inspiration",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-inspiration"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-inspiration"),
         description: "Inspiration?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-condition",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-condition"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-condition"),
         description: "Exhaustion?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-deathsaves",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-deathsaves"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-deathsaves"),
         description: "Death Saves?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-spells-prepared",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-spells-prepared"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-spells-prepared"),
         description: "Spells Prepared?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-spells-slots",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-spells-slots"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-spells-slots"),
         description: "Spell Slots?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-equipment",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-equipment"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-equipment"),
         description: "Equipment?",
         enabled,
       },
       {
         name: "dynamic-sync-policy-xp",
-        isChecked: enabled && game.settings.get("ddb-importer", "dynamic-sync-policy-xp"),
+        isChecked: enabled && game.settings.get("ddb-importer-demo", "dynamic-sync-policy-xp"),
         description: "XP?",
         enabled,
       },
@@ -28116,12 +28116,12 @@ class DDBDynamicUpdateSetup extends FormApplication {
   // eslint-disable-next-line class-methods-use-this
   async _updateObject(event, formData) {
     event.preventDefault();
-    const initial = game.settings.get("ddb-importer", "dynamic-sync");
+    const initial = game.settings.get("ddb-importer-demo", "dynamic-sync");
     for (const [key, value] of Object.entries(formData)) {
       // eslint-disable-next-line no-await-in-loop
-      await game.settings.set("ddb-importer", key, value);
+      await game.settings.set("ddb-importer-demo", key, value);
     }
-    const post = game.settings.get("ddb-importer", "dynamic-sync");
+    const post = game.settings.get("ddb-importer-demo", "dynamic-sync");
 
     if (initial != post) {
       src_logger/* default.warn */.Z.warn("RELOADING!");
@@ -28358,7 +28358,7 @@ function getEquippedAC(equippedGear) {
     }
 
     // magical armor
-    const usingItemEffects = game.settings.get("ddb-importer", "character-update-policy-add-item-effects");
+    const usingItemEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-item-effects");
 
     const daeItemEffects = (usingItemEffects &&
       item.equipped && item.definition.filterType !== "Armor"
@@ -30451,7 +30451,7 @@ async function getResourcesDialog(currentActorId, ddb, character) {
       {
         width: 400,
         classes: ["dialog", "character-resource-selection"],
-        template: "modules/ddb-importer/handlebars/resources.hbs",
+        template: "modules/ddb-importer-demo/handlebars/resources.hbs",
       });
       dialog.render(true);
     } else {
@@ -30916,8 +30916,8 @@ function addFeatEffects(ddb, character, ddbItem, item, choice, type) {
   const daeInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("dae");
   const compendiumItem = character.flags.ddbimporter.compendium;
   const addCharacterEffects = compendiumItem
-    ? game.settings.get("ddb-importer", "munching-policy-add-effects")
-    : game.settings.get("ddb-importer", "character-update-policy-add-character-effects");
+    ? game.settings.get("ddb-importer-demo", "munching-policy-add-effects")
+    : game.settings.get("ddb-importer-demo", "character-update-policy-add-character-effects");
   const modifierItem = generateFeatModifiers(ddb, ddbItem, choice, type);
   if (daeInstalled && addCharacterEffects) {
     item = (0,effects_effects/* generateEffects */.K7)(ddb, character, modifierItem, item, compendiumItem, "feat");
@@ -30933,7 +30933,7 @@ function addFeatEffects(ddb, character, ddbItem, item, choice, type) {
 const allowDupes = [];
 
 function removeActionFeatures(actions, features) {
-  const actionAndFeature = game.settings.get("ddb-importer", "character-update-policy-use-action-and-feature");
+  const actionAndFeature = game.settings.get("ddb-importer-demo", "character-update-policy-use-action-and-feature");
 
   actions = actions.map((action) => {
     const featureMatch = features.find((feature) => feature.name === action.name);
@@ -31004,9 +31004,9 @@ function buildFullDescription(main, summary, title) {
 
 function special_getDescription(ddb, character, feat, forceFull = false) {
   // for now none actions probably always want the full text
-  const useFullSetting = game.settings.get("ddb-importer", "character-update-policy-use-full-description");
+  const useFullSetting = game.settings.get("ddb-importer-demo", "character-update-policy-use-full-description");
   const useFull = forceFull || useFullSetting;
-  const chatAdd = game.settings.get("ddb-importer", "add-description-to-chat");
+  const chatAdd = game.settings.get("ddb-importer-demo", "add-description-to-chat");
 
   let snippet = "";
   let description = "";
@@ -31258,8 +31258,8 @@ function fixFeatures(features) {
 async function addExtraEffects(ddb, documents, character) {
   const compendiumItem = character.flags.ddbimporter.compendium;
   const addCharacterEffects = compendiumItem
-    ? game.settings.get("ddb-importer", "munching-policy-add-effects")
-    : game.settings.get("ddb-importer", "character-update-policy-add-character-effects");
+    ? game.settings.get("ddb-importer-demo", "munching-policy-add-effects")
+    : game.settings.get("ddb-importer-demo", "character-update-policy-add-character-effects");
 
   if (addCharacterEffects) {
     const results = await Promise.all(documents.map((document) => {
@@ -31407,7 +31407,7 @@ function actions_getDamage(action) {
   const meleeOrRangedAction = action.attackTypeRange || action.rangeId;
   const modBonus = (action.statId || action.abilityModifierStatId) && !action.isOffhand && meleeOrRangedAction ? " + @mod" : "";
   const fixedBonus = action.dice?.fixedValue ? ` + ${action.dice.fixedValue}` : "";
-  const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+  const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
 
   if (action.dice) {
     if (action.dice.diceString) {
@@ -31483,7 +31483,7 @@ function getLevelScaleDice(ddb, character, action, feat) {
 
 function martialArtsDamage(ddb, action) {
   const damageType = dictionary/* default.actions.damageType.find */.Z.actions.damageType.find((type) => type.id === action.damageTypeId).name;
-  const globalDamageHints = game.settings.get("ddb-importer", "use-damage-hints");
+  const globalDamageHints = game.settings.get("ddb-importer-demo", "use-damage-hints");
 
   let damageBonus = src_utils/* default.filterBaseModifiers */.Z.filterBaseModifiers(ddb, "damage", "unarmed-attacks").reduce((prev, cur) => prev + cur.value, 0);
   if (damageBonus === 0) {
@@ -31730,7 +31730,7 @@ function getAttackType(ddb, character, action, weapon) {
 const excludedActionFeatures = ["Unarmed Strike"];
 
 function getAttackAction(ddb, character, action) {
-  const actionType = game.settings.get("ddb-importer", "character-update-policy-use-actions-as-features") && !excludedActionFeatures.includes(action.name)
+  const actionType = game.settings.get("ddb-importer-demo", "character-update-policy-use-actions-as-features") && !excludedActionFeatures.includes(action.name)
     ? "feat"
     : "weapon";
   let feature = {
@@ -33172,7 +33172,7 @@ function special(characterJSON) {
 
 async function parseJson(currentActorId, ddb, resourceSelection = true) {
   try {
-    if (game.settings.get("ddb-importer", "character-update-policy-add-spell-effects")) await (0,macros/* createGMMacros */.Kk)();
+    if (game.settings.get("ddb-importer-demo", "character-update-policy-add-spell-effects")) await (0,macros/* createGMMacros */.Kk)();
     src_logger/* default.debug */.Z.debug("Starting core character parse");
     let character = await getCharacter(ddb);
     if (resourceSelection) {
@@ -33361,8 +33361,8 @@ async function setConditions(actor, ddb) {
 var itemIndex;
 
 function activeUpdate() {
-  const dynamicSync = game.settings.get("ddb-importer", "dynamic-sync");
-  const updateUser = game.settings.get("ddb-importer", "dynamic-sync-user");
+  const dynamicSync = game.settings.get("ddb-importer-demo", "dynamic-sync");
+  const updateUser = game.settings.get("ddb-importer-demo", "dynamic-sync-user");
   const gmSyncUser = game.user.isGM && game.user.id == updateUser;
   // console.warn(`Dynamic sync: ${dynamicSync}`);
   // console.warn(`Dynamic sync user: ${updateUser}`);
@@ -33397,9 +33397,9 @@ async function updateCharacterCall(actor, path, bodyContent) {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)(actor.id);
   const dynamicSync = activeUpdate();
   const parsingApi = dynamicSync
-    ? game.settings.get("ddb-importer", "dynamic-api-endpoint")
-    : game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+    ? game.settings.get("ddb-importer-demo", "dynamic-api-endpoint")
+    : game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const campaignId = (0,utils/* getCampaignId */.F9)();
   const proxyCampaignId = campaignId === "" ? null : campaignId;
   const coreBody = {
@@ -33459,7 +33459,7 @@ async function updateDDBSpellSlotsPact(actor) {
 
 async function spellSlotsPact(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-spells-slots")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-spells-slots")) resolve();
     if (
       actor.data.data.spells.pact.max > 0 &&
       ddbData.character.character.data.spells.pact.value !== actor.data.data.spells.pact.value
@@ -33492,7 +33492,7 @@ async function updateDynamicDDBSpellSlots(actor, update) {
 
 async function spellSlots(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-spells-slots")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-spells-slots")) resolve();
 
     let spellSlotData = { spellslots: {}, update: false };
     for (let i = 1; i <= 9; i++) {
@@ -33528,7 +33528,7 @@ async function updateDDBCurrency(actor) {
 
 async function currency(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-currency")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-currency")) resolve();
 
     const value = {
       pp: Number.isInteger(actor.data.data.currency.pp) ? actor.data.data.currency.pp : 0,
@@ -33557,7 +33557,7 @@ async function updateDDBXP(actor) {
 
 async function xp(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-xp")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-xp")) resolve();
     const same = ddbData.character.character.data.details.xp.value === actor.data.data.details.xp.value;
 
     if (!same) {
@@ -33582,7 +33582,7 @@ async function updateDDBHitPoints(actor) {
 
 async function hitPoints(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-hitpoints")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-hitpoints")) resolve();
     const temporaryHitPoints = actor.data.data.attributes.hp.temp ? actor.data.data.attributes.hp.temp : 0;
     const same =
       ddbData.character.character.data.attributes.hp.value === actor.data.data.attributes.hp.value &&
@@ -33607,7 +33607,7 @@ async function updateDDBInspiration(actor) {
 
 async function inspiration(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-inspiration")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-inspiration")) resolve();
     const same = ddbData.character.character.data.attributes.inspiration === actor.data.data.attributes.inspiration;
 
     if (!same) {
@@ -33636,7 +33636,7 @@ async function updateDDBExhaustion(actor) {
 
 async function exhaustion(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-condition")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-condition")) resolve();
     const same = ddbData.character.character.data.attributes.exhaustion === actor.data.data.attributes.exhaustion;
 
     if (!same) {
@@ -33664,7 +33664,7 @@ async function updateDDBCondition(actor, condition) {
 async function conditions(actor, ddbData) {
   return new Promise((resolve) => {
     const dfConditionsOn = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("dfreds-convenient-effects");
-    if (!game.settings.get("ddb-importer", "sync-policy-condition") || !dfConditionsOn) resolve([]);
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-condition") || !dfConditionsOn) resolve([]);
     getActorConditionStates(actor, ddbData.ddb).then((conditions) => {
       let results = [];
       conditions.forEach((condition) => {
@@ -33690,7 +33690,7 @@ async function updateDDBDeathSaves(actor) {
 
 async function deathSaves(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-deathsaves")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-deathsaves")) resolve();
     const same = (0,isequal/* isEqual */.X)(ddbData.character.character.data.attributes.death, actor.data.data.attributes.death);
 
     if (!same) {
@@ -33718,7 +33718,7 @@ async function updateDDBHitDice(actor, klass, update) {
 
 async function hitDice(actor, ddbData) {
   return new Promise((resolve) => {
-    if (!game.settings.get("ddb-importer", "sync-policy-hitdice")) resolve();
+    if (!game.settings.get("ddb-importer-demo", "sync-policy-hitdice")) resolve();
 
     const ddbClasses = ddbData.character.classes;
 
@@ -33782,7 +33782,7 @@ async function updateDDBSpellsPrepared(actor, spells) {
 }
 
 async function spellsPrepared(actor, ddbData) {
-  if (!game.settings.get("ddb-importer", "sync-policy-spells-prepared")) return [];
+  if (!game.settings.get("ddb-importer-demo", "sync-policy-spells-prepared")) return [];
   const ddbSpells = ddbData.character.spells;
 
   const preparedSpells = actor.data.items.filter((item) => {
@@ -33966,7 +33966,7 @@ async function addDDBEquipment(actor, itemsToAdd) {
 
 async function addEquipment(actor, ddbData) {
   const syncItemReady = actor.data.flags.ddbimporter?.syncItemReady;
-  if (syncItemReady && !game.settings.get("ddb-importer", "sync-policy-equipment")) return [];
+  if (syncItemReady && !game.settings.get("ddb-importer-demo", "sync-policy-equipment")) return [];
   const ddbItems = ddbData.character.inventory;
 
   const itemsToAdd = actor.data.items.filter((item) =>
@@ -34010,7 +34010,7 @@ async function updateDDBCustomNames(actor, items) {
 // updates names of items and actions
 async function updateCustomNames(actor, ddbData) {
   const syncItemReady = actor.data.flags.ddbimporter?.syncItemReady;
-  if (syncItemReady && !game.settings.get("ddb-importer", "sync-policy-equipment")) return [];
+  if (syncItemReady && !game.settings.get("ddb-importer-demo", "sync-policy-equipment")) return [];
   const ddbItems = ddbData.character.inventory;
 
   const itemsToName = actor.data.items.filter((item) =>
@@ -34046,7 +34046,7 @@ async function removeDDBEquipment(actor, itemsToRemove) {
 
 async function removeEquipment(actor, ddbData) {
   const syncItemReady = actor.data.flags.ddbimporter?.syncItemReady;
-  if (syncItemReady && !game.settings.get("ddb-importer", "sync-policy-equipment")) return [];
+  if (syncItemReady && !game.settings.get("ddb-importer-demo", "sync-policy-equipment")) return [];
   const ddbItems = ddbData.character.inventory;
 
   const itemsToRemove = ddbItems.filter((item) =>
@@ -34134,7 +34134,7 @@ async function updateDDBEquipmentStatus(actor, updateItemDetails, ddbItems) {
 
 async function equipmentStatus(actor, ddbData, addEquipmentResults) {
   const syncItemReady = actor.data.flags.ddbimporter?.syncItemReady;
-  if (syncItemReady && !game.settings.get("ddb-importer", "sync-policy-equipment")) return [];
+  if (syncItemReady && !game.settings.get("ddb-importer-demo", "sync-policy-equipment")) return [];
   // reload the actor following potential updates to equipment
   let ddbItems = ddbData.ddb.character.inventory;
   let customDDBItems = ddbData.ddb.character.customItems;
@@ -34248,7 +34248,7 @@ async function updateDDBActionUseStatus(actor, actions) {
 
 async function actionUseStatus(actor, ddbData) {
   const syncActionReady = actor.data.flags.ddbimporter?.syncActionReady;
-  if (syncActionReady && !game.settings.get("ddb-importer", "sync-policy-action-use")) return [];
+  if (syncActionReady && !game.settings.get("ddb-importer-demo", "sync-policy-action-use")) return [];
 
   let ddbActions = ddbData.character.actions;
 
@@ -34284,7 +34284,7 @@ async function updateDDBCharacter(actor) {
   }
 
   const characterId = actor.data.flags.ddbimporter.dndbeyond.characterId;
-  const syncId = actor.data.flags["ddb-importer"]?.syncId ? actor.data.flags["ddb-importer"].syncId + 1 : 0;
+  const syncId = actor.data.flags["ddb-importer-demo"]?.syncId ? actor.data.flags["ddb-importer-demo"].syncId + 1 : 0;
 
   const characterDataOptions = {
     currentActorId: actor.id,
@@ -34332,7 +34332,7 @@ async function updateDDBCharacter(actor) {
   // const spellSlots = updateCharacterCall(actor, "spells", spellsData);
   // promises.push(spellSlots);
 
-  actor.setFlag("ddb-importer", "syncId", syncId);
+  actor.setFlag("ddb-importer-demo", "syncId", syncId);
   await setActiveSyncSpellsFlag(actor, true);
 
   // we can now process item attunements and uses (not yet done)
@@ -34364,13 +34364,13 @@ async function activeUpdateActor(actor, update) {
     const actorActiveUpdate = actor.data.flags.ddbimporter?.activeUpdate;
 
     if (actorActiveUpdate) {
-      const syncHP = game.settings.get("ddb-importer", "dynamic-sync-policy-hitpoints");
-      const syncCurrency = game.settings.get("ddb-importer", "dynamic-sync-policy-currency");
-      const syncSpellSlots = game.settings.get("ddb-importer", "dynamic-sync-policy-spells-slots");
-      const syncInspiration = game.settings.get("ddb-importer", "dynamic-sync-policy-inspiration");
-      const syncConditions = game.settings.get("ddb-importer", "dynamic-sync-policy-condition");
-      const syncDeathSaves = game.settings.get("ddb-importer", "dynamic-sync-policy-deathsaves");
-      const syncXP = game.settings.get("ddb-importer", "dynamic-sync-policy-xp");
+      const syncHP = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-hitpoints");
+      const syncCurrency = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-currency");
+      const syncSpellSlots = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-spells-slots");
+      const syncInspiration = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-inspiration");
+      const syncConditions = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-condition");
+      const syncDeathSaves = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-deathsaves");
+      const syncXP = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-xp");
 
 
       if (syncHP && update.data?.attributes?.hp) {
@@ -34518,10 +34518,10 @@ async function activeUpdateUpdateItem(document, update) {
     } else {
       src_logger/* default.debug */.Z.debug("Preparing to sync item change to DDB...");
       const action = document.data.flags.ddbimporter?.action || document.type === "feat";
-      const syncEquipment = game.settings.get("ddb-importer", "dynamic-sync-policy-equipment");
-      const syncActionUse = game.settings.get("ddb-importer", "dynamic-sync-policy-action-use");
-      const syncHD = game.settings.get("ddb-importer", "dynamic-sync-policy-hitdice");
-      const syncSpellsPrepared = game.settings.get("ddb-importer", "dynamic-sync-policy-spells-prepared");
+      const syncEquipment = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-equipment");
+      const syncActionUse = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-action-use");
+      const syncHD = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-hitdice");
+      const syncSpellsPrepared = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-spells-prepared");
       const isDDBItem = document.data.flags.ddbimporter?.id;
       const customItem = document.data.flags.ddbimporter?.custom || false;
 
@@ -34565,7 +34565,7 @@ async function activeUpdateAddOrDeleteItem(document, state) {
   return new Promise((resolve) => {
     let promises = [];
 
-    const syncEquipment = game.settings.get("ddb-importer", "dynamic-sync-policy-equipment");
+    const syncEquipment = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-equipment");
     // we check to see if this is actually an embedded item
     const parentActor = document.parent;
     const actorActiveUpdate = parentActor && parentActor.data.flags.ddbimporter?.activeUpdate;
@@ -34595,7 +34595,7 @@ async function activeUpdateEffectTrigger(document, state) {
   return new Promise((resolve) => {
     let promises = [];
 
-    const syncConditions = game.settings.get("ddb-importer", "dynamic-sync-policy-condition");
+    const syncConditions = game.settings.get("ddb-importer-demo", "dynamic-sync-policy-condition");
     // we check to see if this is actually an embedded item
     const parentActor = document.parent;
     const actorActiveUpdate = parentActor && parentActor.data.flags.ddbimporter?.activeUpdate;
@@ -34770,19 +34770,19 @@ const getCharacterUpdatePolicyTypes = (invert = false) => {
   let itemTypes = [];
 
   if (invert) {
-    if (!game.settings.get("ddb-importer", "character-update-policy-class")) itemTypes.push("class");
-    if (!game.settings.get("ddb-importer", "character-update-policy-feat")) itemTypes.push("feat");
-    if (!game.settings.get("ddb-importer", "character-update-policy-weapon")) itemTypes.push("weapon");
-    if (!game.settings.get("ddb-importer", "character-update-policy-equipment"))
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-class")) itemTypes.push("class");
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-feat")) itemTypes.push("feat");
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-weapon")) itemTypes.push("weapon");
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-equipment"))
       itemTypes = itemTypes.concat(dictionary/* default.types.equipment */.Z.types.equipment);
-    if (!game.settings.get("ddb-importer", "character-update-policy-spell")) itemTypes.push("spell");
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-spell")) itemTypes.push("spell");
   } else {
-    if (game.settings.get("ddb-importer", "character-update-policy-class")) itemTypes.push("class");
-    if (game.settings.get("ddb-importer", "character-update-policy-feat")) itemTypes.push("feat");
-    if (game.settings.get("ddb-importer", "character-update-policy-weapon")) itemTypes.push("weapon");
-    if (game.settings.get("ddb-importer", "character-update-policy-equipment"))
+    if (game.settings.get("ddb-importer-demo", "character-update-policy-class")) itemTypes.push("class");
+    if (game.settings.get("ddb-importer-demo", "character-update-policy-feat")) itemTypes.push("feat");
+    if (game.settings.get("ddb-importer-demo", "character-update-policy-weapon")) itemTypes.push("weapon");
+    if (game.settings.get("ddb-importer-demo", "character-update-policy-equipment"))
       itemTypes = itemTypes.concat(dictionary/* default.types.equipment */.Z.types.equipment);
-    if (game.settings.get("ddb-importer", "character-update-policy-spell")) itemTypes.push("spell");
+    if (game.settings.get("ddb-importer-demo", "character-update-policy-spell")) itemTypes.push("spell");
   }
   return itemTypes;
 };
@@ -34826,8 +34826,8 @@ const DEFAULT_CHARACTER_DATA_OPTIONS = {
 async function getCharacterData(optionsIn) {
   const options = mergeObject(DEFAULT_CHARACTER_DATA_OPTIONS, optionsIn);
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)(options.localCobaltPostFix);
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
   const campaignId = (0,utils/* getCampaignId */.F9)();
   const proxyCampaignId = campaignId === "" ? null : campaignId;
   let body = { cobalt: cobaltCookie, betaKey: betaKey, characterId: options.characterId, campaignId: proxyCampaignId };
@@ -34868,7 +34868,7 @@ async function getCharacterData(optionsIn) {
     src_logger/* default.debug */.Z.debug("currentActorId", options.currentActorId);
     try {
       const character = await parseJson(options.currentActorId, ddb, options.resourceSelection);
-      const shouldChangeName = game.settings.get("ddb-importer", "character-update-policy-name");
+      const shouldChangeName = game.settings.get("ddb-importer-demo", "character-update-policy-name");
       if (!shouldChangeName) {
         character.character.name = undefined;
         character.character.token.name = undefined;
@@ -34876,7 +34876,7 @@ async function getCharacterData(optionsIn) {
       data["character"] = character;
       return data;
     } catch (error) {
-      const debugJson = game.settings.get("ddb-importer", "debug-json");
+      const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
       if (debugJson) {
         (0,utils/* download */.LR)(JSON.stringify(data), `${options.characterId}-raw.json`, "application/json");
       }
@@ -34924,8 +34924,8 @@ class CharacterImport extends FormApplication {
    */
   static get defaultOptions() {
     const options = super.defaultOptions;
-    options.title = game.i18n.localize("ddb-importer.module-name");
-    options.template = "modules/ddb-importer/handlebars/character.hbs";
+    options.title = game.i18n.localize("ddb-importer-demo.module-name");
+    options.template = "modules/ddb-importer-demo/handlebars/character.hbs";
     options.width = 900;
     options.height = "auto";
     options.classes = ["ddbimporter", "sheet"];
@@ -35055,12 +35055,12 @@ class CharacterImport extends FormApplication {
     // updating the image?
     let imagePath = this.actor.img;
     const decorations = data.character.decorations;
-    const userHasPermission = !(game.settings.get("ddb-importer", "restrict-to-trusted") && !game.user.isTrusted);
+    const userHasPermission = !(game.settings.get("ddb-importer-demo", "restrict-to-trusted") && !game.user.isTrusted);
     if (
       userHasPermission &&
       decorations?.avatarUrl &&
       decorations.avatarUrl !== "" &&
-      (imagePath.includes("mystery-man") || game.settings.get("ddb-importer", "character-update-policy-image"))
+      (imagePath.includes("mystery-man") || game.settings.get("ddb-importer-demo", "character-update-policy-image"))
     ) {
       CharacterImport.showCurrentTask(html, "Uploading avatar image");
       const filename = data.character.name
@@ -35068,7 +35068,7 @@ class CharacterImport extends FormApplication {
         .replace(/-+/g, "-")
         .trim();
 
-      const uploadDirectory = game.settings.get("ddb-importer", "image-upload-directory").replace(/^\/|\/$/g, "");
+      const uploadDirectory = game.settings.get("ddb-importer-demo", "image-upload-directory").replace(/^\/|\/$/g, "");
       imagePath = await src_utils/* default.uploadRemoteImage */.Z.uploadRemoteImage(decorations.avatarUrl, uploadDirectory, filename);
       this.result.character.img = imagePath;
       if (decorations?.frameAvatarUrl && decorations.frameAvatarUrl !== "") {
@@ -35094,8 +35094,8 @@ class CharacterImport extends FormApplication {
     const characterId = this.actor.data.flags?.ddbimporter?.dndbeyond?.characterId;
     const syncEnabled = characterId && importSettings.tiers.all;
 
-    const trustedUsersOnly = game.settings.get("ddb-importer", "restrict-to-trusted");
-    const allowAllSync = game.settings.get("ddb-importer", "allow-all-sync");
+    const trustedUsersOnly = game.settings.get("ddb-importer-demo", "restrict-to-trusted");
+    const allowAllSync = game.settings.get("ddb-importer-demo", "allow-all-sync");
     const syncOnly = trustedUsersOnly && allowAllSync && !game.user.isTrusted;
 
     const localCobalt = (0,Secrets/* isLocalCobalt */.Mi)(this.actor.id);
@@ -35103,8 +35103,8 @@ class CharacterImport extends FormApplication {
     const cobaltSet = localCobalt && cobaltCookie && cobaltCookie != "";
     const itemCompendium = await (0,utils/* getCompendiumType */.T0)("item", false);
 
-    const dynamicSync = game.settings.get("ddb-importer", "dynamic-sync");
-    const updateUser = game.settings.get("ddb-importer", "dynamic-sync-user");
+    const dynamicSync = game.settings.get("ddb-importer-demo", "dynamic-sync");
+    const updateUser = game.settings.get("ddb-importer-demo", "dynamic-sync-user");
     const gmSyncUser = game.user.isGM && game.user.id == updateUser;
     const dynamicUpdateAllowed = dynamicSync && gmSyncUser && importSettings.tiers.experimentalMid;
     const dynamicUpdateStatus = this.actor.data.flags?.ddbimporter?.activeUpdate;
@@ -35168,7 +35168,7 @@ class CharacterImport extends FormApplication {
       .find('.sync-policy input[type="checkbox"]')
       .on("change", (event) => {
         game.settings.set(
-          "ddb-importer",
+          "ddb-importer-demo",
           "sync-policy-" + event.currentTarget.dataset.section,
           event.currentTarget.checked
         );
@@ -35200,7 +35200,7 @@ class CharacterImport extends FormApplication {
           };
           const characterData = await getCharacterData(characterDataOptions);
           src_logger/* default.debug */.Z.debug("import.js getCharacterData result", characterData);
-          const debugJson = game.settings.get("ddb-importer", "debug-json");
+          const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
           if (debugJson) {
             (0,utils/* download */.LR)(JSON.stringify(characterData), `${characterId}.json`, "application/json");
           }
@@ -35295,7 +35295,7 @@ class CharacterImport extends FormApplication {
           };
           const characterData = await getCharacterData(characterDataOptions);
           src_logger/* default.debug */.Z.debug("import.js getCharacterData result", characterData);
-          const debugJson = game.settings.get("ddb-importer", "debug-json");
+          const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
           if (debugJson) {
             (0,utils/* download */.LR)(JSON.stringify(characterData), `${characterId}.json`, "application/json");
           }
@@ -35379,19 +35379,19 @@ class CharacterImport extends FormApplication {
   }
 
   async enrichCharacterItems(html, items) {
-    const useInbuiltIcons = game.settings.get("ddb-importer", "character-update-policy-use-inbuilt-icons");
-    const useSRDCompendiumItems = game.settings.get("ddb-importer", "character-update-policy-use-srd");
-    const useSRDCompendiumIcons = game.settings.get("ddb-importer", "character-update-policy-use-srd-icons");
-    const ddbSpellIcons = game.settings.get("ddb-importer", "character-update-policy-use-ddb-spell-icons");
-    const ddbItemIcons = game.settings.get("ddb-importer", "character-update-policy-use-ddb-item-icons");
-    const ddbGenericItemIcons = game.settings.get("ddb-importer", "character-update-policy-use-ddb-generic-item-icons");
-    const activeEffectCopy = game.settings.get("ddb-importer", "character-update-policy-active-effect-copy");
-    const daeEffectCopy = game.settings.get("ddb-importer", "character-update-policy-dae-effect-copy");
+    const useInbuiltIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-inbuilt-icons");
+    const useSRDCompendiumItems = game.settings.get("ddb-importer-demo", "character-update-policy-use-srd");
+    const useSRDCompendiumIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-srd-icons");
+    const ddbSpellIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-spell-icons");
+    const ddbItemIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-item-icons");
+    const ddbGenericItemIcons = game.settings.get("ddb-importer-demo", "character-update-policy-use-ddb-generic-item-icons");
+    const activeEffectCopy = game.settings.get("ddb-importer-demo", "character-update-policy-active-effect-copy");
+    const daeEffectCopy = game.settings.get("ddb-importer-demo", "character-update-policy-dae-effect-copy");
     const daeSRDInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("Dynamic-Effects-SRD");
     const daeMidiInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("midi-srd");
     const daeInstalled = src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("dae");
-    const addItemEffects = game.settings.get("ddb-importer", "character-update-policy-add-item-effects");
-    const addCharacterEffects = game.settings.get("ddb-importer", "character-update-policy-add-character-effects");
+    const addItemEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-item-effects");
+    const addCharacterEffects = game.settings.get("ddb-importer-demo", "character-update-policy-add-character-effects");
 
     // if we still have items to add, add them
     if (items.length > 0) {
@@ -35481,7 +35481,7 @@ class CharacterImport extends FormApplication {
 
   async keepNonDDBItems(ddbItems) {
     const lastImportId = getProperty(this.actorOriginal, "flags.ddbimporter.importId");
-    const ignoreNonDDBItems = game.settings.get("ddb-importer", "character-update-policy-ignore-non-ddb-items");
+    const ignoreNonDDBItems = game.settings.get("ddb-importer-demo", "character-update-policy-ignore-non-ddb-items");
     if (ignoreNonDDBItems) {
       const items = this.actor.getEmbeddedCollection("Item");
       await items.forEach((item) => {
@@ -35598,9 +35598,9 @@ class CharacterImport extends FormApplication {
     let compendiumItems = [];
     let srdCompendiumItems = [];
     let overrideCompendiumItems = [];
-    const useExistingCompendiumItems = game.settings.get("ddb-importer", "character-update-policy-use-existing");
-    const useSRDCompendiumItems = game.settings.get("ddb-importer", "character-update-policy-use-srd");
-    const useOverrideCompendiumItems = game.settings.get("ddb-importer", "character-update-policy-use-override");
+    const useExistingCompendiumItems = game.settings.get("ddb-importer-demo", "character-update-policy-use-existing");
+    const useSRDCompendiumItems = game.settings.get("ddb-importer-demo", "character-update-policy-use-srd");
+    const useOverrideCompendiumItems = game.settings.get("ddb-importer-demo", "character-update-policy-use-override");
 
     /**
      * First choice is override compendium
@@ -35771,7 +35771,7 @@ class CharacterImport extends FormApplication {
     await disableDynamicUpdates(this.actor);
 
     // handle active effects
-    const activeEffectCopy = game.settings.get("ddb-importer", "character-update-policy-active-effect-copy");
+    const activeEffectCopy = game.settings.get("ddb-importer-demo", "character-update-policy-active-effect-copy");
     CharacterImport.showCurrentTask(html, "Calculating Active Effect Changes");
     this.fixUpCharacterEffects(this.result.character);
     let items = await this.fetchCharacterItems(html);
@@ -35782,10 +35782,10 @@ class CharacterImport extends FormApplication {
 
     // manage updates of basic character data more intelligently
     // revert some data if update not wanted
-    if (!game.settings.get("ddb-importer", "character-update-policy-hp")) {
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-hp")) {
       this.result.character.data.attributes.hp = this.actorOriginal.data.attributes.hp;
     }
-    if (!game.settings.get("ddb-importer", "character-update-policy-hit-die")) {
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-hit-die")) {
       this.result.character.data.attributes.hd = this.actorOriginal.data.attributes.hd;
       this.result.classes = this.result.classes.map((klass) => {
         const originalKlass = this.actorOriginal.items.find(
@@ -35797,16 +35797,16 @@ class CharacterImport extends FormApplication {
         return klass;
       });
     }
-    if (!game.settings.get("ddb-importer", "character-update-policy-currency")) {
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-currency")) {
       this.result.character.data.currency = this.actorOriginal.data.currency;
     }
-    if (!game.settings.get("ddb-importer", "character-update-policy-bio")) {
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-bio")) {
       const bioUpdates = ["alignment", "appearance", "background", "biography", "bond", "flaw", "ideal", "trait"];
       bioUpdates.forEach((option) => {
         this.result.character.data.details[option] = this.actorOriginal.data.details[option];
       });
     }
-    if (!game.settings.get("ddb-importer", "character-update-policy-languages")) {
+    if (!game.settings.get("ddb-importer-demo", "character-update-policy-languages")) {
       this.result.character.data.traits.languages = this.actorOriginal.data.traits.languages;
     }
     // if resource mode is in disable and not asking, then we use the previous resources
@@ -35830,7 +35830,7 @@ class CharacterImport extends FormApplication {
     this.result.character.flags.ddbimporter.dndbeyond["proficienciesIncludingEffects"] = null;
     this.result.character.flags.ddbimporter.dndbeyond["effectAbilities"] = null;
     this.result.character.flags.ddbimporter.dndbeyond["abilityOverrides"] = null;
-    setProperty(this.result.character.flags, "ddb-importer.version", CONFIG.DDBI.version);
+    setProperty(this.result.character.flags, "ddb-importer-demo.version", CONFIG.DDBI.version);
 
     if (this.actorOriginal.flags.dnd5e?.wildMagic === true) {
       this.result.character.flags.dnd5e["wildMagic"] = true;
@@ -35893,7 +35893,7 @@ async function importCharacterById(characterId, html) {
       resourceSelection: false,
     };
     const characterData = await getCharacterData(characterDataOptions);
-    const debugJson = game.settings.get("ddb-importer", "debug-json");
+    const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
     if (debugJson) {
       (0,utils/* download */.LR)(JSON.stringify(characterData), `${characterId}.json`, "application/json");
     }
@@ -35933,7 +35933,7 @@ async function importCharacter(actor, html) {
     };
     const characterData = await getCharacterData(characterDataOptions);
     src_logger/* default.debug */.Z.debug("import.js importCharacter getCharacterData result", characterData);
-    const debugJson = game.settings.get("ddb-importer", "debug-json");
+    const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
     if (debugJson) {
       (0,utils/* download */.LR)(JSON.stringify(characterData), `${characterId}.json`, "application/json");
     }
@@ -35984,20 +35984,20 @@ const DIFFICULTY_LEVELS = [
 ];
 
 const SCENE_IMG = [
-  { name: "Bar", img: "modules/ddb-importer/img/encounters/bar.webp" },
-  { name: "Cobbles", img: "modules/ddb-importer/img/encounters/cobbles.webp" },
-  { name: "Dungeon", img: "modules/ddb-importer/img/encounters/dungeon.png" },
-  { name: "Grass", img: "modules/ddb-importer/img/encounters/grass.webp" },
-  { name: "Snow", img: "modules/ddb-importer/img/encounters/snow.webp" },
-  { name: "Stone", img: "modules/ddb-importer/img/encounters/stone.webp" },
-  { name: "Void", img: "modules/ddb-importer/img/encounters/void.webp" },
+  { name: "Bar", img: "modules/ddb-importer-demo/img/encounters/bar.webp" },
+  { name: "Cobbles", img: "modules/ddb-importer-demo/img/encounters/cobbles.webp" },
+  { name: "Dungeon", img: "modules/ddb-importer-demo/img/encounters/dungeon.png" },
+  { name: "Grass", img: "modules/ddb-importer-demo/img/encounters/grass.webp" },
+  { name: "Snow", img: "modules/ddb-importer-demo/img/encounters/snow.webp" },
+  { name: "Stone", img: "modules/ddb-importer-demo/img/encounters/stone.webp" },
+  { name: "Void", img: "modules/ddb-importer-demo/img/encounters/void.webp" },
 ];
 
 async function getEncounterData() {
   const cobaltCookie = (0,Secrets/* getCobalt */.HF)();
-  const betaKey = game.settings.get("ddb-importer", "beta-key");
-  const parsingApi = game.settings.get("ddb-importer", "api-endpoint");
-  const debugJson = game.settings.get("ddb-importer", "debug-json");
+  const betaKey = game.settings.get("ddb-importer-demo", "beta-key");
+  const parsingApi = game.settings.get("ddb-importer-demo", "api-endpoint");
+  const debugJson = game.settings.get("ddb-importer-demo", "debug-json");
 
   const body = {
     cobalt: cobaltCookie,
@@ -36071,8 +36071,8 @@ class DDBEncounterMunch extends Application {
   static get defaultOptions() {
     const options = super.defaultOptions;
     options.baseApplication = "DDBEncounterMuncher";
-    options.id = "ddb-importer-encounters";
-    options.template = "modules/ddb-importer/handlebars/encounters.hbs";
+    options.id = "ddb-importer-demo-encounters";
+    options.template = "modules/ddb-importer-demo/handlebars/encounters.hbs";
     options.resizable = false;
     options.height = "auto";
     options.width = 800;
@@ -36171,7 +36171,7 @@ class DDBEncounterMunch extends Application {
     rewardsHtml[0].innerHTML = `<p id="ddb-encounter-rewards"><i class='fas fa-question'></i> <b>Rewards:</b></p>`;
     progressHtml[0].innerHTML = `<p id="ddb-encounter-progress"><i class='fas fa-question'></i> <b>In Progress:</b></p>`;
 
-    $("#ddb-importer-encounters").css("height", "auto");
+    $("#ddb-importer-demo-encounters").css("height", "auto");
     $("#encounter-button").prop("disabled", true);
     $("#encounter-button").prop("innerText", "Import Encounter");
     $("#encounter-import-policy-use-ddb-save").prop("disabled", true);
@@ -36182,7 +36182,7 @@ class DDBEncounterMunch extends Application {
   }
 
   async importMonsters() {
-    const importMonsters = game.settings.get("ddb-importer", "encounter-import-policy-missing-monsters");
+    const importMonsters = game.settings.get("ddb-importer-demo", "encounter-import-policy-missing-monsters");
 
     if (importMonsters && this.encounter.missingMonsters && this.encounter.missingMonsterIds.length > 0) {
       src_logger/* default.debug */.Z.debug("Importing missing monsters from DDB");
@@ -36269,7 +36269,7 @@ class DDBEncounterMunch extends Application {
   }
 
   async importCharacters(html) {
-    const importCharacters = game.settings.get("ddb-importer", "encounter-import-policy-missing-characters");
+    const importCharacters = game.settings.get("ddb-importer-demo", "encounter-import-policy-missing-characters");
     if (importCharacters && this.encounter.missingCharacters) {
       await Helpers.asyncForEach(this.encounter.missingCharacterData, async (character) => {
         await importCharacterById(character.ddbId, html);
@@ -36288,7 +36288,7 @@ class DDBEncounterMunch extends Application {
       },
     };
 
-    const importJournal = game.settings.get("ddb-importer", "encounter-import-policy-create-journal");
+    const importJournal = game.settings.get("ddb-importer-demo", "encounter-import-policy-create-journal");
     if (importJournal) {
       const journalFolder = await src_utils/* default.getFolder */.Z.getFolder(
         "journal",
@@ -36383,10 +36383,10 @@ class DDBEncounterMunch extends Application {
   }
 
   async createScene() {
-    const importDDBIScene = game.settings.get("ddb-importer", "encounter-import-policy-create-scene");
-    const useExistingScene = game.settings.get("ddb-importer", "encounter-import-policy-existing-scene");
+    const importDDBIScene = game.settings.get("ddb-importer-demo", "encounter-import-policy-create-scene");
+    const useExistingScene = game.settings.get("ddb-importer-demo", "encounter-import-policy-existing-scene");
 
-    let sceneData; 
+    let sceneData;
     let worldScene;
 
     if (importDDBIScene) {
@@ -36407,7 +36407,7 @@ class DDBEncounterMunch extends Application {
     if (sceneData) {
       let tokenData = [];
       const useDDBSave =
-        this.encounter.inProgress && game.settings.get("ddb-importer", "encounter-import-policy-use-ddb-save");
+        this.encounter.inProgress && game.settings.get("ddb-importer-demo", "encounter-import-policy-use-ddb-save");
       const xSquares = sceneData.width / sceneData.grid;
       const ySquares = sceneData.height / sceneData.grid;
       const midSquareOffset = sceneData.grid / 2;
@@ -36543,14 +36543,14 @@ class DDBEncounterMunch extends Application {
   }
 
   async createCombatEncounter() {
-    const importCombat = game.settings.get("ddb-importer", "encounter-import-policy-create-scene") ||
-      game.settings.get("ddb-importer", "encounter-import-policy-existing-scene");
+    const importCombat = game.settings.get("ddb-importer-demo", "encounter-import-policy-create-scene") ||
+      game.settings.get("ddb-importer-demo", "encounter-import-policy-existing-scene");
 
     if (!importCombat) return undefined;
     src_logger/* default.debug */.Z.debug(`Creating combat for encounter ${this.encounter.name}`);
 
     const useDDBSave =
-      this.encounter.inProgress && game.settings.get("ddb-importer", "encounter-import-policy-use-ddb-save");
+      this.encounter.inProgress && game.settings.get("ddb-importer-demo", "encounter-import-policy-use-ddb-save");
 
     await this.scene.view();
     this.combat = await Combat.create({ scene: this.scene.id });
@@ -36569,7 +36569,7 @@ class DDBEncounterMunch extends Application {
       const combatants = await this.combat.createEmbeddedDocuments("Combatant", toCreate);
 
       const rollMonsterInitiative = game.settings.get(
-        "ddb-importer",
+        "ddb-importer-demo",
         "encounter-import-policy-roll-monster-initiative"
       );
       combatants
@@ -36619,7 +36619,7 @@ class DDBEncounterMunch extends Application {
       .find('.sync-policy input[type="checkbox"]')
       .on("change", (event) => {
         game.settings.set(
-          "ddb-importer",
+          "ddb-importer-demo",
           "sync-policy-" + event.currentTarget.dataset.section,
           event.currentTarget.checked
         );
@@ -36630,14 +36630,14 @@ class DDBEncounterMunch extends Application {
       .on("change", (event) => {
         switch (event.currentTarget.dataset.section) {
           case "create-scene": {
-            game.settings.set("ddb-importer", "encounter-import-policy-existing-scene", false);
+            game.settings.set("ddb-importer-demo", "encounter-import-policy-existing-scene", false);
             if (event.currentTarget.checked) $("#encounter-scene-select").prop("disabled", true);
             $("#encounter-scene-img-select").prop("disabled", !event.currentTarget.checked);
             $("#encounter-import-policy-existing-scene").prop('checked', false);
             break;
           }
           case "existing-scene": {
-            game.settings.set("ddb-importer", "encounter-import-policy-create-scene", false);
+            game.settings.set("ddb-importer-demo", "encounter-import-policy-create-scene", false);
             if (event.currentTarget.checked) $("#encounter-scene-img-select").prop("disabled", true);
             $("#encounter-scene-select").prop("disabled", !event.currentTarget.checked);
             $("#encounter-import-policy-create-scene").prop('checked', false);
@@ -36646,7 +36646,7 @@ class DDBEncounterMunch extends Application {
           // no default
         };
         game.settings.set(
-          "ddb-importer",
+          "ddb-importer-demo",
           "encounter-import-policy-" + event.currentTarget.dataset.section,
           event.currentTarget.checked
         );
@@ -36742,7 +36742,7 @@ class DDBEncounterMunch extends Application {
         : `<i class='fas fa-check-circle' style='color: green'></i> <b>In Progress:</b> No`;
 
       $("#encounter-import-policy-use-ddb-save").prop("disabled", !encounter.inProgress);
-      $("#ddb-importer-encounters").css("height", "auto");
+      $("#ddb-importer-demo-encounters").css("height", "auto");
       $("#encounter-button").prop("disabled", false);
     });
 
@@ -36774,7 +36774,7 @@ class DDBEncounterMunch extends Application {
 
   // eslint-disable-next-line class-methods-use-this
   async getData() {
-    const tier = game.settings.get("ddb-importer", "patreon-tier");
+    const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
     const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
     const availableCampaigns = await getAvailableCampaigns();
     const availableEncounters = await filterEncounters();
@@ -36787,37 +36787,37 @@ class DDBEncounterMunch extends Application {
     const encounterConfig = [
       {
         name: "missing-characters",
-        isChecked: game.settings.get("ddb-importer", "encounter-import-policy-missing-characters"),
+        isChecked: game.settings.get("ddb-importer-demo", "encounter-import-policy-missing-characters"),
         enabled: true,
         description: "Import missing characters?",
       },
       {
         name: "missing-monsters",
-        isChecked: game.settings.get("ddb-importer", "encounter-import-policy-missing-monsters"),
+        isChecked: game.settings.get("ddb-importer-demo", "encounter-import-policy-missing-monsters"),
         enabled: true,
         description: "Import missing monsters?",
       },
       {
         name: "create-journal",
-        isChecked: game.settings.get("ddb-importer", "encounter-import-policy-create-journal"),
+        isChecked: game.settings.get("ddb-importer-demo", "encounter-import-policy-create-journal"),
         enabled: true,
         description: "Create encounter journal entry?",
       },
       {
         name: "use-ddb-save",
-        isChecked: game.settings.get("ddb-importer", "encounter-import-policy-use-ddb-save"),
+        isChecked: game.settings.get("ddb-importer-demo", "encounter-import-policy-use-ddb-save"),
         enabled: false,
         description: "Use save information from Encounter (HP for monsters and initiative for all)?",
       },
       {
         name: "create-scene",
-        isChecked: game.settings.get("ddb-importer", "encounter-import-policy-create-scene"),
+        isChecked: game.settings.get("ddb-importer-demo", "encounter-import-policy-create-scene"),
         enabled: true,
         description: "Create/update a scene to use, and add available characters and NPC's?",
       },
       {
         name: "existing-scene",
-        isChecked: game.settings.get("ddb-importer", "encounter-import-policy-existing-scene"),
+        isChecked: game.settings.get("ddb-importer-demo", "encounter-import-policy-existing-scene"),
         enabled: true,
         description: "Use an existing scene?",
       },
@@ -36841,8 +36841,8 @@ class DDBEncounterMunch extends Application {
       encounterConfig,
       sceneImg: SCENE_IMG,
       scenes,
-      createSceneSelect: game.settings.get("ddb-importer", "encounter-import-policy-create-scene"),
-      existingSceneSelect: game.settings.get("ddb-importer", "encounter-import-policy-existing-scene"),
+      createSceneSelect: game.settings.get("ddb-importer-demo", "encounter-import-policy-create-scene"),
+      existingSceneSelect: game.settings.get("ddb-importer-demo", "encounter-import-policy-existing-scene"),
     };
 
     const data = mergeObject(importSettings, encounterSettings);
@@ -36863,7 +36863,7 @@ let sanitize = (text) => {
 };
 
 let createIfNotExists = async (settingName, compendiumType, compendiumLabel) => {
-  const compendiumName = game.settings.get("ddb-importer", settingName);
+  const compendiumName = game.settings.get("ddb-importer-demo", settingName);
   const compendium = await game.packs.get(compendiumName);
   if (compendium) {
     src_logger/* default.info */.Z.info(`Compendium '${compendiumName}' found, will not create compendium.`);
@@ -36883,7 +36883,7 @@ let createIfNotExists = async (settingName, compendiumType, compendiumLabel) => 
         name: name,
         package: "world",
       });
-      await game.settings.set("ddb-importer", settingName, `world.${name}`);
+      await game.settings.set("ddb-importer-demo", settingName, `world.${name}`);
     }
     return true;
   }
@@ -36904,12 +36904,12 @@ const ddbCompendiums = [
 
 function getCompendiumNames() {
   return ddbCompendiums.map((ddbCompendium) => {
-    return game.settings.get("ddb-importer", ddbCompendium.name);
+    return game.settings.get("ddb-importer-demo", ddbCompendium.name);
   });
 }
 
 /* harmony default export */ async function checkCompendiums() {
-  const autoCreate = game.settings.get("ddb-importer", "auto-create-compendium");
+  const autoCreate = game.settings.get("ddb-importer-demo", "auto-create-compendium");
 
   if (autoCreate) {
     let promises = [];
@@ -36950,14 +36950,14 @@ function getCompendiumNames() {
 
 
 function resetSecrets() {
-  game.settings.set("ddb-importer", "cobalt-cookie-local", false);
-  game.settings.set("ddb-importer", "cobalt-cookie", "");
-  game.settings.set("ddb-importer", "campaign-id", "");
+  game.settings.set("ddb-importer-demo", "cobalt-cookie-local", false);
+  game.settings.set("ddb-importer-demo", "cobalt-cookie", "");
+  game.settings.set("ddb-importer-demo", "campaign-id", "");
 }
 
 function resetProxy() {
-  game.settings.set("ddb-importer", "api-endpoint", "https://proxy.ddb.mrprimate.co.uk");
-  game.settings.set("ddb-importer", "custom-proxy", false);
+  game.settings.set("ddb-importer-demo", "api-endpoint", "https://proxy.ddb.mrprimate.co.uk");
+  game.settings.set("ddb-importer-demo", "custom-proxy", false);
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -37016,8 +37016,8 @@ class DDBAdventureFlags extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
     options.title = "DDB Adventure Imported Flags";
-    options.template = "modules/ddb-importer/handlebars/flag-details.hbs";
-    options.classes = ["ddb-importer-flags", "sheet"];
+    options.template = "modules/ddb-importer-demo/handlebars/flag-details.hbs";
+    options.classes = ["ddb-importer-demo-flags", "sheet"];
     options.width = 800;
     return options;
   }
@@ -37030,7 +37030,7 @@ class DDBAdventureFlags extends FormApplication {
 
     let flags = {};
 
-    const flagGroups = ["ddb", "ddbimporter", "monsterMunch", "ddb-importer"];
+    const flagGroups = ["ddb", "ddbimporter", "monsterMunch", "ddb-importer-demo"];
     const ignoredSubFlagGroups = ["ddbimporter.acEffects", "ddbimporter.autoAC"];
 
     function generateFlagLookup(flagData, flagName, flagGroupName) {
@@ -37108,11 +37108,11 @@ const registerSheets_renderPopup = (type, url) => {
     .map((sheetClass) => sheetClass.cls)
     .map((sheet) => sheet.name);
 
-  const trustedUsersOnly = game.settings.get("ddb-importer", "restrict-to-trusted");
-  const allowAllSync = game.settings.get("ddb-importer", "allow-all-sync");
-  const characterLink = game.settings.get("ddb-importer", "character-link-title");
-  const monsterLink = game.settings.get("ddb-importer", "monster-link-title");
-  const whiteTitle = (game.settings.get("ddb-importer", "link-title-colour-white")) ? " white" : "";
+  const trustedUsersOnly = game.settings.get("ddb-importer-demo", "restrict-to-trusted");
+  const allowAllSync = game.settings.get("ddb-importer-demo", "allow-all-sync");
+  const characterLink = game.settings.get("ddb-importer-demo", "character-link-title");
+  const monsterLink = game.settings.get("ddb-importer-demo", "monster-link-title");
+  const whiteTitle = (game.settings.get("ddb-importer-demo", "link-title-colour-white")) ? " white" : "";
 
   pcSheetNames.forEach((sheetName) => {
     Hooks.on("render" + sheetName, (app, html, data) => {
@@ -37251,63 +37251,63 @@ setProperty(CONFIG, "DDBI", {
 
 /* harmony default export */ function registerGameSettings() {
 
-  game.settings.registerMenu("ddb-importer", 'setupMenu', {
-    name: "ddb-importer.setup.name",
-    label: "ddb-importer.setup.name",
-    hint: "ddb-importer.setup.hint",
+  game.settings.registerMenu("ddb-importer-demo", 'setupMenu', {
+    name: "ddb-importer-demo.setup.name",
+    label: "ddb-importer-demo.setup.name",
+    hint: "ddb-importer-demo.setup.hint",
     icon: 'fas fa-wrench',
     type: DDBSetup,
     restricted: true
   });
 
-  game.settings.registerMenu("ddb-importer", 'compendiumMenu', {
-    name: "ddb-importer.compendium-setup.name",
-    label: "ddb-importer.compendium-setup.name",
-    hint: "ddb-importer.compendium-setup.hint",
+  game.settings.registerMenu("ddb-importer-demo", 'compendiumMenu', {
+    name: "ddb-importer-demo.compendium-setup.name",
+    label: "ddb-importer-demo.compendium-setup.name",
+    hint: "ddb-importer-demo.compendium-setup.hint",
     icon: 'fas fa-wrench',
     type: DDBCompendiumSetup,
     restricted: true
   });
 
-  game.settings.registerMenu("ddb-importer", 'dynamicUpdateMenu', {
-    name: "ddb-importer.dynamic-update-setup.name",
-    label: "ddb-importer.dynamic-update-setup.name",
-    hint: "ddb-importer.dynamic-update-setup.hint",
+  game.settings.registerMenu("ddb-importer-demo", 'dynamicUpdateMenu', {
+    name: "ddb-importer-demo.dynamic-update-setup.name",
+    label: "ddb-importer-demo.dynamic-update-setup.name",
+    hint: "ddb-importer-demo.dynamic-update-setup.hint",
     icon: 'fas fa-wrench',
     type: DDBDynamicUpdateSetup,
     restricted: true,
   });
 
-  game.settings.register("ddb-importer", "image-upload-directory", {
-    name: "ddb-importer.image-upload-directory.name",
-    hint: "ddb-importer.image-upload-directory.hint",
+  game.settings.register("ddb-importer-demo", "image-upload-directory", {
+    name: "ddb-importer-demo.image-upload-directory.name",
+    hint: "ddb-importer-demo.image-upload-directory.hint",
     scope: "world",
     config: false,
     type: DirectoryPicker/* DirectoryPicker.Directory */.B.Directory,
     default: "[data] ddb-images/characters",
   });
 
-  game.settings.register("ddb-importer", "other-image-upload-directory", {
-    name: "ddb-importer.image-upload-directory.name",
-    hint: "ddb-importer.image-upload-directory.hint",
+  game.settings.register("ddb-importer-demo", "other-image-upload-directory", {
+    name: "ddb-importer-demo.image-upload-directory.name",
+    hint: "ddb-importer-demo.image-upload-directory.hint",
     scope: "world",
     config: false,
     type: DirectoryPicker/* DirectoryPicker.Directory */.B.Directory,
     default: "[data] ddb-images/other",
   });
 
-  game.settings.register("ddb-importer", "use-webp", {
-    name: "ddb-importer.use-webp.name",
-    hint: "ddb-importer.use-webp.hint",
+  game.settings.register("ddb-importer-demo", "use-webp", {
+    name: "ddb-importer-demo.use-webp.name",
+    hint: "ddb-importer-demo.use-webp.hint",
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "webp-quality", {
-    name: "ddb-importer.webp-quality.name",
-    hint: "ddb-importer.webp-quality.hint",
+  game.settings.register("ddb-importer-demo", "webp-quality", {
+    name: "ddb-importer-demo.webp-quality.name",
+    hint: "ddb-importer-demo.webp-quality.hint",
     scope: "world",
     config: false,
     type: Number,
@@ -37316,19 +37316,19 @@ setProperty(CONFIG, "DDBI", {
 
 
   if (game.user.isGM) {
-    const characterUploads = game.settings.get("ddb-importer", "image-upload-directory");
-    const otherUploads = game.settings.get("ddb-importer", "other-image-upload-directory");
+    const characterUploads = game.settings.get("ddb-importer-demo", "image-upload-directory");
+    const otherUploads = game.settings.get("ddb-importer-demo", "other-image-upload-directory");
     if (characterUploads !== "[data] ddb-images/characters" && otherUploads === "[data] ddb-images/other") {
-      game.settings.set("ddb-importer", "other-image-upload-directory", characterUploads);
+      game.settings.set("ddb-importer-demo", "other-image-upload-directory", characterUploads);
     } else {
       DirectoryPicker/* DirectoryPicker.verifyPath */.B.verifyPath(DirectoryPicker/* DirectoryPicker.parse */.B.parse(otherUploads));
     }
     DirectoryPicker/* DirectoryPicker.verifyPath */.B.verifyPath(DirectoryPicker/* DirectoryPicker.parse */.B.parse(characterUploads));
   }
 
-  game.settings.register("ddb-importer", "frame-image-upload-directory", {
-    name: "ddb-importer.frame-upload-directory.name",
-    hint: "ddb-importer.frame-upload-directory.hint",
+  game.settings.register("ddb-importer-demo", "frame-image-upload-directory", {
+    name: "ddb-importer-demo.frame-upload-directory.name",
+    hint: "ddb-importer-demo.frame-upload-directory.hint",
     scope: "world",
     config: false,
     type: DirectoryPicker/* DirectoryPicker.Directory */.B.Directory,
@@ -37336,239 +37336,239 @@ setProperty(CONFIG, "DDBI", {
   });
 
   if (game.user.isGM) {
-    const frameUploads = game.settings.get("ddb-importer", "frame-image-upload-directory");
+    const frameUploads = game.settings.get("ddb-importer-demo", "frame-image-upload-directory");
     DirectoryPicker/* DirectoryPicker.verifyPath */.B.verifyPath(DirectoryPicker/* DirectoryPicker.parse */.B.parse(frameUploads));
   }
 
-  game.settings.register("ddb-importer", "settings-call-muncher", {
+  game.settings.register("ddb-importer-demo", "settings-call-muncher", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "update-check", {
+  game.settings.register("ddb-importer-demo", "update-check", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "allow-scene-download", {
+  game.settings.register("ddb-importer-demo", "allow-scene-download", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "allow-third-party-scene-download", {
+  game.settings.register("ddb-importer-demo", "allow-third-party-scene-download", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "allow-note-generation", {
+  game.settings.register("ddb-importer-demo", "allow-note-generation", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "auto-create-compendium", {
+  game.settings.register("ddb-importer-demo", "auto-create-compendium", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "use-full-source", {
-    name: "ddb-importer.use-full-source.name",
-    hint: "ddb-importer.use-full-source.hint",
+  game.settings.register("ddb-importer-demo", "use-full-source", {
+    name: "ddb-importer-demo.use-full-source.name",
+    hint: "ddb-importer-demo.use-full-source.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "use-damage-hints", {
-    name: "ddb-importer.use-damage-hints.name",
-    hint: "ddb-importer.use-damage-hints.hint",
+  game.settings.register("ddb-importer-demo", "use-damage-hints", {
+    name: "ddb-importer-demo.use-damage-hints.name",
+    hint: "ddb-importer-demo.use-damage-hints.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "add-damage-restrictions-to-hints", {
-    name: "ddb-importer.add-damage-restrictions-to-hints.name",
-    hint: "ddb-importer.add-damage-restrictions-to-hints.hint",
+  game.settings.register("ddb-importer-demo", "add-damage-restrictions-to-hints", {
+    name: "ddb-importer-demo.add-damage-restrictions-to-hints.name",
+    hint: "ddb-importer-demo.add-damage-restrictions-to-hints.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "restrict-to-trusted", {
-    name: "ddb-importer.restrict-to-trusted.name",
-    hint: "ddb-importer.restrict-to-trusted.hint",
+  game.settings.register("ddb-importer-demo", "restrict-to-trusted", {
+    name: "ddb-importer-demo.restrict-to-trusted.name",
+    hint: "ddb-importer-demo.restrict-to-trusted.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "allow-all-sync", {
-    name: "ddb-importer.allow-all-sync.name",
-    hint: "ddb-importer.allow-all-sync.hint",
+  game.settings.register("ddb-importer-demo", "allow-all-sync", {
+    name: "ddb-importer-demo.allow-all-sync.name",
+    hint: "ddb-importer-demo.allow-all-sync.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "monster-link-title", {
-    name: "ddb-importer.monster-link-title.name",
-    hint: "ddb-importer.monster-link-title.hint",
+  game.settings.register("ddb-importer-demo", "monster-link-title", {
+    name: "ddb-importer-demo.monster-link-title.name",
+    hint: "ddb-importer-demo.monster-link-title.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-link-title", {
-    name: "ddb-importer.character-link-title.name",
-    hint: "ddb-importer.character-link-title.hint",
+  game.settings.register("ddb-importer-demo", "character-link-title", {
+    name: "ddb-importer-demo.character-link-title.name",
+    hint: "ddb-importer-demo.character-link-title.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "link-title-colour-white", {
-    name: "ddb-importer.link-title-colour-white.name",
-    hint: "ddb-importer.link-title-colour-white.hint",
+  game.settings.register("ddb-importer-demo", "link-title-colour-white", {
+    name: "ddb-importer-demo.link-title-colour-white.name",
+    hint: "ddb-importer-demo.link-title-colour-white.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "show-munch-top", {
-    name: "ddb-importer.show-munch-top.name",
-    hint: "ddb-importer.show-munch-top.hint",
+  game.settings.register("ddb-importer-demo", "show-munch-top", {
+    name: "ddb-importer-demo.show-munch-top.name",
+    hint: "ddb-importer-demo.show-munch-top.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "embed-macros", {
-    name: "ddb-importer.embed-macros.name",
-    hint: "ddb-importer.embed-macros.hint",
+  game.settings.register("ddb-importer-demo", "embed-macros", {
+    name: "ddb-importer-demo.embed-macros.name",
+    hint: "ddb-importer-demo.embed-macros.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "add-description-to-chat", {
-    name: "ddb-importer.add-description-to-chat.name",
-    hint: "ddb-importer.add-description-to-chat.hint",
+  game.settings.register("ddb-importer-demo", "add-description-to-chat", {
+    name: "ddb-importer-demo.add-description-to-chat.name",
+    hint: "ddb-importer-demo.add-description-to-chat.hint",
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "show-image-to-players", {
-    name: "ddb-importer.show-image-to-players.name",
-    hint: "ddb-importer.show-image-to-players.hint",
+  game.settings.register("ddb-importer-demo", "show-image-to-players", {
+    name: "ddb-importer-demo.show-image-to-players.name",
+    hint: "ddb-importer-demo.show-image-to-players.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "entity-item-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-item-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-feature-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-feature-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-class-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-class-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-race-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-race-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-trait-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-trait-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-feat-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-feat-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-spell-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-spell-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-override-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-override-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-table-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-table-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "entity-monster-compendium", {
+  game.settings.register("ddb-importer-demo", "entity-monster-compendium", {
     scope: "world",
     config: false,
     type: String,
   });
 
-  game.settings.register("ddb-importer", "adventure-import-path", {
-    name: "ddb-importer.adventure-import-path.name",
-    hint: "ddb-importer.adventure-import-path.hint",
+  game.settings.register("ddb-importer-demo", "adventure-import-path", {
+    name: "ddb-importer-demo.adventure-import-path.name",
+    hint: "ddb-importer-demo.adventure-import-path.hint",
     scope: "world",
     config: true,
     default: "[data] adventures/import",
     type: DirectoryPicker/* DirectoryPicker.Directory */.B.Directory
   });
 
-  game.settings.register("ddb-importer", "adventure-upload-path", {
-    name: "ddb-importer.adventure-upload-path.name",
-    hint: "ddb-importer.adventure-upload-path.hint",
+  game.settings.register("ddb-importer-demo", "adventure-upload-path", {
+    name: "ddb-importer-demo.adventure-upload-path.name",
+    hint: "ddb-importer-demo.adventure-upload-path.hint",
     scope: "world",
     config: true,
     default: "[data] ddb-images/adventures",
     type: DirectoryPicker/* DirectoryPicker.Directory */.B.Directory
   });
 
-  const adventureUploads = game.settings.get("ddb-importer", "adventure-upload-path");
+  const adventureUploads = game.settings.get("ddb-importer-demo", "adventure-upload-path");
 
   if (game.user.isGM) {
     const oldDirPath = `[data] worlds/${game.world.id}/adventures`;
@@ -37578,7 +37578,7 @@ setProperty(CONFIG, "DDBI", {
       DirectoryPicker/* DirectoryPicker.browse */.B.browse(oldDir.activeSource, oldDir.current, { bucket: oldDir.bucket }).then((uploadFileList) => {
         if (uploadFileList.dirs.length !== 0 || uploadFileList.files.length !== 0) {
           src_logger/* default.warn */.Z.warn("Updating adventure uploads to historic default");
-          game.settings.set("ddb-importer", "adventure-upload-path", oldDirPath);
+          game.settings.set("ddb-importer-demo", "adventure-upload-path", oldDirPath);
         }
       }).catch((e) => {
         if (
@@ -37597,9 +37597,9 @@ setProperty(CONFIG, "DDBI", {
     ? `${adventureUploads}/misc`
     : "[data] ddb-images/adventures/misc";
 
-  game.settings.register("ddb-importer", "adventure-misc-path", {
-    name: "ddb-importer.adventure-misc-path.name",
-    hint: "ddb-importer.adventure-misc-path.hint",
+  game.settings.register("ddb-importer-demo", "adventure-misc-path", {
+    name: "ddb-importer-demo.adventure-misc-path.name",
+    hint: "ddb-importer-demo.adventure-misc-path.hint",
     scope: "world",
     config: true,
     default: baseAdventureMiscPath,
@@ -37607,13 +37607,13 @@ setProperty(CONFIG, "DDBI", {
   });
 
   if (game.user.isGM) {
-    const iconUploads = game.settings.get("ddb-importer", "adventure-misc-path");
+    const iconUploads = game.settings.get("ddb-importer-demo", "adventure-misc-path");
     DirectoryPicker/* DirectoryPicker.verifyPath */.B.verifyPath(DirectoryPicker/* DirectoryPicker.parse */.B.parse(iconUploads));
   }
 
-  game.settings.register("ddb-importer", "log-level", {
-    name: "ddb-importer.log-level.name",
-    hint: "ddb-importer.log-level.hint",
+  game.settings.register("ddb-importer-demo", "log-level", {
+    name: "ddb-importer-demo.log-level.name",
+    hint: "ddb-importer-demo.log-level.hint",
     scope: "world",
     config: true,
     type: String,
@@ -37627,59 +37627,59 @@ setProperty(CONFIG, "DDBI", {
     default: "INFO",
   });
 
-  game.settings.register("ddb-importer", "api-endpoint", {
+  game.settings.register("ddb-importer-demo", "api-endpoint", {
     scope: "world",
     config: false,
     type: String,
     default: "https://proxy.ddb.mrprimate.co.uk",
   });
 
-  const ddbProxy = game.settings.get("ddb-importer", "api-endpoint");
+  const ddbProxy = game.settings.get("ddb-importer-demo", "api-endpoint");
   if (ddbProxy === "https://ddb.mrprimate.co.uk") {
-    game.settings.set("ddb-importer", "api-endpoint", "https://proxy.ddb.mrprimate.co.uk");
+    game.settings.set("ddb-importer-demo", "api-endpoint", "https://proxy.ddb.mrprimate.co.uk");
   }
 
-  game.settings.register("ddb-importer", "cors-endpoint", {
+  game.settings.register("ddb-importer-demo", "cors-endpoint", {
     scope: "world",
     config: false,
     type: String,
     default: "https://images.ddb.mrprimate.co.uk/",
   });
 
-  const corsEndpoint = game.settings.get("ddb-importer", "cors-endpoint");
+  const corsEndpoint = game.settings.get("ddb-importer-demo", "cors-endpoint");
   if (corsEndpoint === "https://london.drop.mrprimate.co.uk/") {
-    game.settings.set("ddb-importer", "cors-endpoint", "https://images.ddb.mrprimate.co.uk/");
+    game.settings.set("ddb-importer-demo", "cors-endpoint", "https://images.ddb.mrprimate.co.uk/");
   }
 
-  game.settings.register("ddb-importer", "dynamic-api-endpoint", {
+  game.settings.register("ddb-importer-demo", "dynamic-api-endpoint", {
     scope: "world",
     config: false,
     type: String,
     default: "https://dynamic.ddb.mrprimate.co.uk",
   });
 
-  game.settings.register("ddb-importer", "cors-encode", {
+  game.settings.register("ddb-importer-demo", "cors-encode", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "beta-key", {
+  game.settings.register("ddb-importer-demo", "beta-key", {
     scope: "world",
     config: false,
     type: String,
     default: "",
   });
 
-  game.settings.register("ddb-importer", "patreon-user", {
+  game.settings.register("ddb-importer-demo", "patreon-user", {
     scope: "world",
     config: false,
     type: String,
     default: null,
   });
 
-  game.settings.register("ddb-importer", "debug-json", {
+  game.settings.register("ddb-importer-demo", "debug-json", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37687,7 +37687,7 @@ setProperty(CONFIG, "DDBI", {
   });
 
   /** Character update settings, stored per user and non-configurable in the settings screen */
-  game.settings.register("ddb-importer", "character-update-policy-add-character-effects", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-add-character-effects", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37700,35 +37700,35 @@ setProperty(CONFIG, "DDBI", {
   // ITEM
   // N/A
   // RACE
-  game.settings.register("ddb-importer", "character-update-policy-effect-race-damages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-race-damages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-race-speed", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-race-speed", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-race-senses", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-race-senses", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-race-hp", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-race-hp", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-race-spell-bonus", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-race-spell-bonus", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37737,35 +37737,35 @@ setProperty(CONFIG, "DDBI", {
 
 
   // CLASS
-  game.settings.register("ddb-importer", "character-update-policy-effect-class-damages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-class-damages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-class-speed", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-class-speed", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-class-senses", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-class-senses", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-class-hp", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-class-hp", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-class-spell-bonus", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-class-spell-bonus", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37774,56 +37774,56 @@ setProperty(CONFIG, "DDBI", {
 
 
   // FEAT
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-proficiencies", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-proficiencies", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-languages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-languages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-damages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-damages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-speed", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-speed", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-senses", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-senses", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-hp", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-hp", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-spell-bonus", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-spell-bonus", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-feat-ability-bonus", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-feat-ability-bonus", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37831,56 +37831,56 @@ setProperty(CONFIG, "DDBI", {
   });
 
   // BACKGROUND
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-proficiencies", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-proficiencies", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-languages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-languages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-damages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-damages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-speed", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-speed", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-senses", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-senses", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-hp", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-hp", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-spell-bonus", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-spell-bonus", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-effect-background-ability-bonus", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-effect-background-ability-bonus", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37889,49 +37889,49 @@ setProperty(CONFIG, "DDBI", {
 
   //
   //
-  game.settings.register("ddb-importer", "character-update-policy-add-item-effects", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-add-item-effects", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-add-spell-effects", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-add-spell-effects", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-generate-ac-feature-effects", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-generate-ac-feature-effects", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-existing", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-existing", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-ignore-non-ddb-items", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-ignore-non-ddb-items", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-override", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-override", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-srd", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-srd", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37940,28 +37940,28 @@ setProperty(CONFIG, "DDBI", {
 
   // Character update policy
 
-  game.settings.register("ddb-importer", "character-update-policy-name", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-name", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-hp", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-hp", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-hit-die", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-hit-die", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-class", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-class", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -37969,42 +37969,42 @@ setProperty(CONFIG, "DDBI", {
   });
 
 
-  game.settings.register("ddb-importer", "character-update-policy-feat", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-feat", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-weapon", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-weapon", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-equipment", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-equipment", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-bio", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-bio", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-languages", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-languages", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-import-extras", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-import-extras", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -38012,112 +38012,112 @@ setProperty(CONFIG, "DDBI", {
   });
 
   // = consumable, tool & loot
-  game.settings.register("ddb-importer", "character-update-policy-inventory", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-inventory", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-currency", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-currency", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-spell", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-spell", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-image", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-image", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-ddb-spell-icons", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-ddb-spell-icons", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-ddb-generic-item-icons", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-ddb-generic-item-icons", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-ddb-item-icons", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-ddb-item-icons", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-inbuilt-icons", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-inbuilt-icons", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-srd-icons", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-srd-icons", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-full-description", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-full-description", {
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-action-and-feature", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-action-and-feature", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-use-actions-as-features", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-use-actions-as-features", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-dae-copy", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-dae-copy", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-dae-effect-copy", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-dae-effect-copy", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-active-effect-copy", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-active-effect-copy", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "character-update-policy-active-effect-character-copy", {
+  game.settings.register("ddb-importer-demo", "character-update-policy-active-effect-character-copy", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -38125,14 +38125,14 @@ setProperty(CONFIG, "DDBI", {
   });
 
   /** Munching update settings, stored per user and non-configurable in the settings screen */
-  game.settings.register("ddb-importer", "munching-policy-update-existing", {
+  game.settings.register("ddb-importer-demo", "munching-policy-update-existing", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-srd", {
+  game.settings.register("ddb-importer-demo", "munching-policy-use-srd", {
     scope: "player",
     config: false,
     type: Boolean,
@@ -38140,16 +38140,16 @@ setProperty(CONFIG, "DDBI", {
   });
 
   // build compendium folders?
-  game.settings.register("ddb-importer", "munching-policy-use-compendium-folders", {
+  game.settings.register("ddb-importer-demo", "munching-policy-use-compendium-folders", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-selection-compendium-folders-monster", {
-    name: "ddb-importer.munching-selection-compendium-folders-monster.name",
-    hint: "ddb-importer.munching-selection-compendium-folders-monster.hint",
+  game.settings.register("ddb-importer-demo", "munching-selection-compendium-folders-monster", {
+    name: "ddb-importer-demo.munching-selection-compendium-folders-monster.name",
+    hint: "ddb-importer-demo.munching-selection-compendium-folders-monster.hint",
     scope: "world",
     config: true,
     type: String,
@@ -38161,9 +38161,9 @@ setProperty(CONFIG, "DDBI", {
     default: "TYPE",
   });
 
-  game.settings.register("ddb-importer", "munching-selection-compendium-folders-spell", {
-    name: "ddb-importer.munching-selection-compendium-folders-spell.name",
-    hint: "ddb-importer.munching-selection-compendium-folders-spell.hint",
+  game.settings.register("ddb-importer-demo", "munching-selection-compendium-folders-spell", {
+    name: "ddb-importer-demo.munching-selection-compendium-folders-spell.name",
+    hint: "ddb-importer-demo.munching-selection-compendium-folders-spell.hint",
     scope: "world",
     config: true,
     type: String,
@@ -38174,9 +38174,9 @@ setProperty(CONFIG, "DDBI", {
     default: "SCHOOL",
   });
 
-  game.settings.register("ddb-importer", "munching-selection-compendium-folders-item", {
-    name: "ddb-importer.munching-selection-compendium-folders-item.name",
-    hint: "ddb-importer.munching-selection-compendium-folders-item.hint",
+  game.settings.register("ddb-importer-demo", "munching-selection-compendium-folders-item", {
+    name: "ddb-importer-demo.munching-selection-compendium-folders-item.name",
+    hint: "ddb-importer-demo.munching-selection-compendium-folders-item.hint",
     scope: "world",
     config: true,
     type: String,
@@ -38187,81 +38187,81 @@ setProperty(CONFIG, "DDBI", {
     default: "TYPE",
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-srd-icons", {
-    name: "ddb-importer.munching-policy-use-srd-icons.name",
-    hint: "ddb-importer.munching-policy-use-srd-icons.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-srd-icons", {
+    name: "ddb-importer-demo.munching-policy-use-srd-icons.name",
+    hint: "ddb-importer-demo.munching-policy-use-srd-icons.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-inbuilt-icons", {
-    name: "ddb-importer.munching-policy-use-inbuilt-icons.name",
-    hint: "ddb-importer.munching-policy-use-inbuilt-icons.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-inbuilt-icons", {
+    name: "ddb-importer-demo.munching-policy-use-inbuilt-icons.name",
+    hint: "ddb-importer-demo.munching-policy-use-inbuilt-icons.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-ddb-item-icons", {
-    name: "ddb-importer.munching-policy-use-ddb-item-icons.name",
-    hint: "ddb-importer.munching-policy-use-ddb-item-icons.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-ddb-item-icons", {
+    name: "ddb-importer-demo.munching-policy-use-ddb-item-icons.name",
+    hint: "ddb-importer-demo.munching-policy-use-ddb-item-icons.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-ddb-spell-icons", {
-    name: "ddb-importer.munching-policy-use-ddb-spell-icons.name",
-    hint: "ddb-importer.munching-policy-use-ddb-spell-icons.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-ddb-spell-icons", {
+    name: "ddb-importer-demo.munching-policy-use-ddb-spell-icons.name",
+    hint: "ddb-importer-demo.munching-policy-use-ddb-spell-icons.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-ddb-generic-item-icons", {
-    name: "ddb-importer.munching-policy-use-ddb-generic-item-icons.name",
-    hint: "ddb-importer.munching-policy-use-ddb-generic-item-icons.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-ddb-generic-item-icons", {
+    name: "ddb-importer-demo.munching-policy-use-ddb-generic-item-icons.name",
+    hint: "ddb-importer-demo.munching-policy-use-ddb-generic-item-icons.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-full-token-image", {
-    name: "ddb-importer.munching-policy-use-full-token-image.name",
-    hint: "ddb-importer.munching-policy-use-full-token-image.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-full-token-image", {
+    name: "ddb-importer-demo.munching-policy-use-full-token-image.name",
+    hint: "ddb-importer-demo.munching-policy-use-full-token-image.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-token-avatar-image", {
-    name: "ddb-importer.munching-policy-use-token-avatar-image.name",
-    hint: "ddb-importer.munching-policy-use-token-avatar-image.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-token-avatar-image", {
+    name: "ddb-importer-demo.munching-policy-use-token-avatar-image.name",
+    hint: "ddb-importer-demo.munching-policy-use-token-avatar-image.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-remote-images", {
-    name: "ddb-importer.munching-policy-remote-images.name",
-    hint: "ddb-importer.munching-policy-remote-images.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-remote-images", {
+    name: "ddb-importer-demo.munching-policy-remote-images.name",
+    hint: "ddb-importer-demo.munching-policy-remote-images.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-add-effects", {
-    name: "ddb-importer.munching-policy-add-effects.name",
-    hint: "ddb-importer.munching-policy-add-effects.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-add-effects", {
+    name: "ddb-importer-demo.munching-policy-add-effects.name",
+    hint: "ddb-importer-demo.munching-policy-add-effects.hint",
     scope: "player",
     config: false,
     type: Boolean,
@@ -38269,123 +38269,123 @@ setProperty(CONFIG, "DDBI", {
   });
 
   /** Generate spell effects for munched spells? */
-  game.settings.register("ddb-importer", "munching-policy-add-spell-effects", {
+  game.settings.register("ddb-importer-demo", "munching-policy-add-spell-effects", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-add-ac-armor-effects", {
+  game.settings.register("ddb-importer-demo", "munching-policy-add-ac-armor-effects", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-download-images", {
-    name: "ddb-importer.munching-policy-download-images.name",
-    hint: "ddb-importer.munching-policy-download-images.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-download-images", {
+    name: "ddb-importer-demo.munching-policy-download-images.name",
+    hint: "ddb-importer-demo.munching-policy-download-images.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-dae-copy", {
-    name: "ddb-importer.munching-policy-dae-copy.name",
-    hint: "ddb-importer.munching-policy-dae-copy.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-dae-copy", {
+    name: "ddb-importer-demo.munching-policy-dae-copy.name",
+    hint: "ddb-importer-demo.munching-policy-dae-copy.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-dae-effects", {
-    name: "ddb-importer.munching-policy-use-dae-effects.name",
-    hint: "ddb-importer.munching-policy-use-dae-effects.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-use-dae-effects", {
+    name: "ddb-importer-demo.munching-policy-use-dae-effects.name",
+    hint: "ddb-importer-demo.munching-policy-use-dae-effects.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-hide-description", {
-    name: "ddb-importer.munching-policy-hide-description.name",
-    hint: "ddb-importer.munching-policy-hide-description.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-hide-description", {
+    name: "ddb-importer-demo.munching-policy-hide-description.name",
+    hint: "ddb-importer-demo.munching-policy-hide-description.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-monster-items", {
-    name: "ddb-importer.munching-policy-monster-items.name",
-    hint: "ddb-importer.munching-policy-monster-items.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-monster-items", {
+    name: "ddb-importer-demo.munching-policy-monster-items.name",
+    hint: "ddb-importer-demo.munching-policy-monster-items.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-monster-homebrew", {
-    name: "ddb-importer.munching-policy-monster-homebrew.name",
-    hint: "ddb-importer.munching-policy-monster-homebrew.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-monster-homebrew", {
+    name: "ddb-importer-demo.munching-policy-monster-homebrew.name",
+    hint: "ddb-importer-demo.munching-policy-monster-homebrew.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-monster-homebrew-only", {
-    name: "ddb-importer.munching-policy-monster-homebrew-only.name",
-    hint: "ddb-importer.munching-policy-monster-homebrew-only.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-monster-homebrew-only", {
+    name: "ddb-importer-demo.munching-policy-monster-homebrew-only.name",
+    hint: "ddb-importer-demo.munching-policy-monster-homebrew-only.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-update-images", {
-    name: "ddb-importer.munching-policy-update-images.name",
-    hint: "ddb-importer.munching-policy-update-images.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-update-images", {
+    name: "ddb-importer-demo.munching-policy-update-images.name",
+    hint: "ddb-importer-demo.munching-policy-update-images.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-monster-exact-match", {
-    name: "ddb-importer.munching-policy-monster-match.name",
-    hint: "ddb-importer.munching-policy-monster-match.hint",
+  game.settings.register("ddb-importer-demo", "munching-policy-monster-exact-match", {
+    name: "ddb-importer-demo.munching-policy-monster-match.name",
+    hint: "ddb-importer-demo.munching-policy-monster-match.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-use-source-filter", {
+  game.settings.register("ddb-importer-demo", "munching-policy-use-source-filter", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-muncher-sources", {
+  game.settings.register("ddb-importer-demo", "munching-policy-muncher-sources", {
     scope: "player",
     config: false,
     type: Array,
     default: [],
   });
 
-  game.settings.register("ddb-importer", "munching-policy-monster-use-item-ac", {
+  game.settings.register("ddb-importer-demo", "munching-policy-monster-use-item-ac", {
     scope: "player",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-monster-retain-biography", {
+  game.settings.register("ddb-importer-demo", "munching-policy-monster-retain-biography", {
     scope: "world",
     config: false,
     type: Boolean,
@@ -38393,354 +38393,354 @@ setProperty(CONFIG, "DDBI", {
   });
 
   // sets the current tutorial step the user has completed
-  // game.settings.register("ddb-importer", "tutorial-step", {
+  // game.settings.register("ddb-importer-demo", "tutorial-step", {
   //   scope: "world",
   //   config: false,
   //   type: Number,
   //   default: 0,
   // });
   // sets the current tutorial step the user has completed
-  // game.settings.register("ddb-importer", "tutorial-user", {
+  // game.settings.register("ddb-importer-demo", "tutorial-user", {
   //   scope: "world",
   //   config: false,
   //   type: String,
   //   default: "",
   // });
   // sets the current tutorial step the user has completed
-  // game.settings.register("ddb-importer", "popup-version", {
+  // game.settings.register("ddb-importer-demo", "popup-version", {
   //   scope: "world",
   //   config: false,
   //   type: String,
   //   default: "1.0.0",
   // });
   // sets the user submission name for scene adjustments
-  // game.settings.register("ddb-importer", "scene-submission-username", {
+  // game.settings.register("ddb-importer-demo", "scene-submission-username", {
   //   scope: "user",
   //   config: false,
   //   type: String,
   //   default: "",
   // });
-  game.settings.register("ddb-importer", "cobalt-cookie", {
-    name: "ddb-importer.cobalt-cookie.name",
-    hint: "ddb-importer.cobalt-cookie.hint",
+  game.settings.register("ddb-importer-demo", "cobalt-cookie", {
+    name: "ddb-importer-demo.cobalt-cookie.name",
+    hint: "ddb-importer-demo.cobalt-cookie.hint",
     scope: "world",
     config: false,
     type: String,
     default: "",
   });
 
-  game.settings.register("ddb-importer", "cobalt-cookie-local", {
-    name: "ddb-importer.cobalt-cookie-local.name",
-    hint: "ddb-importer.cobalt-cookie-local.hint",
+  game.settings.register("ddb-importer-demo", "cobalt-cookie-local", {
+    name: "ddb-importer-demo.cobalt-cookie-local.name",
+    hint: "ddb-importer-demo.cobalt-cookie-local.hint",
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  if (game.user.isGM && game.settings.get("ddb-importer", "cobalt-cookie-local") &&
-    game.settings.get("ddb-importer", "cobalt-cookie") != "") {
-    game.settings.set("ddb-importer", "cobalt-cookie-local", false);
+  if (game.user.isGM && game.settings.get("ddb-importer-demo", "cobalt-cookie-local") &&
+    game.settings.get("ddb-importer-demo", "cobalt-cookie") != "") {
+    game.settings.set("ddb-importer-demo", "cobalt-cookie-local", false);
   }
 
-  game.settings.register("ddb-importer", "campaign-id", {
-    name: "ddb-importer.campaign-id.name",
-    hint: "ddb-importer.campaign-id.hint",
+  game.settings.register("ddb-importer-demo", "campaign-id", {
+    name: "ddb-importer-demo.campaign-id.name",
+    hint: "ddb-importer-demo.campaign-id.hint",
     scope: "world",
     config: false,
     type: String,
     default: "",
   });
 
-  game.settings.register("ddb-importer", "sync-policy-currency", {
-    name: "ddb-importer.sync-policy-currency.name",
-    hint: "ddb-importer.sync-policy-currency.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-currency", {
+    name: "ddb-importer-demo.sync-policy-currency.name",
+    hint: "ddb-importer-demo.sync-policy-currency.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-hitpoints", {
-    name: "ddb-importer.sync-policy-hitpoints.name",
-    hint: "ddb-importer.sync-policy-hitpoints.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-hitpoints", {
+    name: "ddb-importer-demo.sync-policy-hitpoints.name",
+    hint: "ddb-importer-demo.sync-policy-hitpoints.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-hitdice", {
-    name: "ddb-importer.sync-policy-hitdice.name",
-    hint: "ddb-importer.sync-policy-hitdice.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-hitdice", {
+    name: "ddb-importer-demo.sync-policy-hitdice.name",
+    hint: "ddb-importer-demo.sync-policy-hitdice.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-action-use", {
-    name: "ddb-importer.sync-policy-action-use.name",
-    hint: "ddb-importer.sync-policy-action-use.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-action-use", {
+    name: "ddb-importer-demo.sync-policy-action-use.name",
+    hint: "ddb-importer-demo.sync-policy-action-use.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-inspiration", {
-    name: "ddb-importer.sync-policy-inspiration.name",
-    hint: "ddb-importer.sync-policy-inspiration.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-inspiration", {
+    name: "ddb-importer-demo.sync-policy-inspiration.name",
+    hint: "ddb-importer-demo.sync-policy-inspiration.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-condition", {
-    name: "ddb-importer.sync-policy-condition.name",
-    hint: "ddb-importer.sync-policy-condition.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-condition", {
+    name: "ddb-importer-demo.sync-policy-condition.name",
+    hint: "ddb-importer-demo.sync-policy-condition.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-deathsaves", {
-    name: "ddb-importer.sync-policy-deathsaves.name",
-    hint: "ddb-importer.sync-policy-deathsaves.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-deathsaves", {
+    name: "ddb-importer-demo.sync-policy-deathsaves.name",
+    hint: "ddb-importer-demo.sync-policy-deathsaves.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-spells-prepared", {
-    name: "ddb-importer.sync-policy-spells-prepared.name",
-    hint: "ddb-importer.sync-policy-spells-prepared.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-spells-prepared", {
+    name: "ddb-importer-demo.sync-policy-spells-prepared.name",
+    hint: "ddb-importer-demo.sync-policy-spells-prepared.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-spells-slots", {
-    name: "ddb-importer.sync-policy-spells-slots.name",
-    hint: "ddb-importer.sync-policy-spells-slots.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-spells-slots", {
+    name: "ddb-importer-demo.sync-policy-spells-slots.name",
+    hint: "ddb-importer-demo.sync-policy-spells-slots.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-spells-sync", {
-    name: "ddb-importer.sync-policy-spells-sync.name",
-    hint: "ddb-importer.sync-policy-spells-sync.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-spells-sync", {
+    name: "ddb-importer-demo.sync-policy-spells-sync.name",
+    hint: "ddb-importer-demo.sync-policy-spells-sync.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-equipment", {
-    name: "ddb-importer.sync-policy-equipment.name",
-    hint: "ddb-importer.sync-policy-equipment.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-equipment", {
+    name: "ddb-importer-demo.sync-policy-equipment.name",
+    hint: "ddb-importer-demo.sync-policy-equipment.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "sync-policy-xp", {
-    name: "ddb-importer.sync-policy-xp.name",
-    hint: "ddb-importer.sync-policy-xp.hint",
+  game.settings.register("ddb-importer-demo", "sync-policy-xp", {
+    name: "ddb-importer-demo.sync-policy-xp.name",
+    hint: "ddb-importer-demo.sync-policy-xp.hint",
     scope: "player",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "encounter-import-policy-create-scene", {
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-create-scene", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "encounter-import-policy-existing-scene", {
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: false,
-  });
-
-  game.settings.register("ddb-importer", "encounter-import-policy-missing-characters", {
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: true,
-  });
-
-  game.settings.register("ddb-importer", "encounter-import-policy-missing-monsters", {
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: true,
-  });
-
-  game.settings.register("ddb-importer", "encounter-import-policy-create-journal", {
-    scope: "world",
-    config: false,
-    type: Boolean,
-    default: true,
-  });
-
-  game.settings.register("ddb-importer", "encounter-import-policy-roll-monster-initiative", {
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-existing-scene", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "encounter-import-policy-use-ddb-save", {
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-missing-characters", {
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: true,
+  });
+
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-missing-monsters", {
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: true,
+  });
+
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-create-journal", {
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: true,
+  });
+
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-roll-monster-initiative", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "adventure-muncher-full-config", {
+  game.settings.register("ddb-importer-demo", "encounter-import-policy-use-ddb-save", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync", {
+  game.settings.register("ddb-importer-demo", "adventure-muncher-full-config", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-user", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync", {
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false,
+  });
+
+  game.settings.register("ddb-importer-demo", "dynamic-sync-user", {
     scope: "world",
     config: false,
     type: String,
     default: "",
   });
 
-  if (game.settings.get("ddb-importer", "dynamic-sync-user") === "" && game.user.isGM) {
-    game.settings.set("ddb-importer", "dynamic-sync-user", game.user.id);
+  if (game.settings.get("ddb-importer-demo", "dynamic-sync-user") === "" && game.user.isGM) {
+    game.settings.set("ddb-importer-demo", "dynamic-sync-user", game.user.id);
   }
 
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-currency", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-currency", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-hitpoints", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-hitpoints", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-hitdice", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-hitdice", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-action-use", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-action-use", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-inspiration", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-inspiration", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-condition", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-condition", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-deathsaves", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-deathsaves", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-spells-prepared", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-spells-prepared", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-spells-slots", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-spells-slots", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-spells-sync", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-spells-sync", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-equipment", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-equipment", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "dynamic-sync-policy-xp", {
+  game.settings.register("ddb-importer-demo", "dynamic-sync-policy-xp", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "third-party-scenes-partial", {
+  game.settings.register("ddb-importer-demo", "third-party-scenes-partial", {
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-update-world-monster-update-images", {
+  game.settings.register("ddb-importer-demo", "munching-policy-update-world-monster-update-images", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "munching-policy-update-world-monster-retain-biography", {
+  game.settings.register("ddb-importer-demo", "munching-policy-update-world-monster-retain-biography", {
     scope: "world",
     config: false,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "pact-spells-prepared", {
+  game.settings.register("ddb-importer-demo", "pact-spells-prepared", {
     scope: "world",
     config: false,
     type: Boolean,
@@ -38754,7 +38754,7 @@ class DDBItemConfig extends FormApplication {
   static get defaultOptions() {
     const options = super.defaultOptions;
     options.title = "DDB Owned Item Config";
-    options.template = "modules/ddb-importer/handlebars/item-config.hbs";
+    options.template = "modules/ddb-importer-demo/handlebars/item-config.hbs";
     options.classes = ["ddbimporter", "sheet"];
     options.width = 500;
     return options;
@@ -38839,8 +38839,8 @@ function initItemSheetHook(app, html) {
   // console.error(app.entity);
   // console.log(data);
   const title = `DDB Importer Item Config`;
-  const whiteTitle = (game.settings.get("ddb-importer", "link-title-colour-white")) ? " white" : "";
-  let button = $(`<a class="open-item-ddb-importer" title="${title}"><i class="fab fa-d-and-d-beyond${whiteTitle}"></i></a>`);
+  const whiteTitle = (game.settings.get("ddb-importer-demo", "link-title-colour-white")) ? " white" : "";
+  let button = $(`<a class="open-item-ddb-importer-demo" title="${title}"><i class="fab fa-d-and-d-beyond${whiteTitle}"></i></a>`);
   button.click((event) => {
     if (event.shiftKey && event.ctrlKey) {
       new DDBAdventureFlags(app.document, {}).render(true);
@@ -38848,7 +38848,7 @@ function initItemSheetHook(app, html) {
       new DDBItemConfig(app.document, {}).render(true);
     }
   });
-  html.closest('.app').find('.open-item-ddb-importer').remove();
+  html.closest('.app').find('.open-item-ddb-importer-demo').remove();
   let titleElement = html.closest('.app').find('.window-title');
   button.insertAfter(titleElement);
 }
@@ -38863,7 +38863,7 @@ function itemSheets() {
 
 
 const MODULE_TITLE = "DDB Importer";
-const MODULE_NAME = "ddb-importer";
+const MODULE_NAME = "ddb-importer-demo";
 const MODULE_AUTHOR = "MrPrimate";
 const _GITHUB_API_LATEST = `https://api.github.com/repos/${MODULE_AUTHOR}/${MODULE_NAME}/releases/latest`;
 const _GITHUB_MODULE_JSON_LATEST = `https://raw.githubusercontent.com/${MODULE_AUTHOR}/${MODULE_NAME}/master/module-template.json`;
@@ -38904,7 +38904,7 @@ async function getLatestModuleMinimumCoreVersion() {
     }
 
     // check version number only for GMs
-    const coreCheck = game.settings.get("ddb-importer", "update-check");
+    const coreCheck = game.settings.get("ddb-importer-demo", "update-check");
     if (!coreCheck) return;
 
     const { latestVersion, prerelease: preRelease } = await getLatestModuleVersion();
@@ -43705,32 +43705,32 @@ function loadDDBConfig() {
 ;// CONCATENATED MODULE: ./src/hooks/renderMuncher/settings.js
 function earlySettings() {
 
-  game.settings.register("ddb-importer", "show-munch-top", {
-    name: "ddb-importer.show-munch-top.name",
-    hint: "ddb-importer.show-munch-top.hint",
+  game.settings.register("ddb-importer-demo", "show-munch-top", {
+    name: "ddb-importer-demo.show-munch-top.name",
+    hint: "ddb-importer-demo.show-munch-top.hint",
     scope: "world",
     config: true,
     type: Boolean,
     default: true,
   });
 
-  game.settings.register("ddb-importer", "patreon-tier", {
+  game.settings.register("ddb-importer-demo", "patreon-tier", {
     scope: "world",
     config: false,
     type: String,
     default: null,
   });
 
-  game.settings.register("ddb-importer", "custom-proxy", {
-    name: "ddb-importer.custom-proxy.name",
-    hint: "ddb-importer.custom-proxy.hint",
+  game.settings.register("ddb-importer-demo", "custom-proxy", {
+    name: "ddb-importer-demo.custom-proxy.name",
+    hint: "ddb-importer-demo.custom-proxy.hint",
     scope: "world",
     config: false,
     type: Boolean,
     default: false,
   });
 
-  game.settings.register("ddb-importer", "encounter-muncher-enabled", {
+  game.settings.register("ddb-importer-demo", "encounter-muncher-enabled", {
     scope: "world",
     config: false,
     type: Boolean,
@@ -43738,7 +43738,7 @@ function earlySettings() {
   });
 
   // for D&D 5e 1.4 ac migrtion
-  game.settings.register("ddb-importer", "ac-migration-complete-v1-4", {
+  game.settings.register("ddb-importer-demo", "ac-migration-complete-v1-4", {
     scope: "world",
     config: false,
     type: Boolean,
@@ -43772,12 +43772,12 @@ function addMuncher (app, html) {
           new DDBCookie().render(true);
         }
       } else {
-        game.settings.set("ddb-importer", "settings-call-muncher", true);
+        game.settings.set("ddb-importer-demo", "settings-call-muncher", true);
         new DDBSetup().render(true);
       }
     });
 
-    const top = game.settings.get("ddb-importer", "show-munch-top");
+    const top = game.settings.get("ddb-importer-demo", "show-munch-top");
     if (top) {
       $(html).find(".directory-header").append(button);
     } else {
@@ -43796,9 +43796,9 @@ function addMuncher (app, html) {
 
 
 function addEncounterMuncher (app, html) {
-  const tier = game.settings.get("ddb-importer", "patreon-tier");
+  const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
   const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
-  const enabled = game.settings.get("ddb-importer", "encounter-muncher-enabled");
+  const enabled = game.settings.get("ddb-importer-demo", "encounter-muncher-enabled");
 
   if (enabled && app.options.id == "scenes" && game.user.isGM && tiers.supporter) {
     let button = $("<div class='header-actions action-buttons flexrow'><button class='ddb-muncher' id='ddb-encounter-munch-open'><i class='fas fa-dungeon'></i> DDB Encounter Muncher</button></div>");
@@ -43831,7 +43831,7 @@ function addEncounterMuncher (app, html) {
       }
     });
 
-    const top = game.settings.get("ddb-importer", "show-munch-top");
+    const top = game.settings.get("ddb-importer-demo", "show-munch-top");
     if (top) {
       $(html).find(".directory-header").prepend(button);
     } else {
@@ -43895,7 +43895,7 @@ function linkTables(type, html) {
       findString = "a.entity-link[data-entity='RollTable']";
       break;
     case "item": {
-      const tableCompendium = game.settings.get("ddb-importer", "entity-table-compendium");
+      const tableCompendium = game.settings.get("ddb-importer-demo", "entity-table-compendium");
       content = $(html).find(`div[data-edit="data.description.value"]`);
       findString = `a.entity-link[data-pack='${tableCompendium}']`;
       break;
@@ -43954,7 +43954,7 @@ function linkTables(type, html) {
 
 function linkImages(html) {
   if (!game.user.isGM) return;
-  const displayImages = game.settings.get("ddb-importer", "show-image-to-players");
+  const displayImages = game.settings.get("ddb-importer-demo", "show-image-to-players");
   // does this functionality exist from anther module?
   const funcExists = !displayImages ||
     src_utils/* default.isModuleInstalledAndActive */.Z.isModuleInstalledAndActive("vtta-dndbeyond") ||
@@ -43979,7 +43979,7 @@ function linkImages(html) {
           $(showPlayersButton).click((event) => {
             event.preventDefault();
             event.stopPropagation();
-            game.socket.emit("module.ddb-importer", {
+            game.socket.emit("module.ddb-importer-demo", {
               sender: game.user.data._id,
               action: "showImage",
               src: $(element).attr("src"),
@@ -44023,7 +44023,7 @@ function getTableButton() {
 
 function buildNotes(html, data) {
   if (!game.user.isGM) return;
-  const allow = game.settings.get("ddb-importer", "allow-note-generation");
+  const allow = game.settings.get("ddb-importer-demo", "allow-note-generation");
   if (!allow) return;
 
   // mark all headers
@@ -44139,12 +44139,12 @@ const adventure_renderPopup = (type, url) => {
 
 function adventureFlags(app, html, data) {
   if (!game.user.isGM || !app.document.data.flags.ddb) return;
-  const existingLink = html.closest('.app').find('.open-adventure-ddb-importer');
+  const existingLink = html.closest('.app').find('.open-adventure-ddb-importer-demo');
   if (existingLink.length > 0) return;
 
   const title = `Go to DDB`;
-  const whiteTitle = (game.settings.get("ddb-importer", "link-title-colour-white")) ? " white" : "";
-  let button = $(`<a class="open-adventure-ddb-importer" title="${title}"><i class="fab fa-d-and-d-beyond${whiteTitle}"></i></a>`);
+  const whiteTitle = (game.settings.get("ddb-importer-demo", "link-title-colour-white")) ? " white" : "";
+  let button = $(`<a class="open-adventure-ddb-importer-demo" title="${title}"><i class="fab fa-d-and-d-beyond${whiteTitle}"></i></a>`);
   button.click((event) => {
     if (event.shiftKey && event.ctrlKey) {
       new DDBAdventureFlags(app.document, {}).render(true);
@@ -44365,7 +44365,7 @@ function onceReady() {
 }
 
 function onReady() {
-  game.socket.on("module.ddb-importer", (data) => {
+  game.socket.on("module.ddb-importer-demo", (data) => {
     if (data.sender === game.user.data._id) {
       return;
     }
@@ -44400,7 +44400,7 @@ function renderJournalSheet(sheet, html, data) {
 
 
 /**
-   * Extracts all notes that have been placed by ddb-importer
+   * Extracts all notes that have been placed by ddb-importer-demo
    * Creates the expected data structure for the database by
    * getting the real label from the appropriate Journal Entry
    * @param {Scene} scene The scene to extract the notes from
@@ -44577,7 +44577,7 @@ function collectSceneData(scene, bookCode) {
   data.flags.ddb.img = `assets/${scene.data.img.split("assets/").pop()}`;
 
   if (!data.flags.ddbimporter) data.flags.ddbimporter = {};
-  data.flags.ddbimporter['version'] = game.modules.get("ddb-importer").data.version;
+  data.flags.ddbimporter['version'] = game.modules.get("ddb-importer-demo").data.version;
 
   return data;
 }
@@ -44679,8 +44679,8 @@ class SceneEnhancerExport extends Application {
   static get defaultOptions() {
     const options = super.defaultOptions;
     options.baseApplication = "SceneEnhancerExport";
-    options.id = "ddb-importer-scene-enhancer";
-    options.template = "modules/ddb-importer/handlebars/enhance-export.hbs";
+    options.id = "ddb-importer-demo-scene-enhancer";
+    options.template = "modules/ddb-importer-demo/handlebars/enhance-export.hbs";
     options.width = 500;
     options.resizable = false;
     options.height = "auto";
@@ -44728,7 +44728,7 @@ class SceneEnhancerExport extends Application {
 
   activateListeners(html) {
     super.activateListeners(html);
-    $("#ddb-importer-scene-enhancer").css("height", "auto");
+    $("#ddb-importer-demo-scene-enhancer").css("height", "auto");
 
     html.find('#compendium-form').submit(async (event) => {
       const form = document.querySelector('#compendium-form');
@@ -44889,7 +44889,7 @@ function getSceneId(li) {
 
 /* harmony default export */ function extendSceneNavigationContext(html, contextOptions) {
   contextOptions.push({
-    name: "ddb-importer.scenes.download",
+    name: "ddb-importer-demo.scenes.download",
     callback: (li) => {
       const scene = game.scenes.get(getSceneId(li));
       const data = collectSceneData(scene, scene.data.flags.ddb.bookCode);
@@ -44903,7 +44903,7 @@ function getSceneId(li) {
     },
     condition: (li) => {
       const scene = game.scenes.get(getSceneId(li));
-      const sceneDownload = game.settings.get("ddb-importer", "allow-scene-download");
+      const sceneDownload = game.settings.get("ddb-importer-demo", "allow-scene-download");
       const allowDownload = game.user.isGM && sceneDownload && scene.data.flags.ddb?.ddbId;
       return allowDownload;
     },
@@ -44911,14 +44911,14 @@ function getSceneId(li) {
   });
 
   contextOptions.push({
-    name: "ddb-importer.scenes.third-party-download",
+    name: "ddb-importer-demo.scenes.third-party-download",
     callback: (li) => {
       const scene = game.scenes.get(getSceneId(li));
       new SceneEnhancerExport(scene).render(true);
     },
     condition: (li) => {
       const scene = game.scenes.get(getSceneId(li));
-      const sceneDownload = game.settings.get("ddb-importer", "allow-third-party-scene-download");
+      const sceneDownload = game.settings.get("ddb-importer-demo", "allow-third-party-scene-download");
       const allowDownload = game.user.isGM && sceneDownload && !scene.data.flags.ddb?.ddbId;
       return allowDownload;
     },

@@ -14,7 +14,7 @@
 </ul>
 
 <div class="form-description">
-  <form id="ddb-importer-sync-settings" autocomplete="off" onsubmit="event.preventDefault();">
+  <form id="ddb-importer-demo-sync-settings" autocomplete="off" onsubmit="event.preventDefault();">
     <div class="form-content">
       <hr>
       <div class="form-group">
@@ -28,7 +28,7 @@
       <hr>
     </div>
       {{#each settings}}
-      <div class="ddb-importer-sync-setting">
+      <div class="ddb-importer-demo-sync-setting">
         <input {{#if this.isChecked}}checked{{/if}} type="checkbox"
               id="{{this.name}}"
               name="{{this.name}}"
@@ -38,7 +38,7 @@
 
     <hr>
 </div>
-    <button id="ddb-importer-sync-settings" class="munch-button" type="submit">Save</button>
+    <button id="ddb-importer-demo-sync-settings" class="munch-button" type="submit">Save</button>
   </form>
 
 </div>
