@@ -24427,16 +24427,9 @@ class Helpers {
           case "monster": {
             try {
               const tier = game.settings.get("ddb-importer-demo", "patreon-tier");
-              const tiers = (0,utils/* getPatreonTiers */.A1)(tier);
-              if (tiers.all) {
-                src_logger/* default.debug */.Z.debug(`Importing missing ${type}s from DDB`, docIds);
-                AdventureMunch._progressNote(`Importing ${docIds.length} missing ${type}s from DDB`);
-                resolve(parseCritters(docIds));
-              } else {
-                src_logger/* default.warn */.Z.warn(`Unable to import missing ${type}s from DDB - link to patreon or use your own proxy`, docIds);
-                ui.notifications.warn(`Unable to import missing ${type}s from DDB - link to patreon or use your own proxy`, { permanent: true });
-                resolve([]);
-              }
+              src_logger/* default.debug */.Z.debug(`Importing missing ${type}s from DDB`, docIds);
+              AdventureMunch._progressNote(`Importing ${docIds.length} missing ${type}s from DDB`);
+              resolve(parseCritters(docIds));
             } catch (err) {
               if (err instanceof SyntaxError) {
                 ui.notifications.error("Error fetching monsters, likely cause outdated ddb-proxy", { permanent: true });
@@ -26802,19 +26795,19 @@ function getMuncherSettings(includeHomebrew = true) {
         name: "monster-homebrew",
         isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-homebrew") && !sourcesSelected,
         description: homebrewDescription,
-        enabled: tiers.homebrew && !sourcesSelected,
+        enabled: !sourcesSelected,
       },
       {
         name: "monster-homebrew-only",
         isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-homebrew-only") && !sourcesSelected,
         description: "Homebrew monsters only? (Otherwise both)",
-        enabled: tiers.homebrew && !sourcesSelected,
+        enabled: !sourcesSelected,
       },
       {
         name: "monster-exact-match",
         isChecked: game.settings.get("ddb-importer-demo", "munching-policy-monster-exact-match"),
         description: "Exact name match?",
-        enabled: tiers.homebrew,
+        enabled: true,
       }
     ]
     : [];
@@ -26875,7 +26868,7 @@ function getMuncherSettings(includeHomebrew = true) {
       name: "use-source-filter",
       isChecked: enableSources,
       description: "Restrict import to specific source book(s)? (DDB sets this as the <i>first</i> book a monster appears in).",
-      enabled: tiers.homebrew,
+      enabled: true,
     }
   ];
 
@@ -27231,16 +27224,13 @@ class DDBMuncher extends Application {
       $('button[id^="munch-migrate-compendium-item"]').prop('disabled', false);
       $('button[id^="munch-fix-base64"]').prop('disabled', false);
 
-      if (tiers.all) {
-        $('button[id^="munch-monsters-start"]').prop('disabled', false);
-        $('button[id^="munch-source-select"]').prop('disabled', false);
-      }
-      if (tiers.supporter) {
-        $('button[id^="munch-races-start"]').prop('disabled', false);
-        $('button[id^="munch-feats-start"]').prop('disabled', false);
-        $('button[id^="munch-frames-start"]').prop('disabled', false);
-        $('button[id^="munch-classes-start"]').prop('disabled', false);
-      }
+
+      $('button[id^="munch-monsters-start"]').prop('disabled', false);
+      $('button[id^="munch-source-select"]').prop('disabled', false);
+      $('button[id^="munch-races-start"]').prop('disabled', false);
+      $('button[id^="munch-feats-start"]').prop('disabled', false);
+      $('button[id^="munch-frames-start"]').prop('disabled', false);
+      $('button[id^="munch-classes-start"]').prop('disabled', false);
       // if (tiers.experimentalMid) {
       // }
     }
