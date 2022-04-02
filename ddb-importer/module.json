@@ -6,7 +6,7 @@
   "description": "Import your dndbeyond.com characters, spells, items, monsters, encounters, and adventures at super speed!",
   "version": "2.9.26",
   "download": "https://github.com/JMonsorno/ddb-importer/archive/refs/heads/demo-mode.zip",
-  "manifest": "https://github.com/JMonsorno/ddb-importer/raw/demo-mode/module-dev.json",
+  "manifest": "https://github.com/JMonsorno/ddb-importer/raw/demo-mode/module.json",
   "readme": "https://github.com/JMonsorno/ddb-importer/blob/demo-mode/README.md",
   "changelog": "https://github.com/JMonsorno/ddb-importer/blob/demo-mode/CHANGELOG.md",
   "url": "https://github.com/mrprimate/ddb-importer",
